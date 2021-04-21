@@ -13,12 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			estructura: [
-				{
-					altura: "3",
-					no_columnas: "2"
-				}
-			]
+
+			altura: "3",
+			nocolumnasEstado: "2"
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -43,6 +40,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			setNoColumnas: noColumnas => {
+				const store = getStore();
+				setStore({ nocolumnasEstado: noColumnas });
 			}
 		}
 	};

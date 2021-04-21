@@ -13,7 +13,7 @@ export const HomeTesis = () => (
 			<img src={dnaImage} />
 		</p>
 		<button className="btnHome">
-			<Link to="/structure">Iniciar</Link>
+			<Link to="/structure">Iniciar DEMO</Link>
 		</button>
 	</div>
 );

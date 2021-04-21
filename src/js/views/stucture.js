@@ -6,6 +6,7 @@ import "../../styles/structure.scss";
 
 function Structure() {
 	const { store, actions } = useContext(Context);
+	//const [noColumnas, setNoColumnas] = useState("");
 
 	return (
 		<React.Fragment>
@@ -17,11 +18,23 @@ function Structure() {
 			</div>
 			<div className="row justify-content">
 				<div className="col-md-6">
-					<div className="config-paso-1">
+					<div className="config-paso-1 justify-content">
 						<p>
 							<h2 className="sub-title">Paso 1: Configuración de la Estructura</h2>
 						</p>
-
+						<p>
+							<h4>Número de Columnas (mínimo 2 - máximo 5)</h4>
+							<input
+								className="no-columnas"
+								type="number"
+								placeholder="2"
+								id="no-columnas"
+								name="no-columnas"
+								min="2"
+								max="5"
+								onChange={e => actions.setNoColumnas(e.target.value)}
+							/>
+						</p>
 						<p className="save-btn">
 							<button className="btnPaso text-center mt-12 title">
 								<span>Guardar Paso 1</span>
@@ -31,7 +44,15 @@ function Structure() {
 				</div>
 				<div className="col-md-6">
 					<svg viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
-						<line x1="0" y1="0" x2="10" y2="10" stroke="black" strokeWidth="1px" />
+						<line
+							x1="0"
+							y1="20"
+							x2="0"
+							y2="15"
+							stroke="black"
+							strokeWidth="10px"
+							vectorEffect="non-scaling-stroke"
+						/>
 					</svg>
 				</div>
 			</div>
