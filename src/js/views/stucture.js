@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import dnaImage from "../../img/dna-genetic-algorithm.jpg";
+//import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 
 export const Structure = () => (
@@ -13,7 +13,7 @@ export const Structure = () => (
 			<h2 className="sub-title">Paso 1: Configuración de la Estructura</h2>
 		</p>
 		<button className="btnHome">
-			<Link to="/demo">Iniciar</Link>
+			<Link to="/demo">Calcular</Link>
 		</button>
 	</div>
 );
