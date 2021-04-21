@@ -4,7 +4,7 @@ import ScrollToTop from "./component/scrollToTop";
 
 //import { Home } from "./views/home";
 import { HomeTesis } from "./views/home-tesis";
-import { Structure } from "./views/stucture";
+import Structure from "./views/stucture";
 import { Autor } from "./views/autor";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";

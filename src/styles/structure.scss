@@ -9,9 +9,16 @@
 
 .save-btn {
     padding-left: 10%;
+    justify-items: center;
+    align-items: center;
 }
 
 .btnPaso {
     background-color: #2f8ee7;
     color: rgb(245, 245, 245);
+}
+
+svg {
+    border: solid red 1px;
+    justify-self: center;
 }

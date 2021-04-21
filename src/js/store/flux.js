@@ -12,6 +12,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
+			],
+			estructura: [
+				{
+					altura: "3",
+					no_columnas: "2"
+				}
 			]
 		},
 		actions: {
