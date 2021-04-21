@@ -1,4 +1,18 @@
-.btn* {
-    background-color: 1px aqua;
-    color: black;
-};
+.title {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-weight: bold;
+}
+
+.btnHome {
+    background-color: #3eeb3e;
+    color: rgb(161, 157, 157);
+}
+
+Link {
+    text-emphasis-color: white;
+}
