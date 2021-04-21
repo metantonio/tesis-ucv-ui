@@ -41,9 +41,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+
 			setNoColumnas: noColumnas => {
 				const store = getStore();
 				setStore({ nocolumnasEstado: noColumnas });
+			},
+
+			getNoColumnas: () => {
+				let store = getStore();
+				return store.nocolumnasEstado;
 			}
 		}
 	};

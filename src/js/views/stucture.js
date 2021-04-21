@@ -7,6 +7,27 @@ import "../../styles/structure.scss";
 function Structure() {
 	const { store, actions } = useContext(Context);
 	//const [noColumnas, setNoColumnas] = useState("");
+	var x1 = 0;
+	var x2 = 0;
+	var y1 = 20;
+	var y2 = 15;
+
+	var loopForDibujo = () => {
+		for (let j = 2; (j = valor); j++) {
+			var increment = j;
+			return (
+				<line
+					x1={5 * (increment - 2)}
+					y1={y1}
+					x2={5 * (increment - 2)}
+					y2={y2}
+					stroke="black"
+					strokeWidth="10px"
+					vectorEffect="non-scaling-stroke"
+				/>
+			);
+		}
+	};
 
 	return (
 		<React.Fragment>
@@ -44,15 +65,20 @@ function Structure() {
 				</div>
 				<div className="col-md-6">
 					<svg viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
-						<line
-							x1="0"
-							y1="20"
-							x2="0"
-							y2="15"
-							stroke="black"
-							strokeWidth="10px"
-							vectorEffect="non-scaling-stroke"
-						/>
+						{{ loopForDibujo }
+						/* for(var i=2; i=5; i++)
+						{
+							<line
+								x1={x1}
+								y1={y1}
+								x2={x2}
+								y2={y2}
+								stroke="black"
+								strokeWidth="10px"
+								vectorEffect="non-scaling-stroke"
+							/>
+						} */
+						}
 					</svg>
 				</div>
 			</div>
