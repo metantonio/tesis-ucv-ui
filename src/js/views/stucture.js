@@ -12,6 +12,7 @@ function Structure() {
 	var y1 = 20;
 	var y2 = 15;
 	var drawLines = "";
+	var drawLines2 = "";
 	//var i = 2;
 
 	let dibujo = () => {
@@ -32,6 +33,26 @@ function Structure() {
 				'stroke="black" strokeWidth="10px"></line>';
 		}
 		return drawLines;
+	};
+
+	let dibujoVigas = () => {
+		for (var i = 1; i <= actions.getNoPisos(); i++) {
+			drawLines2 +=
+				'<line x1="' +
+				0 +
+				'" ' +
+				'y1="' +
+				(40 - actions.getEntrePiso() * i) +
+				'" ' +
+				'x2="' +
+				actions.getLuzVano() * (actions.getNoColumnas() - 1) +
+				'" ' +
+				'y2="' +
+				(40 - actions.getEntrePiso() * i) +
+				'" ' +
+				'stroke="black" strokeWidth="10px"></line>';
+		}
+		return drawLines2;
 	};
 
 	return (
@@ -104,7 +125,7 @@ function Structure() {
 				</div>
 				<div className="col-md-6">
 					<svg
-						viewBox="0 0 50 40"
+						viewBox="-5 0 50 40"
 						preserveAspectRatio="xMidYMid meet"
 						xmlns="http://www.w3.org/2000/svg"
 						id="caja-dibujo">
@@ -120,9 +141,11 @@ function Structure() {
 							var alturaEntrePiso = actions.getEntrePiso();
 							var luzVano = actions.getLuzVano();
 							drawLines = dibujo();
+							drawLines2 = dibujoVigas();
+							drawLines = drawLines + drawLines2;
 							document.getElementById("caja-dibujo").innerHTML = drawLines;
 							//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-							console.log(drawLines);
+							console.log(drawLines, drawLines2);
 							return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 						}}>
 						<span>Guardar Paso 1 y Dibujar</span>
