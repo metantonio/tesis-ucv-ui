@@ -10,6 +10,9 @@ export const Navbar = () => {
 			<Link to="/structure">
 				<span className="navbar-brand mb-0 col-4 h1">Configuración Estructura</span>
 			</Link>
+			<Link to="/forces">
+				<span className="navbar-brand mb-0 col-4 h1">Casos de Carga</span>
+			</Link>
 			<Link to="/autor">
 				<span className="navbar-brand mb-0 col-4 h1">Acerca del Autor</span>
 			</Link>

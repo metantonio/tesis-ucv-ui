@@ -16,9 +16,21 @@
 .btnPaso {
     background-color: #2f8ee7;
     color: rgb(245, 245, 245);
+    text-emphasis-color: white;
+    text-decoration-color: white;
+}
+
+.btnPaso:hover {
+    background-color: #e21818;
+    color: rgb(245, 245, 245);
 }
 
 svg {
     border: solid red 1px;
     justify-self: center;
+}
+
+.btnPaso2 {
+    background-color: #2fe747;
+    color: rgb(245, 245, 245);
 }

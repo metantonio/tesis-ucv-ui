@@ -155,6 +155,13 @@ function Structure() {
 						<span>Guardar Paso 1 y Dibujar</span>
 					</button>
 				</p>
+				<p>
+					<button className="btnPaso2 text-center mt-12 title">
+						<Link to="/forces">
+							<span>Ir al Paso 2</span>
+						</Link>
+					</button>
+				</p>
 			</div>
 		</React.Fragment>
 	);
