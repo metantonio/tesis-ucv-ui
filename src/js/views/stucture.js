@@ -101,7 +101,15 @@ function Structure() {
 							/>
 						</p>
 						<p className="save-btn">
-							<button className="btnPaso text-center mt-12 title">
+							<button
+								className="btnPaso text-center mt-12 title"
+								onClick={() => {
+									var numeroCol = actions.getNoColumnas();
+									var numeroPisos = actions.getNoPisos();
+									var alturaEntrePiso = actions.getEntrePiso();
+									var luzVano = actions.getLuzVano();
+									console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
+								}}>
 								<span>Guardar Paso 1</span>
 							</button>
 						</p>
