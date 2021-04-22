@@ -122,7 +122,7 @@ function Structure() {
 								'y2="' +
 								(40 - actions.getEntrePiso() * actions.getNoPisos()) +
 								'" ' +
-								'stroke="black" strokeWidth="10px" vectorEffect="non-scaling-stroke">')
+								'stroke="black" strokeWidth="10px" vectorEffect="non-scaling-stroke"></line>')
 							// <line
 							// 	x1={x1}
 							// 	y1={y1}
