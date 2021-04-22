@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, Component } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
@@ -12,22 +12,27 @@ function Structure() {
 	var y1 = 20;
 	var y2 = 15;
 
-	var loopForDibujo = () => {
-		for (let j = 2; (j = valor); j++) {
-			var increment = j;
-			return (
-				<line
-					x1={5 * (increment - 2)}
-					y1={y1}
-					x2={5 * (increment - 2)}
-					y2={y2}
-					stroke="black"
-					strokeWidth="10px"
-					vectorEffect="non-scaling-stroke"
-				/>
-			);
-		}
-	};
+	// let getColumnas = () => {
+	// 	console.log(actions.getNoColumnas);
+	// 	return state.actions.getNoColumnas;
+	// };
+
+	// var loopForDibujo = (valor = 5) => {
+	// 	for (let j = 2; (j = valor); j++) {
+	// 		var increment = j;
+	// 		return (
+	// 			<line
+	// 				x1={5 * (increment - 2)}
+	// 				y1={y1}
+	// 				x2={5 * (increment - 2)}
+	// 				y2={y2}
+	// 				stroke="black"
+	// 				strokeWidth="10px"
+	// 				vectorEffect="non-scaling-stroke"
+	// 			/>
+	// 		);
+	// 	}
+	// };
 
 	return (
 		<React.Fragment>
@@ -65,20 +70,19 @@ function Structure() {
 				</div>
 				<div className="col-md-6">
 					<svg viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
-						{{ loopForDibujo }
-						/* for(var i=2; i=5; i++)
+						{/* for(var i=2; i=
+						{getColumnas}; i++)
 						{
 							<line
-								x1={x1}
+								x1={x1 + getColumnas}
 								y1={y1}
-								x2={x2}
+								x2={5 * getColumnas}
 								y2={y2}
 								stroke="black"
 								strokeWidth="10px"
 								vectorEffect="non-scaling-stroke"
 							/>
-						} */
-						}
+						} */}
 					</svg>
 				</div>
 			</div>

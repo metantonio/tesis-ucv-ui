@@ -13,9 +13,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-
-			altura: "3",
-			nocolumnasEstado: "2"
+			nocolumnasEstado: "2",
+			columna: {
+				longitud: "3"
+			}
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -42,14 +43,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 
+			getNoColumnas: () => {
+				const store = getStore();
+				console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.nocolumnasEstado;
+			},
+
 			setNoColumnas: noColumnas => {
 				const store = getStore();
 				setStore({ nocolumnasEstado: noColumnas });
-			},
-
-			getNoColumnas: () => {
-				let store = getStore();
-				return store.nocolumnasEstado;
+				return console.log(`setNoColumnas ${store.nocolumnasEstado}`);
 			}
 		}
 	};
