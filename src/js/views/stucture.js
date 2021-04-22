@@ -11,6 +11,8 @@ function Structure() {
 	var x2 = 0;
 	var y1 = 20;
 	var y2 = 15;
+	var drawLines = "";
+	var i = 2;
 
 	// let getColumnas = () => {
 	// 	console.log(actions.getNoColumnas);
@@ -100,38 +102,56 @@ function Structure() {
 								onChange={e => actions.setLuzVano(e.target.value)}
 							/>
 						</p>
-						<p className="save-btn">
-							<button
-								className="btnPaso text-center mt-12 title"
-								onClick={() => {
-									var numeroCol = actions.getNoColumnas();
-									var numeroPisos = actions.getNoPisos();
-									var alturaEntrePiso = actions.getEntrePiso();
-									var luzVano = actions.getLuzVano();
-									console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-								}}>
-								<span>Guardar Paso 1</span>
-							</button>
-						</p>
 					</div>
 				</div>
 				<div className="col-md-6">
-					<svg viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
-						{/* for(var i=2; i=
-						{getColumnas}; i++)
+					<svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg" id="caja-dibujo">
+						for(var {i}
+						=2; {i} = {actions.getNoColumnas()}; {i++})
 						{
-							<line
-								x1={x1 + getColumnas}
-								y1={y1}
-								x2={5 * getColumnas}
-								y2={y2}
-								stroke="black"
-								strokeWidth="10px"
-								vectorEffect="non-scaling-stroke"
-							/>
-						} */}
+							(drawLines +=
+								'<line x1="' +
+								actions.getLuzVano() * (i - 2) +
+								'" ' +
+								'y1="' +
+								40 +
+								'" ' +
+								'x2="' +
+								actions.getLuzVano() * (i - 2) +
+								'" ' +
+								'y2="' +
+								(40 - actions.getEntrePiso() * actions.getNoPisos()) +
+								'" ' +
+								'stroke="black" strokeWidth="10px" vectorEffect="non-scaling-stroke">')
+							// <line
+							// 	x1={x1}
+							// 	y1={y1}
+							// 	x2={x2}
+							// 	y2={y2}
+							// 	stroke="black"
+							// 	strokeWidth="10px"
+							// 	vectorEffect="non-scaling-stroke">
+							// 	{(document.getRootNode().y2 = 20 - actions.getEntrePiso())}
+							// </line>
+						}
+						;
 					</svg>
 				</div>
+				<p className="save-btn">
+					<button
+						className="btnPaso text-center mt-12 title"
+						onClick={() => {
+							var numeroCol = actions.getNoColumnas();
+							var numeroPisos = actions.getNoPisos();
+							var alturaEntrePiso = actions.getEntrePiso();
+							var luzVano = actions.getLuzVano();
+							document.getElementById("caja-dibujo").innerHTML = drawLines;
+							//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
+							return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+						}}>
+						<span>Guardar Paso 1</span>
+					</button>
+				</p>
 			</div>
 		</React.Fragment>
 	);
