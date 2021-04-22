@@ -30,4 +30,4 @@ La realización de esta interfaz es para el desarrollo de un producto mínimo vi
 ```bash
 Optimización de las Edificaciones de Acero con arriostramientos laterales en un sentido, condicionada a las deriva de piso mediante la aplicación de Algoritmos Genéticos
 ```
-[Martínez, Antonio](https://github.com/metantonio)
+### Autor: [Martínez, Antonio](https://github.com/metantonio)
