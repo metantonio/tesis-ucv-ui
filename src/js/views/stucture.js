@@ -12,29 +12,27 @@ function Structure() {
 	var y1 = 20;
 	var y2 = 15;
 	var drawLines = "";
-	var i = 2;
+	//var i = 2;
 
-	// let getColumnas = () => {
-	// 	console.log(actions.getNoColumnas);
-	// 	return state.actions.getNoColumnas;
-	// };
-
-	// var loopForDibujo = (valor = 5) => {
-	// 	for (let j = 2; (j = valor); j++) {
-	// 		var increment = j;
-	// 		return (
-	// 			<line
-	// 				x1={5 * (increment - 2)}
-	// 				y1={y1}
-	// 				x2={5 * (increment - 2)}
-	// 				y2={y2}
-	// 				stroke="black"
-	// 				strokeWidth="10px"
-	// 				vectorEffect="non-scaling-stroke"
-	// 			/>
-	// 		);
-	// 	}
-	// };
+	let dibujo = () => {
+		for (var i = 1; i <= actions.getNoColumnas(); i++) {
+			drawLines +=
+				'<line x1="' +
+				actions.getLuzVano() * (i - 1) +
+				'" ' +
+				'y1="' +
+				40 +
+				'" ' +
+				'x2="' +
+				actions.getLuzVano() * (i - 1) +
+				'" ' +
+				'y2="' +
+				(40 - actions.getEntrePiso() * actions.getNoPisos()) +
+				'" ' +
+				'stroke="black" strokeWidth="10px"></line>';
+		}
+		return drawLines;
+	};
 
 	return (
 		<React.Fragment>
@@ -105,36 +103,12 @@ function Structure() {
 					</div>
 				</div>
 				<div className="col-md-6">
-					<svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg" id="caja-dibujo">
-						for(var {i}
-						=2; {i} = {actions.getNoColumnas()}; {i++})
-						{
-							(drawLines +=
-								'<line x1="' +
-								actions.getLuzVano() * (i - 2) +
-								'" ' +
-								'y1="' +
-								40 +
-								'" ' +
-								'x2="' +
-								actions.getLuzVano() * (i - 2) +
-								'" ' +
-								'y2="' +
-								(40 - actions.getEntrePiso() * actions.getNoPisos()) +
-								'" ' +
-								'stroke="black" strokeWidth="10px" vectorEffect="non-scaling-stroke"></line>')
-							// <line
-							// 	x1={x1}
-							// 	y1={y1}
-							// 	x2={x2}
-							// 	y2={y2}
-							// 	stroke="black"
-							// 	strokeWidth="10px"
-							// 	vectorEffect="non-scaling-stroke">
-							// 	{(document.getRootNode().y2 = 20 - actions.getEntrePiso())}
-							// </line>
-						}
-						;
+					<svg
+						viewBox="0 0 50 40"
+						preserveAspectRatio="xMidYMid meet"
+						xmlns="http://www.w3.org/2000/svg"
+						id="caja-dibujo">
+						{}
 					</svg>
 				</div>
 				<p className="save-btn">
@@ -145,11 +119,13 @@ function Structure() {
 							var numeroPisos = actions.getNoPisos();
 							var alturaEntrePiso = actions.getEntrePiso();
 							var luzVano = actions.getLuzVano();
+							drawLines = dibujo();
 							document.getElementById("caja-dibujo").innerHTML = drawLines;
 							//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
+							console.log(drawLines);
 							return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 						}}>
-						<span>Guardar Paso 1</span>
+						<span>Guardar Paso 1 y Dibujar</span>
 					</button>
 				</p>
 			</div>
