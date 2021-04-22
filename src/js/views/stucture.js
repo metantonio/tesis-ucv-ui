@@ -96,7 +96,7 @@ function Structure() {
 							/>
 						</p>
 						<p>
-							<h4>Altura Entrepiso (m)</h4>
+							<h4>Altura Entrepiso (m) (max = 6m)</h4>
 							<input
 								className="no-columnas"
 								type="number"
@@ -105,11 +105,12 @@ function Structure() {
 								name="no-columnas"
 								min="1.00"
 								step="0.01"
+								max="6.00"
 								onChange={e => actions.setEntrePiso(e.target.value)}
 							/>
 						</p>
 						<p>
-							<h4>Luz de vanos (m)</h4>
+							<h4>Luz de vanos (m) (max = 6m)</h4>
 							<input
 								className="no-columnas"
 								type="number"
@@ -118,6 +119,7 @@ function Structure() {
 								name="no-columnas"
 								min="0.50"
 								step="0.01"
+								max="6.00"
 								onChange={e => actions.setLuzVano(e.target.value)}
 							/>
 						</p>
@@ -125,8 +127,10 @@ function Structure() {
 				</div>
 				<div className="col-md-6">
 					<svg
-						viewBox="-5 0 50 40"
-						preserveAspectRatio="xMidYMid meet"
+						width="350px"
+						height="500px"
+						viewBox="-5 -10 35 50"
+						preserveAspectRatio="none"
 						xmlns="http://www.w3.org/2000/svg"
 						id="caja-dibujo">
 						{}
