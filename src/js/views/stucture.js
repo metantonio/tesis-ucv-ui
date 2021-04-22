@@ -49,7 +49,7 @@ function Structure() {
 							<h2 className="sub-title">Paso 1: Configuración de la Estructura</h2>
 						</p>
 						<p>
-							<h4>Número de Columnas (mínimo 2 - máximo 5)</h4>
+							<h4>Número de Columnas Eje X (mínimo 2 - máximo 5)</h4>
 							<input
 								className="no-columnas"
 								type="number"
@@ -59,6 +59,45 @@ function Structure() {
 								min="2"
 								max="5"
 								onChange={e => actions.setNoColumnas(e.target.value)}
+							/>
+						</p>
+						<p>
+							<h4>Número de Pisos (mínimo 1 - máximo 8)</h4>
+							<input
+								className="no-columnas"
+								type="number"
+								placeholder="1"
+								id="no-columnas"
+								name="no-columnas"
+								min="1"
+								max="8"
+								onChange={e => actions.setNoPisos(e.target.value)}
+							/>
+						</p>
+						<p>
+							<h4>Altura Entrepiso (m)</h4>
+							<input
+								className="no-columnas"
+								type="number"
+								placeholder="1"
+								id="no-columnas"
+								name="no-columnas"
+								min="1.00"
+								step="0.01"
+								onChange={e => actions.setEntrePiso(e.target.value)}
+							/>
+						</p>
+						<p>
+							<h4>Luz de vanos (m)</h4>
+							<input
+								className="no-columnas"
+								type="number"
+								placeholder="3.00"
+								id="no-columnas"
+								name="no-columnas"
+								min="0.50"
+								step="0.01"
+								onChange={e => actions.setLuzVano(e.target.value)}
 							/>
 						</p>
 						<p className="save-btn">

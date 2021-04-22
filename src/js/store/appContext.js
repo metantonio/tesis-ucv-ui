@@ -33,6 +33,15 @@ const injectContext = PassedComponent => {
 			 **/
 			state.actions.setNoColumnas();
 			state.actions.getNoColumnas();
+
+			state.actions.setNoPisos();
+			state.actions.getNoPisos();
+
+			state.actions.setEntrePiso();
+			state.actions.getEntrePiso();
+
+			state.actions.setLuzVano();
+			state.actions.getLuzVano();
 		}, []);
 
 		// The initial value for the context is not null anymore, but the current state of this component,

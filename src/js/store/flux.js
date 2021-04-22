@@ -14,6 +14,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			nocolumnasEstado: "2",
+			noPisosEstado: "2",
+			entrePisosEstado: "2.75",
+			luzVanoEstado: "3.00",
 			columna: {
 				longitud: "3"
 			}
@@ -53,6 +56,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				setStore({ nocolumnasEstado: noColumnas });
 				return console.log(`setNoColumnas ${store.nocolumnasEstado}`);
+			},
+
+			getNoPisos: () => {
+				const store = getStore();
+				console.log(`getNoPisos ${store.noPisosEstado}`);
+				return store.noPisosEstado;
+			},
+
+			setNoPisos: noPisos => {
+				const store = getStore();
+				setStore({ noPisosEstado: noPisos });
+				return console.log(`setNoPisos ${store.noPisosEstado}`);
+			},
+
+			setEntrePiso: entrePisos => {
+				const store = getStore();
+				setStore({ entrePisosEstado: entrePisos });
+				return console.log(`setEntrePisos ${store.entrePisosEstado}`);
+			},
+
+			getEntrePiso: () => {
+				const store = getStore();
+				console.log(`getEntrePiso ${store.entrePisosEstado}`);
+				return store.entrePisosEstado;
+			},
+
+			setLuzVano: luzVano => {
+				const store = getStore();
+				setStore({ luzVanoEstado: luzVano });
+				return console.log(`setLuzVano ${store.luzVanoEstado}`);
+			},
+
+			getLuzVano: () => {
+				const store = getStore();
+				console.log(`getLuzVano ${store.luzVanoEstado}`);
+				return store.luzVanoEstado;
 			}
 		}
 	};
