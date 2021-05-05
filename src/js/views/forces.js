@@ -31,7 +31,7 @@ function Forces() {
 				<div className="col-md-6">
 					<div className="config-paso-1 justify-content">
 						<p>
-							<h4>Carga Viva Entrepiso(kgf/m2)</h4>
+							<h4>Carga Variable Entrepiso(kgf/m2)</h4>
 							<input
 								className="no-columnas"
 								type="number"
@@ -67,7 +67,7 @@ function Forces() {
 				<div className="col-md-6">
 					<div className="config-paso-1 justify-content">
 						<p>
-							<h4>Carga Viva Techo(kgf/m2)</h4>
+							<h4>Carga Variable Techo(kgf/m2)</h4>
 							<input
 								className="no-columnas"
 								type="number"
