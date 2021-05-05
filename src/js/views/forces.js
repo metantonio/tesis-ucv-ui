@@ -99,14 +99,14 @@ function Forces() {
 							/>
 						</p>
 						<p>
-							<h4>Viento (kgf/m2)</h4>
+							<h4>Viento (kgf/m2) (COVENIN 2003-86)</h4>
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="0.00"
+								placeholder="30.00"
 								id="cargaViento"
 								name="no-columnas"
-								min="0.00"
+								min="30.00"
 								step="0.01"
 								onChange={e => {
 									var cargaViento = document.getElementById("cargaViento").value;
