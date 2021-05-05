@@ -17,9 +17,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			noPisosEstado: "2",
 			entrePisosEstado: "2.75",
 			luzVanoEstado: "3.00",
-			columna: {
-				longitud: "3"
-			},
 			cargaVLosaEntrePisoEstado: "250",
 			cargaPLosaEntrePisoEstado: "800",
 			cargaVTechoEstado: "100",

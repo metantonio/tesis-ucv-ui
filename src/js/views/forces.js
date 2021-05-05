@@ -134,7 +134,7 @@ function Forces() {
 					</p>
 					<p>
 						<button className="btnPaso2 text-center mt-12 title">
-							<Link to="/">
+							<Link to="/profiles">
 								<span>Ir al Paso 3</span>
 							</Link>
 						</button>

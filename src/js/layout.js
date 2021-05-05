@@ -6,6 +6,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { HomeTesis } from "./views/home-tesis";
 import Structure from "./views/stucture";
 import Forces from "./views/forces";
+import Profiles from "./views/profiles";
 import { Autor } from "./views/autor";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
@@ -35,8 +36,8 @@ const Layout = () => {
 						<Route exact path="/forces">
 							<Forces />
 						</Route>
-						<Route exact path="/demo">
-							<Demo />
+						<Route exact path="/profiles">
+							<Profiles />
 						</Route>
 						<Route exact path="/autor">
 							<Autor />
