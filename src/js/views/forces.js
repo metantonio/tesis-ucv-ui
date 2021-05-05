@@ -36,11 +36,14 @@ function Forces() {
 								className="no-columnas"
 								type="number"
 								placeholder="250.00"
-								id="no-columnas"
+								id="cargaVEntrepiso"
 								name="no-columnas"
 								min="1.00"
 								step="0.01"
-								//onChange={e => actions.setNoColumnas(e.target.value)}
+								onChange={e => {
+									var cargaVEntrepiso = document.getElementById("cargaVEntrepiso").value;
+									return cargaVEntrepiso;
+								}}
 							/>
 						</p>
 						<p>
@@ -49,25 +52,14 @@ function Forces() {
 								className="no-columnas"
 								type="number"
 								placeholder="800.00"
-								id="no-columnas"
+								id="cargaPEntrepiso"
 								name="no-columnas"
 								min="1.00"
 								step="0.01"
-
-								//onChange={e => actions.setNoPisos(e.target.value)}
-							/>
-						</p>
-						<p>
-							<h4>Sismo (kgf)</h4>
-							<input
-								className="no-columnas"
-								type="number"
-								placeholder="0.00"
-								id="no-columnas"
-								name="no-columnas"
-								min="0.00"
-								step="0.01"
-								//onChange={e => actions.setEntrePiso(e.target.value)}
+								onChange={e => {
+									var cargaPEntrepiso = document.getElementById("cargaPEntrepiso").value;
+									return cargaPEntrepiso;
+								}}
 							/>
 						</p>
 					</div>
@@ -80,12 +72,14 @@ function Forces() {
 								className="no-columnas"
 								type="number"
 								placeholder="100.00"
-								id="no-columnas"
+								id="cargaVTecho"
 								name="no-columnas"
 								min="40.00"
 								step="0.01"
-
-								//onChange={e => actions.setNoColumnas(e.target.value)}
+								onChange={e => {
+									var cargaVTecho = document.getElementById("cargaVTecho").value;
+									return cargaVTecho;
+								}}
 							/>
 						</p>
 						<p>
@@ -94,12 +88,14 @@ function Forces() {
 								className="no-columnas"
 								type="number"
 								placeholder="150.00"
-								id="no-columnas"
+								id="cargaPTecho"
 								name="no-columnas"
 								min="1.00"
 								step="0.01"
-
-								//onChange={e => actions.setNoPisos(e.target.value)}
+								onChange={e => {
+									var cargaPTecho = document.getElementById("cargaPTecho").value;
+									return cargaPTecho;
+								}}
 							/>
 						</p>
 						<p>
@@ -108,19 +104,31 @@ function Forces() {
 								className="no-columnas"
 								type="number"
 								placeholder="0.00"
-								id="no-columnas"
+								id="cargaViento"
 								name="no-columnas"
 								min="0.00"
 								step="0.01"
-
-								//onChange={e => actions.setEntrePiso(e.target.value)}
+								onChange={e => {
+									var cargaViento = document.getElementById("cargaViento").value;
+									return cargaViento;
+								}}
 							/>
 						</p>
 					</div>
 				</div>
 				<div className="btn sub-title col-md-12">
 					<p>
-						<button className="btnPaso text-center mt-12 title">
+						<button
+							className="btnPaso text-center mt-12 title"
+							onClick={e =>
+								actions.setCargas(
+									cargaVEntrepiso.value,
+									cargaPEntrepiso.value,
+									cargaVTecho.value,
+									cargaPTecho.value,
+									cargaViento.value
+								)
+							}>
 							<span>Guardar configuración de Cargas</span>
 						</button>
 					</p>

@@ -19,7 +19,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			luzVanoEstado: "3.00",
 			columna: {
 				longitud: "3"
-			}
+			},
+			cargaVLosaEntrePisoEstado: "250",
+			cargaPLosaEntrePisoEstado: "800",
+			cargaVTechoEstado: "100",
+			cargaPTechoEstado: "150",
+			cargaVientoEstado: "0",
+			cargasP: [],
+			cargasV: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -92,6 +99,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				console.log(`getLuzVano ${store.luzVanoEstado}`);
 				return store.luzVanoEstado;
+			},
+
+			setCargas: (cargaVLosaEntrePiso, cargaPLosaEntrePiso, cargaVTecho, cargaPTecho, cargaViento) => {
+				const store = getStore();
+				setStore({ cargaVLosaEntrePisoEstado: cargaVLosaEntrePiso });
+				setStore({ cargaPLosaEntrePisoEstado: cargaPLosaEntrePiso });
+				setStore({ cargaVTechoEstado: cargaVTecho });
+				setStore({ cargaPTechoEstado: cargaPTecho });
+				setStore({ cargaVientoEstado: cargaViento });
+				setStore({ cargasP: [] });
+				setStore({ cargasV: [] });
+				var arregloCargasP = [];
+				var arregloCargasV = [];
+
+				arregloCargasP.push(cargaPTecho);
+				for (var i = 2; i <= store.noPisosEstado; i++) {
+					arregloCargasP.push(cargaPLosaEntrePiso);
+				}
+
+				arregloCargasV.push(cargaVTecho);
+				for (var i = 2; i <= store.noPisosEstado; i++) {
+					arregloCargasV.push(cargaVLosaEntrePiso);
+				}
+
+				setStore({ cargasP: arregloCargasP });
+				setStore({ cargasV: arregloCargasV });
+				return console.log(`ArregloCargasP ${store.cargasP} y ArregloCargasV ${store.cargasV}`);
+			},
+
+			getCargasV: () => {
+				const store = getStore();
+				console.log(`getCargasV ${store.cargasV}`);
+				return store.cargasV;
+			},
+
+			getCargasP: () => {
+				const store = getStore();
+				console.log(`getCargasP ${store.cargasP}`);
+				return store.cargasP;
 			}
 		}
 	};
