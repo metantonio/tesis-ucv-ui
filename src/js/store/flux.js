@@ -57,6 +57,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					j: "1.50",
 					cw: "263"
 				}
+			],
+			perfilUPL: [
+				{
+					designacion: "UPL 80",
+					altura: "80",
+					peso: "6.08",
+					area: "7.75",
+					ix: "74.4",
+					sx: "18.6",
+					zx: "22.4",
+					rx: "3.10",
+					iy: "7.80",
+					sy: "3.18",
+					zy: "7.24",
+					ry: "1.00",
+					j: "0.995",
+					cw: "84.9"
+				}
 			]
 		},
 		actions: {
@@ -175,6 +193,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				console.log(`getIPN ${store.perfilIPN}`);
 				return store.perfilIPN;
+			},
+
+			getPerfilUPL: () => {
+				const store = getStore();
+				console.log(`getUPN ${store.perfilUPL}`);
+				return store.perfilUPL;
 			}
 		}
 	};

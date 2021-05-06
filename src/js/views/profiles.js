@@ -9,6 +9,7 @@ function Profiles() {
 	const { store, actions } = useContext(Context);
 
 	var listIPN = actions.getPerfilIPN();
+	var listUPL = actions.getPerfilUPL();
 
 	//en la siguiente función debe entrar un lista
 	function getIPNProfile(item) {
@@ -109,9 +110,87 @@ function Profiles() {
 		return final;
 	}
 
+	function addTableUPL() {
+		var fila = "";
+		var final = listUPL.map(function(listUPL, index, array) {
+			var a = "<th scope='row'>PERFIL UPL</th>";
+			a += "<th>Designación</th>";
+			a += "<th>Altura (mm)</th>";
+			a += "<th>Peso (kgf/m)</th>";
+			a += "<th>Área (cm²)</th>";
+			a += "<th>Ix (cm⁴)</th>";
+			a += "<th>Sx (cm³)</th>";
+			a += "<th>Zx (cm³)</th>";
+			a += "<th>rx (cm)</th>";
+			a += "<th>Iy (cm⁴)</th>";
+			a += "<th>Sy (cm³)</th>";
+			a += "<th>Zy (cm³)</th>";
+			a += "<th>ry (cm)</th>";
+			a += "<th>J (cm⁴)</th>";
+			a += "<th>Cw (cm⁶)</th>";
+			//serían los encabezados de la tabla
+			var html = "<tr>" + a + "</tr>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				index +
+				"</td>" +
+				"<td>" +
+				listUPL.designacion +
+				"</td>" +
+				"<td>" +
+				listUPL.altura +
+				"</td>" +
+				"<td>" +
+				listUPL.peso +
+				"</td>" +
+				"<td>" +
+				listUPL.area +
+				"</td>" +
+				"<td>" +
+				listUPL.ix +
+				"</td>" +
+				"<td>" +
+				listUPL.sx +
+				"</td>" +
+				"<td>" +
+				listUPL.zx +
+				"</td>" +
+				"<td>" +
+				listUPL.rx +
+				"</td>" +
+				"<td>" +
+				listUPL.iy +
+				"</td>" +
+				"<td>" +
+				listUPL.sy +
+				"</td>" +
+				"<td>" +
+				listUPL.zy +
+				"</td>" +
+				"<td>" +
+				listUPL.ry +
+				"</td>" +
+				"<td>" +
+				listUPL.j +
+				"</td>" +
+				"<td>" +
+				listUPL.cw +
+				"</td>" +
+				"</tr>" +
+				"<br/>";
+			document.getElementById("tabla-upl").innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		addTableIPN();
+		addTableUPL();
 	});
 
 	return (
@@ -160,7 +239,7 @@ function Profiles() {
 				<br />
 				<br />
 				<div className="col-md-12">
-					<table className="default" id="tabla-upl">
+					<table className="default" id="tabla-upl" onLoad="addTableUPL()">
 						<tr>
 							<th scope="row">PERFIL UPL</th>
 							<th>Designación</th>
