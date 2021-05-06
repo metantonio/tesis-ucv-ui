@@ -23,7 +23,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 			cargaPTechoEstado: "150",
 			cargaVientoEstado: "0",
 			cargasP: [],
-			cargasV: []
+			cargasV: [],
+			perfilIPN: [
+				{
+					designacion: "IPN 80",
+					altura: "80",
+					peso: "6.1",
+					area: "7.77",
+					ix: "78.4",
+					sx: "19.6",
+					zx: "22.0",
+					rx: "3.18",
+					iy: "6.29",
+					sy: "2.99",
+					zy: "4.68",
+					ry: "0.90",
+					j: "0.772",
+					cw: "86"
+				},
+				{
+					designacion: "IPN 100",
+					altura: "100",
+					peso: "8.34",
+					area: "10.62",
+					ix: "171",
+					sx: "34.2",
+					zx: "39.4",
+					rx: "4.01",
+					iy: "12.2",
+					sy: "4.88",
+					zy: "8.19",
+					ry: "1.07",
+					j: "1.50",
+					cw: "263"
+				}
+			]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -135,6 +169,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				console.log(`getCargasP ${store.cargasP}`);
 				return store.cargasP;
+			},
+
+			getPerfilIPN: () => {
+				const store = getStore();
+				console.log(`getIPN ${store.perfilIPN}`);
+				return store.perfilIPN;
 			}
 		}
 	};

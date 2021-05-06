@@ -8,7 +8,111 @@ import "../../styles/home-tesis.scss";
 function Profiles() {
 	const { store, actions } = useContext(Context);
 
-	//var i = 2;
+	var listIPN = actions.getPerfilIPN();
+
+	//en la siguiente función debe entrar un lista
+	function getIPNProfile(item) {
+		var designacion = item.designacion;
+		var altura = item.altura;
+		var peso = item.peso;
+		var area = item.area;
+		var ix = item.ix;
+		var sx = item.sx;
+		var zx = item.zx;
+		var rx = item.rx;
+		var iy = item.iy;
+		var sy = item.sy;
+		var zy = item.zy;
+		var ry = item.ry;
+		var jt = item.j;
+		var cw = item.cw;
+		var lista = [];
+		lista.push(designacion, altura, peso, area, ix, sx, zx, rx, iy, sy, zy, ry, jt, cw);
+		console.log(lista);
+		return lista;
+	}
+
+	function addTableIPN() {
+		var fila = "";
+		var final = listIPN.map(function(listIPN, index, array) {
+			var a = "<th scope='row'>PERFIL IPN</th>";
+			a += "<th>Designación</th>";
+			a += "<th>Altura (mm)</th>";
+			a += "<th>Peso (kgf/m)</th>";
+			a += "<th>Área (cm²)</th>";
+			a += "<th>Ix (cm⁴)</th>";
+			a += "<th>Sx (cm³)</th>";
+			a += "<th>Zx (cm³)</th>";
+			a += "<th>rx (cm)</th>";
+			a += "<th>Iy (cm⁴)</th>";
+			a += "<th>Sy (cm³)</th>";
+			a += "<th>Zy (cm³)</th>";
+			a += "<th>ry (cm)</th>";
+			a += "<th>J (cm⁴)</th>";
+			a += "<th>Cw (cm⁶)</th>";
+			//serían los encabezados de la tabla
+			var html = "<tr>" + a + "</tr>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				index +
+				"</td>" +
+				"<td>" +
+				listIPN.designacion +
+				"</td>" +
+				"<td>" +
+				listIPN.altura +
+				"</td>" +
+				"<td>" +
+				listIPN.peso +
+				"</td>" +
+				"<td>" +
+				listIPN.area +
+				"</td>" +
+				"<td>" +
+				listIPN.ix +
+				"</td>" +
+				"<td>" +
+				listIPN.sx +
+				"</td>" +
+				"<td>" +
+				listIPN.zx +
+				"</td>" +
+				"<td>" +
+				listIPN.rx +
+				"</td>" +
+				"<td>" +
+				listIPN.iy +
+				"</td>" +
+				"<td>" +
+				listIPN.sy +
+				"</td>" +
+				"<td>" +
+				listIPN.zy +
+				"</td>" +
+				"<td>" +
+				listIPN.ry +
+				"</td>" +
+				"<td>" +
+				listIPN.j +
+				"</td>" +
+				"<td>" +
+				listIPN.cw +
+				"</td>" +
+				"</tr>" +
+				"<br/>";
+			document.getElementById("tabla-ipn").innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
+	useEffect(() => {
+		// Actualiza el título del documento usando la API del navegador
+		addTableIPN();
+	});
 
 	return (
 		<React.Fragment>
@@ -28,8 +132,54 @@ function Profiles() {
 					</p>
 					<br />
 				</div>
-				<div className="col-md-6" />
-				<div className="col-md-6" />
+				<p>
+					<h4 className="sub-title 2">Muestras del Catálogo de SIDETUR - Perfiles IPN y UPL</h4>
+				</p>
+				<div className="col-md-12" id="tabla1">
+					<table className="default" id="tabla-ipn" onLoad="addTableIPN()">
+						<tr>
+							<th scope="row">PERFIL IPN</th>
+							<th>Designación</th>
+							<th>Altura (mm)</th>
+							<th>Peso (kgf/m)</th>
+							<th>Área (cm²)</th>
+							<th>Ix (cm⁴)</th>
+							<th>Sx (cm³)</th>
+							<th>Zx (cm³)</th>
+							<th>rx (cm)</th>
+							<th>Iy (cm⁴)</th>
+							<th>Sy (cm³)</th>
+							<th>Zy (cm³)</th>
+							<th>ry (cm)</th>
+							<th>J (cm⁴)</th>
+							<th>Cw (cm⁶)</th>
+						</tr>
+					</table>
+				</div>
+				<br />
+				<br />
+				<br />
+				<div className="col-md-12">
+					<table className="default" id="tabla-upl">
+						<tr>
+							<th scope="row">PERFIL UPL</th>
+							<th>Designación</th>
+							<th>Altura (mm)</th>
+							<th>Peso (kgf/m)</th>
+							<th>Área (cm²)</th>
+							<th>Ix (cm⁴)</th>
+							<th>Sx (cm³)</th>
+							<th>Zx (cm³)</th>
+							<th>rx (cm)</th>
+							<th>Iy (cm⁴)</th>
+							<th>Sy (cm³)</th>
+							<th>Zy (cm³)</th>
+							<th>ry (cm)</th>
+							<th>J (cm⁴)</th>
+							<th>Cw (cm⁶)</th>
+						</tr>
+					</table>
+				</div>
 				<div className="btn sub-title col-md-12">
 					<p>
 						<button
