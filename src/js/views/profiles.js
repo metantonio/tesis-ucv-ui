@@ -270,7 +270,7 @@ function Profiles() {
 					</p>
 					<p>
 						<button className="btnPaso2 text-center mt-12 title">
-							<Link to="/">
+							<Link to="/calculus">
 								<span>Ir al Paso 4</span>
 							</Link>
 						</button>

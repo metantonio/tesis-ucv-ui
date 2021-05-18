@@ -7,6 +7,7 @@ import { HomeTesis } from "./views/home-tesis";
 import Structure from "./views/stucture";
 import Forces from "./views/forces";
 import Profiles from "./views/profiles";
+import Calculus from "./views/calculus";
 import { Autor } from "./views/autor";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
@@ -38,6 +39,9 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/profiles">
 							<Profiles />
+						</Route>
+						<Route exact path="/calculus">
+							<Calculus />
 						</Route>
 						<Route exact path="/autor">
 							<Autor />

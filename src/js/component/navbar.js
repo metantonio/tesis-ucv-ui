@@ -16,6 +16,9 @@ export const Navbar = () => {
 			<Link to="/profiles">
 				<span className="navbar-brand mb-0 col-4 h1">Perfiles Estructurales</span>
 			</Link>
+			<Link to="/calculus">
+				<span className="navbar-brand mb-0 col-4 h1">Cálculos</span>
+			</Link>
 			<Link to="/autor">
 				<span className="navbar-brand mb-0 col-4 h1">Acerca del Autor</span>
 			</Link>
