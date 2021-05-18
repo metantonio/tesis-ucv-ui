@@ -211,7 +211,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getLuzVano: () => {
 				const store = getStore();
-				console.log(`getLuzVano ${store.luzVanoEstado}`);
+				//console.log(`getLuzVano ${store.luzVanoEstado}`);
 				return store.luzVanoEstado;
 			},
 

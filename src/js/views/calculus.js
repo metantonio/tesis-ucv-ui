@@ -35,8 +35,13 @@ function Calculus() {
 		e: 0,
 		teta: 0,
 		cos: 0,
-		sin: 0
+		sin: 0,
+		inercia: 1,
+		elasticidad: 2100000
 	};
+	var listaPerfiles = actions.getPerfilIPN();
+	var listUPL = actions.getPerfilUPL();
+	var listaPerfiles = listaPerfiles.concat(listUPL);
 
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
@@ -128,15 +133,25 @@ function Calculus() {
 
 	let tablaConectividad = () => {
 		//Columnas
-		console.log("función tablConectividad");
-		elementos["elemento"] = "prueba";
+		console.log("función tablaConectividad");
+		var item = listaPerfiles[Math.floor(Math.random() * listaPerfiles.length)];
+		elementos["elemento"] = item["designacion"];
+		elementos["inercia"] = item["ix"];
 		elementos["puntoIni"] = nodosCoordenadas[0];
 		elementos["puntoFin"] = nodosCoordenadas[1];
-		elementos["a"] = 0;
-		elementos["b"] = 0;
-		elementos["c"] = 0;
-		elementos["d"] = 0;
-		elementos["e"] = 0;
+		elementos["longitud"] = Math.sqrt(
+			Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
+				Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
+		);
+		elementos["area"] = item["area"];
+		elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
+		elementos["b"] =
+			(12 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 3);
+		elementos["c"] =
+			(6 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 2);
+		elementos["d"] = (4 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
+		elementos["e"] = (2 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
+		elementos["peso"] = item["peso"] * elementos["longitud"]; //peso del elemento
 		if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
 			elementos["teta"] = Math.atan(
 				(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
@@ -154,11 +169,82 @@ function Calculus() {
 		console.log(vectorConectividad);
 	};
 
+	function addTableConnect() {
+		var fila = "";
+		var final = vectorConectividad.map(function(vectorConectividad, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Coordenada Inicial</th>";
+			a += "<th>Coordenada Final</th>";
+			a += "<th>A</th>";
+			a += "<th>B</th>";
+			a += "<th>C</th>";
+			a += "<th>D</th>";
+			a += "<th>E</th>";
+			a += "<th>θ (rad)</th>";
+			a += "<th>cos(θ)</th>";
+			a += "<th>seno(θ)</th>";
+			a += "<th>Peso(kg)</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.elemento +
+				"</td>" +
+				"<td>(" +
+				vectorConectividad.puntoIni +
+				")</td>" +
+				"<td>(" +
+				vectorConectividad.puntoFin +
+				")</td>" +
+				"<td>" +
+				vectorConectividad.a +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.b +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.c +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.d +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.e +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.teta +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.cos +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.sin +
+				"</td>" +
+				"<td>" +
+				vectorConectividad.peso +
+				"</td>" +
+				"</tr>" +
+				"<br/>";
+			document.getElementById("tabla-connect").innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
 		nodosNum();
 		tablaConectividad();
+		console.log(listaPerfiles);
 	});
 
 	return (
@@ -183,6 +269,7 @@ function Calculus() {
 						document.getElementById("caja-dibujo2").innerHTML = drawLines;
 						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 						// console.log(drawLines, drawLines2);
+						addTableConnect();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Dibujar</span>
@@ -207,21 +294,21 @@ function Calculus() {
 			</div>
 			<p />
 			<div className="col-md-12" id="tabla3">
-				<table className="table table-striped" id="tabla-conect" onLoad="">
+				<table className="table table-striped" id="tabla-connect" onLoad="">
 					<thead>
 						<tr>
-							<th scope="row">Elemento</th>
+							<th scope="row">No</th>
 							<th>Perfil</th>
-							<th>Punto Inicial</th>
-							<th>Punto Final</th>
+							<th>Coordenada Inicial</th>
+							<th>Coordenada Final</th>
 							<th>A</th>
 							<th>B</th>
 							<th>C</th>
 							<th>D</th>
 							<th>E</th>
 							<th>θ</th>
-							<th>i</th>
-							<th>m</th>
+							<th>coseno</th>
+							<th>seno</th>
 						</tr>
 					</thead>
 				</table>
