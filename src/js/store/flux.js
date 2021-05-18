@@ -56,6 +56,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 					ry: "1.07",
 					j: "1.50",
 					cw: "263"
+				},
+				{
+					designacion: "IPN 120",
+					altura: "120",
+					peso: "11.1",
+					area: "14.2",
+					ix: "328",
+					sx: "54.7",
+					zx: "63.1",
+					rx: "4.81",
+					iy: "21.5",
+					sy: "7.41",
+					zy: "12.5",
+					ry: "1.23",
+					j: "2.55",
+					cw: "673"
+				},
+				{
+					designacion: "IPN 140",
+					altura: "140",
+					peso: "14.3",
+					area: "18.2",
+					ix: "573",
+					sx: "81.9",
+					zx: "94.5",
+					rx: "5.61",
+					iy: "35.2",
+					sy: "10.7",
+					zy: "18.0",
+					ry: "1.40",
+					j: "4.07",
+					cw: "1510"
 				}
 			],
 			perfilUPL: [
@@ -74,6 +106,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 					ry: "1.00",
 					j: "0.995",
 					cw: "84.9"
+				},
+				{
+					designacion: "UPL 100",
+					altura: "100",
+					peso: "8.20",
+					area: "10.45",
+					ix: "155",
+					sx: "30.9",
+					zx: "37.8",
+					rx: "3.92",
+					iy: "13.5",
+					sy: "4.80",
+					zy: "11.0",
+					ry: "1.15",
+					j: "1.71",
+					cw: "237"
+				},
+				{
+					designacion: "UPL 120",
+					altura: "120",
+					peso: "9.58",
+					area: "12.2",
+					ix: "266",
+					sx: "44.3",
+					zx: "52.8",
+					rx: "4.67",
+					iy: "19.8",
+					sy: "6.10",
+					zy: "14.3",
+					ry: "1.27",
+					j: "1.96",
+					cw: "520"
 				}
 			]
 		},
