@@ -13,6 +13,7 @@ function Structure() {
 	var y2 = 15;
 	var drawLines = "";
 	var drawLines2 = "";
+	var drawText = "";
 	//var i = 2;
 
 	let dibujo = () => {
@@ -22,7 +23,7 @@ function Structure() {
 				actions.getLuzVano() * (i - 1) +
 				'" ' +
 				'y1="' +
-				40 +
+				40.1 +
 				'" ' +
 				'x2="' +
 				actions.getLuzVano() * (i - 1) +
@@ -31,6 +32,17 @@ function Structure() {
 				(40 - actions.getEntrePiso() * actions.getNoPisos()) +
 				'" ' +
 				'stroke="black" strokeWidth="10px"></line>';
+			drawText +=
+				'<text x="' +
+				actions.getLuzVano() * (i - 1) +
+				'" ' +
+				'y="' +
+				40 +
+				'" ' +
+				'font-size="0.15em"' +
+				'fill="red">' +
+				i +
+				"</text>";
 		}
 		return drawLines;
 	};
@@ -39,7 +51,7 @@ function Structure() {
 		for (var i = 1; i <= actions.getNoPisos(); i++) {
 			drawLines2 +=
 				'<line x1="' +
-				0 +
+				0.1 +
 				'" ' +
 				'y1="' +
 				(40 - actions.getEntrePiso() * i) +
@@ -51,6 +63,17 @@ function Structure() {
 				(40 - actions.getEntrePiso() * i) +
 				'" ' +
 				'stroke="black" strokeWidth="10px"></line>';
+			drawText +=
+				'<text x="' +
+				0 +
+				'" ' +
+				'y="' +
+				(40 - actions.getEntrePiso() * i) +
+				'" ' +
+				'font-size="0.15em"' +
+				'fill="blue">' +
+				i +
+				"</text>";
 		}
 		return drawLines2;
 	};
@@ -146,7 +169,7 @@ function Structure() {
 							var luzVano = actions.getLuzVano();
 							drawLines = dibujo();
 							drawLines2 = dibujoVigas();
-							drawLines = drawLines + drawLines2;
+							drawLines = drawLines + drawLines2 + drawText;
 							document.getElementById("caja-dibujo").innerHTML = drawLines;
 							//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 							console.log(drawLines, drawLines2);
