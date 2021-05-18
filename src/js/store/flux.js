@@ -139,7 +139,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					j: "1.96",
 					cw: "520"
 				}
-			]
+			],
+			vectorConect: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -168,7 +169,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getNoColumnas: () => {
 				const store = getStore();
-				console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
 				return store.nocolumnasEstado;
 			},
 
@@ -180,7 +181,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getNoPisos: () => {
 				const store = getStore();
-				console.log(`getNoPisos ${store.noPisosEstado}`);
+				//console.log(`getNoPisos ${store.noPisosEstado}`);
 				return store.noPisosEstado;
 			},
 
@@ -198,7 +199,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getEntrePiso: () => {
 				const store = getStore();
-				console.log(`getEntrePiso ${store.entrePisosEstado}`);
+				//console.log(`getEntrePiso ${store.entrePisosEstado}`);
 				return store.entrePisosEstado;
 			},
 
@@ -263,6 +264,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				console.log(`getUPN ${store.perfilUPL}`);
 				return store.perfilUPL;
+			},
+
+			getVectorConect: () => {
+				const store = getStore();
+				console.log(`getVectorConect ${store.vectorConect}`);
+				return store.vectorConect;
 			}
 		}
 	};

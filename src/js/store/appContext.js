@@ -46,6 +46,8 @@ const injectContext = PassedComponent => {
 			state.actions.setCargas();
 			state.actions.getCargasP();
 			state.actions.getCargasV();
+
+			state.actions.getVectorConect();
 		}, []);
 
 		// The initial value for the context is not null anymore, but the current state of this component,
