@@ -23,7 +23,7 @@ function Structure() {
 				actions.getLuzVano() * (i - 1) +
 				'" ' +
 				'y1="' +
-				40.1 +
+				40.2 +
 				'" ' +
 				'x2="' +
 				actions.getLuzVano() * (i - 1) +
@@ -51,7 +51,7 @@ function Structure() {
 		for (var i = 1; i <= actions.getNoPisos(); i++) {
 			drawLines2 +=
 				'<line x1="' +
-				0.1 +
+				0.2 +
 				'" ' +
 				'y1="' +
 				(40 - actions.getEntrePiso() * i) +
