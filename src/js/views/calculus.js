@@ -23,7 +23,8 @@ function Calculus() {
 	var u = 0;
 	var v = 0;
 	var uv = [];
-	var vectorConectividad = [];
+	//var vectorConectividad = [];
+	var vectorConectividadf = [];
 	var elementos = {
 		elemento: "",
 		puntoIni: [],
@@ -134,44 +135,55 @@ function Calculus() {
 	let tablaConectividad = () => {
 		//Columnas
 		console.log("función tablaConectividad");
-		var item = listaPerfiles[Math.floor(Math.random() * listaPerfiles.length)];
-		elementos["elemento"] = item["designacion"];
-		elementos["inercia"] = item["ix"];
-		elementos["puntoIni"] = nodosCoordenadas[0];
-		elementos["puntoFin"] = nodosCoordenadas[1];
-		elementos["longitud"] = Math.sqrt(
-			Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
-				Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
-		);
-		elementos["area"] = item["area"];
-		elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
-		elementos["b"] =
-			(12 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 3);
-		elementos["c"] =
-			(6 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 2);
-		elementos["d"] = (4 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
-		elementos["e"] = (2 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
-		elementos["peso"] = item["peso"] * elementos["longitud"]; //peso del elemento
-		if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
-			elementos["teta"] = Math.atan(
-				(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
-					(elementos["puntoFin"][0] - elementos["puntoIni"][0])
+		var item = [];
+		var vectorConectividad = [{}];
+		for (var i = 0; i < nodosCoordenadas.length - 1; i++) {
+			item = listaPerfiles[Math.floor(Math.random() * listaPerfiles.length)]; //de donde copiará los perfiles aleatorios
+			//console.log(item);
+			elementos["elemento"] = item["designacion"];
+			elementos["inercia"] = item["ix"];
+			//console.log(i);
+			elementos["puntoIni"] = nodosCoordenadas[i];
+			elementos["puntoFin"] = nodosCoordenadas[i + 1];
+			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
+			elementos["longitud"] = Math.sqrt(
+				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
+					Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
 			);
-		} else {
-			elementos["teta"] = Math.PI / 2;
+			elementos["area"] = item["area"];
+			elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
+			elementos["b"] =
+				(12 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 3);
+			elementos["c"] =
+				(6 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 2);
+			elementos["d"] = (4 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
+			elementos["e"] = (2 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
+			elementos["peso"] = item["peso"] * elementos["longitud"]; //peso del elemento
+			if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
+				elementos["teta"] = Math.atan(
+					(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
+						(elementos["puntoFin"][0] - elementos["puntoIni"][0])
+				);
+			} else {
+				elementos["teta"] = Math.PI / 2;
+			}
+			elementos["cos"] = Math.cos(elementos["teta"]);
+			if ((elementos["teta"] = Math.PI / 2)) {
+				elementos["cos"] = 0;
+			}
+			elementos["sin"] = Math.sin(elementos["teta"]);
+			item = [];
+			console.log(elementos);
+			vectorConectividad.push(elementos);
 		}
-		elementos["cos"] = Math.cos(elementos["teta"]);
-		if ((elementos["teta"] = Math.PI / 2)) {
-			elementos["cos"] = 0;
-		}
-		elementos["sin"] = Math.sin(elementos["teta"]);
-		vectorConectividad.push(elementos);
-		console.log(vectorConectividad);
+		vectorConectividadf = vectorConectividadf.concat(vectorConectividad);
+		console.log("Vector Conectividad:");
+		console.log(vectorConectividadf);
 	};
 
 	function addTableConnect() {
 		var fila = "";
-		var final = vectorConectividad.map(function(vectorConectividad, index, array) {
+		var final = vectorConectividadf.map(function(vectorConectividadf, index, array) {
 			var a = "<th scope='row'>No</th>";
 			a += "<th>Perfil</th>";
 			a += "<th>Coordenada Inicial</th>";
@@ -195,40 +207,40 @@ function Calculus() {
 				(index + 1) +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.elemento +
+				vectorConectividadf.elemento +
 				"</td>" +
 				"<td>(" +
-				vectorConectividad.puntoIni +
+				vectorConectividadf.puntoIni +
 				")</td>" +
 				"<td>(" +
-				vectorConectividad.puntoFin +
+				vectorConectividadf.puntoFin +
 				")</td>" +
 				"<td>" +
-				vectorConectividad.a +
+				vectorConectividadf.a +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.b +
+				vectorConectividadf.b +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.c +
+				vectorConectividadf.c +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.d +
+				vectorConectividadf.d +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.e +
+				vectorConectividadf.e +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.teta +
+				vectorConectividadf.teta +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.cos +
+				vectorConectividadf.cos +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.sin +
+				vectorConectividadf.sin +
 				"</td>" +
 				"<td>" +
-				vectorConectividad.peso +
+				vectorConectividadf.peso +
 				"</td>" +
 				"</tr>" +
 				"<br/>";
@@ -243,8 +255,8 @@ function Calculus() {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
 		nodosNum();
-		tablaConectividad();
-		console.log(listaPerfiles);
+		//tablaConectividad();
+		//console.log(listaPerfiles);
 	});
 
 	return (
@@ -269,6 +281,7 @@ function Calculus() {
 						document.getElementById("caja-dibujo2").innerHTML = drawLines;
 						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 						// console.log(drawLines, drawLines2);
+						tablaConectividad();
 						addTableConnect();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
