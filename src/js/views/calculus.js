@@ -27,6 +27,7 @@ function Calculus() {
 	var vectorConectividadf = [];
 
 	var listaPerfiles = actions.getPerfilIPN();
+	var listaIPN = actions.getPerfilIPN();
 	var listUPL = actions.getPerfilUPL();
 	var listaPerfiles = listaPerfiles.concat(listUPL);
 
@@ -142,7 +143,7 @@ function Calculus() {
 		};
 		var ele2 = {};
 		for (var i = 0; i < nodosCoordenadas.length - 1; i++) {
-			item = listaPerfiles[Math.floor(Math.random() * listaPerfiles.length)]; //de donde copiará los perfiles aleatorios
+			item = listaIPN[Math.floor(Math.random() * listaIPN.length)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
