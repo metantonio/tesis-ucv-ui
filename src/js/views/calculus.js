@@ -25,21 +25,7 @@ function Calculus() {
 	var uv = [];
 	//var vectorConectividad = [];
 	var vectorConectividadf = [];
-	var elementos = {
-		elemento: "",
-		puntoIni: [],
-		puntoFin: [],
-		a: 0,
-		b: 0,
-		c: 0,
-		d: 0,
-		e: 0,
-		teta: 0,
-		cos: 0,
-		sin: 0,
-		inercia: 1,
-		elasticidad: 2100000
-	};
+
 	var listaPerfiles = actions.getPerfilIPN();
 	var listUPL = actions.getPerfilUPL();
 	var listaPerfiles = listaPerfiles.concat(listUPL);
@@ -136,13 +122,31 @@ function Calculus() {
 		//Columnas
 		console.log("función tablaConectividad");
 		var item = [];
-		var vectorConectividad = [{}];
+		let union = [];
+		var elementos = {
+			elemento: "",
+			puntoIni: [],
+			puntoFin: [],
+			a: 0,
+			b: 0,
+			c: 0,
+			d: 0,
+			e: 0,
+			teta: 0,
+			cos: 0,
+			sin: 0,
+			inercia: 1,
+			elasticidad: 2100000,
+			longitud: 10,
+			peso: 0
+		};
+		var ele2 = {};
 		for (var i = 0; i < nodosCoordenadas.length - 1; i++) {
 			item = listaPerfiles[Math.floor(Math.random() * listaPerfiles.length)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
-			//console.log(i);
+			console.log(i);
 			elementos["puntoIni"] = nodosCoordenadas[i];
 			elementos["puntoFin"] = nodosCoordenadas[i + 1];
 			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
@@ -150,6 +154,7 @@ function Calculus() {
 				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
 					Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
 			);
+			//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
 			elementos["area"] = item["area"];
 			elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
 			elementos["b"] =
@@ -168,17 +173,37 @@ function Calculus() {
 				elementos["teta"] = Math.PI / 2;
 			}
 			elementos["cos"] = Math.cos(elementos["teta"]);
-			if ((elementos["teta"] = Math.PI / 2)) {
+			if (elementos["teta"] == Math.PI / 2) {
 				elementos["cos"] = 0;
 			}
 			elementos["sin"] = Math.sin(elementos["teta"]);
-			item = [];
-			console.log(elementos);
-			vectorConectividad.push(elementos);
+			//item = [];
+			//console.log(elementos);
+			ele2 = elementos;
+			union.push(ele2);
+			ele2 = {};
+			elementos = {
+				elemento: "",
+				puntoIni: [],
+				puntoFin: [],
+				a: 0,
+				b: 0,
+				c: 0,
+				d: 0,
+				e: 0,
+				teta: 0,
+				cos: 0,
+				sin: 0,
+				inercia: 1,
+				elasticidad: 2100000,
+				longitud: 10,
+				peso: 0
+			};
 		}
-		vectorConectividadf = vectorConectividadf.concat(vectorConectividad);
+		vectorConectividadf = union;
 		console.log("Vector Conectividad:");
 		console.log(vectorConectividadf);
+		return vectorConectividadf;
 	};
 
 	function addTableConnect() {
