@@ -481,6 +481,25 @@ function Calculus() {
 		return final;
 	}
 
+	let matrizRigidLocal = () => {
+		let matriz = [[], [], [], [], [], []];
+		let vectorMatrizRigL = [];
+		vectorConectividadf.forEach(element => {
+			matriz = [
+				[+element.a, 0, 0, -element.a, 0, 0],
+				[0, +element.b, +element.c, 0, -element.b, +element.c],
+				[0, +element.c, +element.d, 0, -element.c, +element.e],
+				[-element.a, 0, 0, +element.a, 0, 0],
+				[0, -element.b, -element.c, 0, +element.b, -element.c],
+				[0, +element.c, +element.e, 0, -element.c, +element.d]
+			];
+			vectorMatrizRigL.push(matriz);
+			matriz = [[], [], [], [], [], []];
+		});
+		console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
+		return vectorMatrizRigL;
+	};
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -515,6 +534,7 @@ function Calculus() {
 						tablaConectividad();
 						tablaConectividad2();
 						addTableConnect();
+						matrizRigidLocal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -534,11 +554,11 @@ function Calculus() {
 				</div>
 			</div>
 			<p> </p>
-			<div className="text-md-left">
+			<div className="text-sm-left">
 				<h2> 1-. Tabla de Conectividad</h2>
 			</div>
 			<p />
-			<div className="col-md-12" id="tabla3">
+			<div className="col-sm-12" id="tabla3">
 				<table className="table table-striped" id="tabla-connect" onLoad="">
 					<thead>
 						<tr>
@@ -558,6 +578,10 @@ function Calculus() {
 					</thead>
 				</table>
 			</div>
+			<div className="text-sm-left">
+				<h2> 2-. Matrices de Rigidez en coordenadas locales para cada elemento</h2>
+			</div>
+			<div className="col-sm-12" id="matrices-rigid-local" />
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
