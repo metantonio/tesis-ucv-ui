@@ -26,7 +26,7 @@ function Calculus() {
 	var uv = [];
 	//var vectorConectividad = [];
 	var vectorConectividadf = [];
-
+	var vectorConectividadf2 = [];
 	var listaPerfiles = actions.getPerfilIPN();
 	var listaIPN = actions.getPerfilIPN();
 	var listUPL = actions.getPerfilUPL();
@@ -135,7 +135,7 @@ function Calculus() {
 
 	let tablaConectividad = () => {
 		//Columnas
-		console.log("función tablaConectividad");
+		//console.log("función tablaConectividad");
 		var item = [];
 		let union = [];
 		var elementos = {
@@ -161,7 +161,7 @@ function Calculus() {
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
-			console.log(i);
+			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadas[i];
 			elementos["puntoFin"] = nodosCoordenadas[i + 1];
 			elementos["nodoIni"] = nodosNumeros[i];
@@ -241,8 +241,8 @@ function Calculus() {
 			};
 		} // aquí termina el for
 		vectorConectividadf = union;
-		console.log("Vector Conectividad:");
-		console.log(vectorConectividadf);
+		//console.log("Vector Conectividad Columnas:");
+		//console.log(vectorConectividadf);
 		return vectorConectividadf;
 	};
 
@@ -251,30 +251,30 @@ function Calculus() {
 			coordMetro: nodosCoordenadas,
 			coordNum: nodosNumeros
 		};
-		console.log("vector para match", vector);
-		console.log("vector a comparar", matchCoordenadas["coordMetro"]);
+		//console.log("vector para match", vector);
+		//console.log("vector a comparar", matchCoordenadas["coordMetro"]);
 		let match = [];
-		console.log("long lista nodos", nodosNumeros.length);
+		//console.log("long lista nodos", nodosNumeros.length);
 		var n = 0;
 
 		nodosCoordenadas.forEach(element => {
-			console.log("loop función matchCoord", element);
-			console.log("index?", n);
+			//console.log("loop función matchCoord", element);
+			//console.log("index?", n);
 			var elementString = String(element);
 			var vectoString = String(vector);
 			if (elementString == vectoString) {
 				match = nodosNumeros[n];
-				console.log("aquí hubo el match");
+				//console.log("aquí hubo el match");
 			}
 			n++;
 		});
-		console.log("match", match);
+		//console.log("match", match);
 		return match;
 	};
 
 	let tablaConectividad2 = () => {
 		//Vigas
-		console.log("función tablaConectividad2");
+		//console.log("función tablaConectividad2");
 		var item = [];
 		let union = [];
 		let vectorConectividadf2 = [];
@@ -303,7 +303,7 @@ function Calculus() {
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
-			console.log(i);
+			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadasV[i];
 			elementos["puntoFin"] = nodosCoordenadasV[i + 1];
 			//var temp4 = i - temp + 1;
@@ -387,13 +387,24 @@ function Calculus() {
 		//console.log("union de vigas", union);
 		vectorConectividadf2 = union;
 		//vectorConectividadf.push(vectorConectividadf2);
-		console.log("Vector Conectividad:");
-		console.log(vectorConectividadf2);
+		//console.log("Vector Conectividad f2 Vigas:");
+		//console.log(vectorConectividadf2);
+		vectorConectividadf2.forEach(element => {
+			vectorConectividadf.push(element);
+		});
+		//vectorConectividadf.push(vectorConectividadf2);
 		return vectorConectividadf2;
 	};
 
 	function addTableConnect() {
 		var fila = "";
+		// var vectorTemp = [];
+		// console.log("Vector Conectividad f2 Vigas addTable:");
+		// console.log(vectorConectividadf2);
+		// vectorTemp.push(vectorConectividadf, vectorConectividadf2);
+		// console.log("vectorTemp", vectorTemp);
+		console.log("Vector Conectividadf", vectorConectividadf);
+
 		var final = vectorConectividadf.map(function(vectorConectividadf, index, array) {
 			var a = "<th scope='row'>No</th>";
 			a += "<th>Perfil</th>";
