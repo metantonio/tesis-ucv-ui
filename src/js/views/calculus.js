@@ -158,33 +158,37 @@ function Calculus() {
 					Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
 			);
 			//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
-			elementos["area"] = item["area"];
-			elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
-			elementos["b"] =
-				(12 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 3);
-			elementos["c"] =
-				(6 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 2);
-			elementos["d"] = (4 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
-			elementos["e"] = (2 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
-			elementos["peso"] = item["peso"] * elementos["longitud"]; //peso del elemento
-			if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
-				elementos["teta"] = Math.atan(
-					(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
-						(elementos["puntoFin"][0] - elementos["puntoIni"][0])
-				);
-			} else {
-				elementos["teta"] = Math.PI / 2;
-			}
-			elementos["cos"] = Math.cos(elementos["teta"]);
-			if (elementos["teta"] == Math.PI / 2) {
-				elementos["cos"] = 0;
-			}
-			elementos["sin"] = Math.sin(elementos["teta"]);
-			//item = [];
-			//console.log(elementos);
-			ele2 = elementos;
-			union.push(ele2);
-			ele2 = {};
+
+			if (elementos["longitud"] == actions.getEntrePiso()) {
+				elementos["area"] = item["area"];
+				elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
+				elementos["b"] =
+					(12 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 3);
+				elementos["c"] =
+					(6 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 2);
+				elementos["d"] = (4 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
+				elementos["e"] = (2 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
+				elementos["peso"] = item["peso"] * elementos["longitud"]; //peso del elemento
+				if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
+					elementos["teta"] = Math.atan(
+						(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
+							(elementos["puntoFin"][0] - elementos["puntoIni"][0])
+					);
+				} else {
+					elementos["teta"] = Math.PI / 2;
+				}
+				elementos["cos"] = Math.cos(elementos["teta"]);
+				if (elementos["teta"] == Math.PI / 2) {
+					elementos["cos"] = 0;
+				}
+				elementos["sin"] = Math.sin(elementos["teta"]);
+				elementos["tipo"] = "Columna";
+				//item = [];
+				//console.log(elementos);
+				ele2 = elementos;
+				union.push(ele2);
+				ele2 = {};
+			} //Aquí termina el IF de las columnas
 			elementos = {
 				elemento: "",
 				puntoIni: [],
@@ -202,9 +206,10 @@ function Calculus() {
 				longitud: 10,
 				peso: 0,
 				nodoIni: [],
-				nodoFin: []
+				nodoFin: [],
+				tipo: ""
 			};
-		}
+		} // aquí termina el for
 		vectorConectividadf = union;
 		console.log("Vector Conectividad:");
 		console.log(vectorConectividadf);
@@ -216,6 +221,7 @@ function Calculus() {
 		var final = vectorConectividadf.map(function(vectorConectividadf, index, array) {
 			var a = "<th scope='row'>No</th>";
 			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
 			a += "<th>Coordenada Inicial</th>";
 			a += "<th>Coordenada Final</th>";
 			a += "<th>EA/L</th>";
@@ -226,7 +232,7 @@ function Calculus() {
 			a += "<th>θ (rad)</th>";
 			a += "<th>cos(θ)</th>";
 			a += "<th>seno(θ)</th>";
-			a += "<th>Longitud(m)</th>";
+			a += "<th>Longitud(cm)</th>";
 			a += "<th>Peso(kg)</th>";
 
 			//serían los encabezados de la tabla
@@ -239,6 +245,9 @@ function Calculus() {
 				"</td>" +
 				"<td>" +
 				vectorConectividadf.elemento +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.tipo +
 				"</td>" +
 				"<td>(" +
 				vectorConectividadf.puntoIni +
@@ -271,7 +280,7 @@ function Calculus() {
 				vectorConectividadf.sin +
 				"</td>" +
 				"<td>" +
-				vectorConectividadf.longitud +
+				vectorConectividadf.longitud * 100 +
 				"</td>" +
 				"<td>" +
 				vectorConectividadf.peso +
