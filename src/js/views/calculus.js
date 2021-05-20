@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
+import { array } from "prop-types";
 
 function Calculus() {
 	const { store, actions } = useContext(Context);
@@ -499,6 +500,24 @@ function Calculus() {
 		console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
 		return vectorMatrizRigL;
 	};
+	let matrizEA = [[1, 2, 3], [4, 5, 6]];
+	let matrizEB = [[5, -1], [1, 0], [-2, 3]];
+
+	let multiplicarMatrices = (matrizA, matrizB) => {
+		let matrizRes = [matrizA.length];
+		console.log(matrizA.length, matrizB[0].length);
+		for (var i = 0; i < matrizA.length; i++) {
+			matrizRes[i] = new Array(matrizB[0].length).fill(0);
+			for (var j = 0; j < matrizB[0].length; j++) {
+				console.log(matrizRes[i][j]);
+				for (var k = 0; k < matrizA[0].length; k++) {
+					console.log(k);
+					matrizRes[i][j] += matrizA[i][k] * matrizB[k][j];
+				}
+			}
+		}
+		return matrizRes;
+	};
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -535,6 +554,7 @@ function Calculus() {
 						tablaConectividad2();
 						addTableConnect();
 						matrizRigidLocal();
+						console.log(multiplicarMatrices(matrizEA, matrizEB));
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
