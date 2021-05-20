@@ -150,6 +150,8 @@ function Calculus() {
 			console.log(i);
 			elementos["puntoIni"] = nodosCoordenadas[i];
 			elementos["puntoFin"] = nodosCoordenadas[i + 1];
+			elementos["nodoIni"] = nodosNumeros[i];
+			elementos["nodoFin"] = nodosNumeros[i + 1];
 			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
 			elementos["longitud"] = Math.sqrt(
 				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
@@ -198,7 +200,9 @@ function Calculus() {
 				inercia: 1,
 				elasticidad: 2100000,
 				longitud: 10,
-				peso: 0
+				peso: 0,
+				nodoIni: [],
+				nodoFin: []
 			};
 		}
 		vectorConectividadf = union;
@@ -214,14 +218,15 @@ function Calculus() {
 			a += "<th>Perfil</th>";
 			a += "<th>Coordenada Inicial</th>";
 			a += "<th>Coordenada Final</th>";
-			a += "<th>A</th>";
-			a += "<th>B</th>";
-			a += "<th>C</th>";
-			a += "<th>D</th>";
-			a += "<th>E</th>";
+			a += "<th>EA/L</th>";
+			a += "<th>12EA/L³</th>";
+			a += "<th>6EI/L²</th>";
+			a += "<th>4EI/L</th>";
+			a += "<th>2EI/L</th>";
 			a += "<th>θ (rad)</th>";
 			a += "<th>cos(θ)</th>";
 			a += "<th>seno(θ)</th>";
+			a += "<th>Longitud(m)</th>";
 			a += "<th>Peso(kg)</th>";
 
 			//serían los encabezados de la tabla
@@ -264,6 +269,9 @@ function Calculus() {
 				"</td>" +
 				"<td>" +
 				vectorConectividadf.sin +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.longitud +
 				"</td>" +
 				"<td>" +
 				vectorConectividadf.peso +
