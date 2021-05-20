@@ -103,7 +103,7 @@ function Calculus() {
 				nodosCoordenadas.push(uv);
 			}
 		}
-		console.log("nodosCoordColumnas", nodosCoordenadas);
+		//console.log("nodosCoordColumnas", nodosCoordenadas);
 		return nodosCoordenadas;
 	};
 
@@ -116,7 +116,7 @@ function Calculus() {
 				nodosCoordenadasV.push(uv);
 			}
 		}
-		console.log("nodosCoordVigas", nodosCoordenadasV, nodosCoordenadasV.length);
+		//console.log("nodosCoordVigas", nodosCoordenadasV, nodosCoordenadasV.length);
 		return nodosCoordenadasV;
 	};
 
@@ -129,7 +129,7 @@ function Calculus() {
 				nodosNumeros.push(uv);
 			}
 		}
-		console.log("nodosNum", nodosNumeros);
+		//console.log("nodosNum", nodosNumeros);
 		return nodosNumeros;
 	};
 
@@ -517,7 +517,7 @@ function Calculus() {
 						addTableConnect();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
-					<span>Dibujar</span>
+					<span>Calcular</span>
 				</button>
 			</p>
 			<div className="row justify-content">

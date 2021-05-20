@@ -172,7 +172,7 @@ function Structure() {
 							drawLines = drawLines + drawLines2 + drawText;
 							document.getElementById("caja-dibujo").innerHTML = drawLines;
 							//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-							console.log(drawLines, drawLines2);
+							//console.log(drawLines, drawLines2);
 							return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 						}}>
 						<span>Guardar Paso 1 y Dibujar</span>
