@@ -500,6 +500,7 @@ function Calculus() {
 		console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
 		return vectorMatrizRigL;
 	};
+	//Matrices de ejemplo para probar la función de multiplicar matrices
 	let matrizEA = [[1, 2, 3], [4, 5, 6]];
 	let matrizEB = [[5, -1], [1, 0], [-2, 3]];
 
@@ -554,7 +555,7 @@ function Calculus() {
 						tablaConectividad2();
 						addTableConnect();
 						matrizRigidLocal();
-						console.log(multiplicarMatrices(matrizEA, matrizEB));
+						//console.log(multiplicarMatrices(matrizEA, matrizEB));
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
