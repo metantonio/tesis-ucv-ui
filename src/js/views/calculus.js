@@ -161,27 +161,40 @@ function Calculus() {
 
 			if (elementos["longitud"] == actions.getEntrePiso()) {
 				elementos["area"] = item["area"];
-				elementos["a"] = (elementos["elasticidad"] * elementos["area"]) / (elementos["longitud"] * 100);
-				elementos["b"] =
-					(12 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 3);
-				elementos["c"] =
-					(6 * elementos["elasticidad"] * elementos["inercia"]) / Math.pow(elementos["longitud"] * 100, 2);
-				elementos["d"] = (4 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
-				elementos["e"] = (2 * elementos["elasticidad"] * elementos["inercia"]) / (elementos["longitud"] * 100);
-				elementos["peso"] = item["peso"] * elementos["longitud"]; //peso del elemento
+				elementos["a"] = (
+					(elementos["elasticidad"] * elementos["area"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["b"] = (
+					(12 * elementos["elasticidad"] * elementos["inercia"]) /
+					Math.pow(elementos["longitud"] * 100, 3)
+				).toFixed(3);
+				elementos["c"] = (
+					(6 * elementos["elasticidad"] * elementos["inercia"]) /
+					Math.pow(elementos["longitud"] * 100, 2)
+				).toFixed(3);
+				elementos["d"] = (
+					(4 * elementos["elasticidad"] * elementos["inercia"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["e"] = (
+					(2 * elementos["elasticidad"] * elementos["inercia"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["peso"] = (item["peso"] * elementos["longitud"]).toFixed(2); //peso del elemento
 				if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
 					elementos["teta"] = Math.atan(
 						(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
 							(elementos["puntoFin"][0] - elementos["puntoIni"][0])
 					);
 				} else {
-					elementos["teta"] = Math.PI / 2;
+					elementos["teta"] = (Math.PI / 2).toFixed(6);
 				}
-				elementos["cos"] = Math.cos(elementos["teta"]);
+				elementos["cos"] = Math.cos(elementos["teta"]).toFixed(3);
 				if (elementos["teta"] == Math.PI / 2) {
 					elementos["cos"] = 0;
 				}
-				elementos["sin"] = Math.sin(elementos["teta"]);
+				elementos["sin"] = Math.sin(elementos["teta"]).toFixed(3);
 				elementos["tipo"] = "Columna";
 				//item = [];
 				//console.log(elementos);
