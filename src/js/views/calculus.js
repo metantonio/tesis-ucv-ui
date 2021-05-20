@@ -19,6 +19,7 @@ function Calculus() {
 	var noCol = actions.getNoColumnas() * actions.getNoPisos();
 	var noVig = actions.getNoPisos * (actions.getNoColumnas - 1);
 	var nodosCoordenadas = [];
+	var nodosCoordenadasV = [];
 	var nodosNumeros = [];
 	var u = 0;
 	var v = 0;
@@ -102,21 +103,21 @@ function Calculus() {
 				nodosCoordenadas.push(uv);
 			}
 		}
-		console.log(nodosCoordenadas);
+		console.log("nodosCoordColumnas", nodosCoordenadas);
 		return nodosCoordenadas;
 	};
 
 	let nodosCoordVigas = () => {
-		for (var i = 0; i <= actions.getNoPisos() - 1; i++) {
+		for (var i = 0; i <= actions.getNoPisos(); i++) {
 			v = i * actions.getEntrePiso();
-			for (var j = 0; j <= actions.getNoColumnas(); j++) {
+			for (var j = 0; j <= actions.getNoColumnas() - 1; j++) {
 				u = j * actions.getLuzVano();
 				uv = [u, v];
-				nodosCoordenadas.push(uv);
+				nodosCoordenadasV.push(uv);
 			}
 		}
-		console.log(nodosCoordenadas);
-		return nodosCoordenadas;
+		console.log("nodosCoordVigas", nodosCoordenadasV, nodosCoordenadasV.length);
+		return nodosCoordenadasV;
 	};
 
 	let nodosNum = () => {
@@ -128,7 +129,7 @@ function Calculus() {
 				nodosNumeros.push(uv);
 			}
 		}
-		console.log(nodosNumeros);
+		console.log("nodosNum", nodosNumeros);
 		return nodosNumeros;
 	};
 
@@ -245,6 +246,152 @@ function Calculus() {
 		return vectorConectividadf;
 	};
 
+	let matchCoord = vector => {
+		let matchCoordenadas = {
+			coordMetro: nodosCoordenadas,
+			coordNum: nodosNumeros
+		};
+		console.log("vector para match", vector);
+		console.log("vector a comparar", matchCoordenadas["coordMetro"]);
+		let match = [];
+		console.log("long lista nodos", nodosNumeros.length);
+		var n = 0;
+
+		nodosCoordenadas.forEach(element => {
+			console.log("loop función matchCoord", element);
+			console.log("index?", n);
+			var elementString = String(element);
+			var vectoString = String(vector);
+			if (elementString == vectoString) {
+				match = nodosNumeros[n];
+				console.log("aquí hubo el match");
+			}
+			n++;
+		});
+		console.log("match", match);
+		return match;
+	};
+
+	let tablaConectividad2 = () => {
+		//Vigas
+		console.log("función tablaConectividad2");
+		var item = [];
+		let union = [];
+		let vectorConectividadf2 = [];
+		var elementos = {
+			elemento: "",
+			puntoIni: [],
+			puntoFin: [],
+			a: 0,
+			b: 0,
+			c: 0,
+			d: 0,
+			e: 0,
+			teta: 0,
+			cos: 0,
+			sin: 0,
+			inercia: 1,
+			elasticidad: 2100000,
+			longitud: 10,
+			peso: 0
+		};
+		var ele2 = {};
+		//let temp = parseInt(actions.getNoPisos());
+		//let temp3 = parseInt(actions.getNoColumnas());
+		for (var i = 0; i < nodosCoordenadasV.length - 1; i++) {
+			item = listaIPN[Math.floor(Math.random() * listaIPN.length)]; //de donde copiará los perfiles aleatorios
+			//console.log(item);
+			elementos["elemento"] = item["designacion"];
+			elementos["inercia"] = item["ix"];
+			console.log(i);
+			elementos["puntoIni"] = nodosCoordenadasV[i];
+			elementos["puntoFin"] = nodosCoordenadasV[i + 1];
+			//var temp4 = i - temp + 1;
+			elementos["nodoIni"] = matchCoord(nodosCoordenadasV[i]);
+			//var temp2 = temp + temp4;
+			//console.log("temp2", temp2);
+			elementos["nodoFin"] = matchCoord(nodosCoordenadasV[i + 1]);
+			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
+			elementos["longitud"] = Math.sqrt(
+				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
+					Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
+			);
+			//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
+
+			if ((elementos["longitud"] == actions.getLuzVano()) & (elementos["puntoIni"][1] != 0)) {
+				elementos["area"] = item["area"];
+				elementos["a"] = (
+					(elementos["elasticidad"] * elementos["area"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["b"] = (
+					(12 * elementos["elasticidad"] * elementos["inercia"]) /
+					Math.pow(elementos["longitud"] * 100, 3)
+				).toFixed(3);
+				elementos["c"] = (
+					(6 * elementos["elasticidad"] * elementos["inercia"]) /
+					Math.pow(elementos["longitud"] * 100, 2)
+				).toFixed(3);
+				elementos["d"] = (
+					(4 * elementos["elasticidad"] * elementos["inercia"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["e"] = (
+					(2 * elementos["elasticidad"] * elementos["inercia"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["peso"] = (item["peso"] * elementos["longitud"]).toFixed(2); //peso del elemento
+				if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
+					elementos["teta"] = Math.atan(
+						(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
+							(elementos["puntoFin"][0] - elementos["puntoIni"][0])
+					);
+				} else {
+					elementos["teta"] = (Math.PI / 2).toFixed(6);
+				}
+				elementos["cos"] = Math.cos(elementos["teta"]).toFixed(3);
+				if (elementos["teta"] == Math.PI / 2) {
+					elementos["cos"] = 0;
+				}
+				elementos["sin"] = Math.sin(elementos["teta"]).toFixed(3);
+				elementos["tipo"] = "Viga";
+				//item = [];
+				//console.log(elementos);
+				ele2 = elementos;
+				union.push(ele2);
+				ele2 = {};
+				//temp4 = 0;
+				//temp2 = 0;
+			} //Aquí termina el IF de las vigas
+			elementos = {
+				elemento: "",
+				puntoIni: [],
+				puntoFin: [],
+				a: 0,
+				b: 0,
+				c: 0,
+				d: 0,
+				e: 0,
+				teta: 0,
+				cos: 0,
+				sin: 0,
+				inercia: 1,
+				elasticidad: 2100000,
+				longitud: 10,
+				peso: 0,
+				nodoIni: [],
+				nodoFin: [],
+				tipo: ""
+			};
+		} // aquí termina el for
+		//console.log("union de vigas", union);
+		vectorConectividadf2 = union;
+		//vectorConectividadf.push(vectorConectividadf2);
+		console.log("Vector Conectividad:");
+		console.log(vectorConectividadf2);
+		return vectorConectividadf2;
+	};
+
 	function addTableConnect() {
 		var fila = "";
 		var final = vectorConectividadf.map(function(vectorConectividadf, index, array) {
@@ -327,6 +474,7 @@ function Calculus() {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
 		nodosNum();
+		nodosCoordVigas();
 		//tablaConectividad();
 		//console.log(listaPerfiles);
 	});
@@ -354,6 +502,7 @@ function Calculus() {
 						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 						// console.log(drawLines, drawLines2);
 						tablaConectividad();
+						tablaConectividad2();
 						addTableConnect();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
