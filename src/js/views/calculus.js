@@ -106,6 +106,19 @@ function Calculus() {
 		return nodosCoordenadas;
 	};
 
+	let nodosCoordVigas = () => {
+		for (var i = 0; i <= actions.getNoPisos() - 1; i++) {
+			v = i * actions.getEntrePiso();
+			for (var j = 0; j <= actions.getNoColumnas(); j++) {
+				u = j * actions.getLuzVano();
+				uv = [u, v];
+				nodosCoordenadas.push(uv);
+			}
+		}
+		console.log(nodosCoordenadas);
+		return nodosCoordenadas;
+	};
+
 	let nodosNum = () => {
 		for (var i = 0; i <= actions.getNoColumnas() - 1; i++) {
 			u = i;
@@ -159,7 +172,10 @@ function Calculus() {
 			);
 			//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
 
-			if (elementos["longitud"] == actions.getEntrePiso()) {
+			if (
+				(elementos["longitud"] == actions.getEntrePiso()) &
+				(elementos["puntoIni"][0] == elementos["puntoFin"][0])
+			) {
 				elementos["area"] = item["area"];
 				elementos["a"] = (
 					(elementos["elasticidad"] * elementos["area"]) /
