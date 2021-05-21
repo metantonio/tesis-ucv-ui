@@ -511,7 +511,7 @@ function Calculus() {
 		var vectorMatrizRigL = matrizRigidLocal();
 		var final = vectorMatrizRigL.map(function(item, index, array) {
 			var a = "<div className='row justify-content-center'/>";
-			a += "<div className='col-12'>";
+			a += "<div className='col-6'>";
 			a += "<h2>K'";
 			a += index + 1;
 			a += " =</h2>";
@@ -637,7 +637,7 @@ function Calculus() {
 			<div className="text-sm-left">
 				<h2> 2-. Matrices de Rigidez en coordenadas locales para cada elemento</h2>
 			</div>
-			<div className="row justify-content-center" id="matrices-rigid-local" />
+			<div className="col justify-content-center" id="matrices-rigid-local" />
 
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
