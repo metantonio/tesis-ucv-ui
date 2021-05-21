@@ -473,18 +473,20 @@ function Calculus() {
 				"<td>" +
 				vectorConectividadf.peso +
 				"</td>" +
-				"</tr>" +
-				"<br/>";
+				"</tr>";
+			//+"<br/>";
 			document.getElementById("tabla-connect").innerHTML = html + fila;
 
 			return html + fila, fila;
 		});
 		return final;
 	}
+	var vectorMatrizRigLocal = [];
 
 	let matrizRigidLocal = () => {
 		let matriz = [[], [], [], [], [], []];
 		let vectorMatrizRigL = [];
+		vectorMatrizRigLocal = [];
 		vectorConectividadf.forEach(element => {
 			matriz = [
 				[+element.a, 0, 0, -element.a, 0, 0],
@@ -497,22 +499,52 @@ function Calculus() {
 			vectorMatrizRigL.push(matriz);
 			matriz = [[], [], [], [], [], []];
 		});
-		console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
+		//console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
+		vectorMatrizRigLocal = vectorMatrizRigL;
 		return vectorMatrizRigL;
 	};
 	//Matrices de ejemplo para probar la función de multiplicar matrices
 	let matrizEA = [[1, 2, 3], [4, 5, 6]];
 	let matrizEB = [[5, -1], [1, 0], [-2, 3]];
 
+	function addMatricesRigLocal() {
+		var vectorMatrizRigL = matrizRigidLocal();
+		var final = vectorMatrizRigL.map(function(item, index, array) {
+			var a = "<div className='row justify-content-center'/>";
+			a += "<div className='col-12'>";
+			a += "<h2>K'";
+			a += index + 1;
+			a += " =</h2>";
+			a += "<table className='table table-bordered col-10' padding='5px'>";
+			a += "<thead><tr><th/><th/><th/><th/><th/><th/><tr/></thead>";
+			a += "<tbody>";
+			for (var i = 0; i < 6; i++) {
+				//console.log("item", item[i]);
+				a += "<tr>";
+				for (var j = 0; j < 6; j++) {
+					//console.log("ij", i, j);
+					a += "<td>";
+					a += item[i][j];
+					a += "  </td>";
+				}
+				a += "<tr/>";
+			}
+			a += "</tbody></table><br/></div></div>";
+			//a += "<div className='row justify-content-center'/>";
+			document.getElementById("matrices-rigid-local").innerHTML += a;
+			return a;
+		});
+	}
+
 	let multiplicarMatrices = (matrizA, matrizB) => {
 		let matrizRes = [matrizA.length];
-		console.log(matrizA.length, matrizB[0].length);
+		//console.log(matrizA.length, matrizB[0].length);
 		for (var i = 0; i < matrizA.length; i++) {
 			matrizRes[i] = new Array(matrizB[0].length).fill(0);
 			for (var j = 0; j < matrizB[0].length; j++) {
-				console.log(matrizRes[i][j]);
+				//console.log(matrizRes[i][j]);
 				for (var k = 0; k < matrizA[0].length; k++) {
-					console.log(k);
+					//console.log(k);
 					matrizRes[i][j] += matrizA[i][k] * matrizB[k][j];
 				}
 			}
@@ -525,6 +557,7 @@ function Calculus() {
 		nodosCoord();
 		nodosNum();
 		nodosCoordVigas();
+		vectorMatrizRigLocal = matrizRigidLocal();
 		//tablaConectividad();
 		//console.log(listaPerfiles);
 	});
@@ -554,8 +587,10 @@ function Calculus() {
 						tablaConectividad();
 						tablaConectividad2();
 						addTableConnect();
-						matrizRigidLocal();
+						//matrizRigidLocal();
 						//console.log(multiplicarMatrices(matrizEA, matrizEB));
+						addMatricesRigLocal();
+						console.log("vector Matriz rigid local", vectorMatrizRigLocal);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -602,7 +637,8 @@ function Calculus() {
 			<div className="text-sm-left">
 				<h2> 2-. Matrices de Rigidez en coordenadas locales para cada elemento</h2>
 			</div>
-			<div className="col-sm-12" id="matrices-rigid-local" />
+			<div className="row justify-content-center" id="matrices-rigid-local" />
+
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">

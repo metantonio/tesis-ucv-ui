@@ -7,3 +7,13 @@
     border: solid black 1px;
     text-align: center;
 }
+
+table tr *{
+    text-align: center;
+  }
+
+table {
+    border-right: solid black 1px;
+    border-left: solid black 1px;
+    padding: 5px;
+}
