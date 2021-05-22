@@ -600,6 +600,35 @@ function Calculus() {
 		return matrizRes;
 	};
 
+	function addMatricesRigGlobal() {
+		var vectorMatrizRigG = matrizRigidGlogal();
+		var final = vectorMatrizRigG.map(function(item, index, array) {
+			var a = "<div className='row justify-content-center'/>";
+			a += "<div className='col-6'>";
+			a += "<h2>K";
+			a += index + 1;
+			a += " =</h2>";
+			a += "<table className='table table-bordered col-10' padding='5px'>";
+			a += "<thead><tr><th/><th/><th/><th/><th/><th/><tr/></thead>";
+			a += "<tbody>";
+			for (var i = 0; i < 6; i++) {
+				//console.log("item", item[i]);
+				a += "<tr>";
+				for (var j = 0; j < 6; j++) {
+					//console.log("ij", i, j);
+					a += "<td>";
+					a += item[i][j];
+					a += "  </td>";
+				}
+				a += "<tr/>";
+			}
+			a += "</tbody></table><br/></div></div>";
+			//a += "<div className='row justify-content-center'/>";
+			document.getElementById("matrices-rigid-global").innerHTML += a;
+			return a;
+		});
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -642,6 +671,7 @@ function Calculus() {
 						//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
 						vectorMatrizRigGlobal = matrizRigidGlogal();
 						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
+						addMatricesRigGlobal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -686,10 +716,13 @@ function Calculus() {
 				</table>
 			</div>
 			<div className="text-sm-left">
-				<h2> 2-. Matrices de Rigidez en coordenadas locales para cada elemento</h2>
+				<h2> 2-. Matrices de Rigidez en coordenadas Locales para cada elemento</h2>
 			</div>
 			<div className="col justify-content-center" id="matrices-rigid-local" />
-
+			<div className="text-sm-left">
+				<h2> 3-. Matrices de Rigidez en coordenadas Globales para cada elemento</h2>
+			</div>
+			<div className="col justify-content-center" id="matrices-rigid-global" />
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
