@@ -482,6 +482,7 @@ function Calculus() {
 		return final;
 	}
 	var vectorMatrizRigLocal = [];
+	var vectorMatrizRigGlobal = [];
 
 	let matrizRigidLocal = () => {
 		let matriz = [[], [], [], [], [], []];
@@ -503,6 +504,53 @@ function Calculus() {
 		vectorMatrizRigLocal = vectorMatrizRigL;
 		return vectorMatrizRigL;
 	};
+
+	let matrizRigidGlogal = () => {
+		let matrizL = [[], [], [], [], [], []];
+		let matrizLtras = [[], [], [], [], [], []];
+		let vectorMatrizLtras = [];
+		let vectorMatrizL = [];
+		vectorMatrizRigGlobal = [];
+		var multi1 = [];
+		vectorConectividadf.forEach(element => {
+			matrizL = [
+				[+element.cos, +element.sin, 0, 0, 0, 0],
+				[-element.sin, +element.cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +element.cos, +element.sin, 0],
+				[0, 0, 0, -element.sin, +element.cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+			vectorMatrizL.push(matrizL);
+			matrizL = [[], [], [], [], [], []];
+			matrizLtras = [
+				[+element.cos, -element.sin, 0, 0, 0, 0],
+				[+element.sin, +element.cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +element.cos, -element.sin, 0],
+				[0, 0, 0, +element.sin, +element.cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+			vectorMatrizLtras.push(matrizLtras);
+			matrizLtras = [[], [], [], [], [], []];
+		});
+		//console.log("vectores de transformación", vectorMatrizLtras, vectorMatrizL);
+		//console.log("vectorMatrizRigLocal", vectorMatrizRigLocal);
+		for (var i = 0; i < vectorMatrizRigLocal.length; i++) {
+			//console.log(i);
+			multi1[i] = multiplicarMatrices(vectorMatrizLtras[i], vectorMatrizRigLocal[i]);
+			//console.log(multi1[i]);
+			multi1[i] = multiplicarMatrices(multi1[i], vectorMatrizL[i]);
+			//console.log(multi1[i]);
+			//vectorMatrizRigGlobal.push(multi1[i]);
+			//console.log("vectorMatrizRigGlobal dentro del for", vectorMatrizRigGlobal);
+		}
+		//console.log("vector multi1", multi1);
+		//vectorMatrizRigGlobal = multi1;
+		//vectorMatrizRigGlobal = vectorMatrizRigL;
+		return multi1;
+	};
+
 	//Matrices de ejemplo para probar la función de multiplicar matrices
 	let matrizEA = [[1, 2, 3], [4, 5, 6]];
 	let matrizEB = [[5, -1], [1, 0], [-2, 3]];
@@ -560,6 +608,7 @@ function Calculus() {
 		vectorMatrizRigLocal = matrizRigidLocal();
 		//tablaConectividad();
 		//console.log(listaPerfiles);
+		vectorMatrizRigGlobal = matrizRigidGlogal();
 	});
 
 	return (
@@ -590,7 +639,9 @@ function Calculus() {
 						//matrizRigidLocal();
 						//console.log(multiplicarMatrices(matrizEA, matrizEB));
 						addMatricesRigLocal();
-						console.log("vector Matriz rigid local", vectorMatrizRigLocal);
+						//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
+						vectorMatrizRigGlobal = matrizRigidGlogal();
+						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
