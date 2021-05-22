@@ -167,6 +167,8 @@ function Calculus() {
 			elementos["puntoFin"] = nodosCoordenadas[i + 1];
 			elementos["nodoIni"] = nodosNumeros[i];
 			elementos["nodoFin"] = nodosNumeros[i + 1];
+			elementos["vectorX"] = matchCoord2(nodosCoordenadas[i]);
+			elementos["vectorY"] = matchCoord2(nodosCoordenadas[i + 1]);
 			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
 			elementos["longitud"] = Math.sqrt(
 				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
@@ -238,7 +240,9 @@ function Calculus() {
 				peso: 0,
 				nodoIni: [],
 				nodoFin: [],
-				tipo: ""
+				tipo: "",
+				vectorX: [],
+				vectorY: []
 			};
 		} // aquí termina el for
 		vectorConectividadf = union;
@@ -265,6 +269,33 @@ function Calculus() {
 			var vectoString = String(vector);
 			if (elementString == vectoString) {
 				match = nodosNumeros[n];
+				//console.log("aquí hubo el match");
+			}
+			n++;
+		});
+		//console.log("match", match);
+		return match;
+	};
+
+	let matchCoord2 = vector => {
+		let matchCoordenadas = {
+			coordMetro: nodosCoordenadas,
+			coordNum: nodosNumeros
+		};
+		//console.log("vector para match", vector);
+		//console.log("vector a comparar", matchCoordenadas["coordMetro"]);
+		let match = [];
+		//console.log("long lista nodos", nodosNumeros.length);
+		var n = 0;
+		var p = 0;
+		nodosCoordenadas.forEach(element => {
+			//console.log("loop función matchCoord", element);
+			//console.log("index?", n);
+			var elementString = String(element);
+			var vectoString = String(vector);
+			if (elementString == vectoString) {
+				p = 3 * (n + 1);
+				match = [p - 3, p - 2, p - 1];
 				//console.log("aquí hubo el match");
 			}
 			n++;
@@ -312,6 +343,8 @@ function Calculus() {
 			//var temp2 = temp + temp4;
 			//console.log("temp2", temp2);
 			elementos["nodoFin"] = matchCoord(nodosCoordenadasV[i + 1]);
+			elementos["vectorX"] = matchCoord2(nodosCoordenadasV[i]);
+			elementos["vectorY"] = matchCoord2(nodosCoordenadasV[i + 1]);
 			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
 			elementos["longitud"] = Math.sqrt(
 				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
@@ -382,7 +415,9 @@ function Calculus() {
 				peso: 0,
 				nodoIni: [],
 				nodoFin: [],
-				tipo: ""
+				tipo: "",
+				vectorX: [],
+				vectorY: []
 			};
 		} // aquí termina el for
 		//console.log("union de vigas", union);
@@ -649,6 +684,83 @@ function Calculus() {
 		//vectorGenetico=final;
 		return final;
 	}
+	let matrizRigidezTotal = [];
+
+	let rigidezTotal = () => {
+		let numNodosu = 0;
+		var tempy = 0;
+		var tempx = 0;
+		console.log(actions.getNoPisos(), actions.getNoColumnas());
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+		console.log("No de nodos", numNodosu);
+		for (var a = 0; a < numNodosu; a++) {
+			matrizRigidezTotal[a] = new Array(numNodosu).fill(0);
+			for (var b = 0; b < numNodosu; b++) {
+				matrizRigidezTotal[a][b] = 0;
+			}
+		}
+		//console.log(matrizRigidezTotal);
+		for (var i = 0; i < numNodosu - 3; i += 3) {
+			for (var j = 0; i < numNodosu - 3; j += 3) {
+				console.log("Posición Matriz Rig Total", i, j);
+				codigoGeneticoP.forEach(element => {
+					//esquina superior izquierda de la matriz rigidez k
+					//console.log(element);
+					if ((element.vectorX[0] == i) & (element.vectorX[0] == j)) {
+						for (var k = 0; k <= 2; k++) {
+							for (var m = 0; m <= 2; m++) {
+								//console.log(element.vectorX[0]);
+								matrizRigidezTotal[i + k][m + j] += element.rigidez[k][m];
+								//console.log(matrizRigidezTotal[i + k][m + j]);
+							}
+						}
+					} else {
+						console.log("IF esquina sup-derecha");
+						//esquina superior derecha de la matriz rigidez k
+						if ((element.vectorX[0] == i) & (element.vectorY[0] == j)) {
+							for (var k = 0; k <= 2; k++) {
+								tempy = 0;
+								for (var m = 3; m <= 5; m++) {
+									matrizRigidezTotal[i + k][tempy + j] += element.rigidez[k][m];
+									tempy++;
+									//console.log(matrizRigidezTotal[i + k][tempy + j]);
+								}
+							}
+						} else {
+							console.log("IF esquina inf-izquierda");
+							//esquina inferior izquierda de la matriz rigidez k
+							if ((element.vectorY[0] == j) & (element.vectorY[0] == i)) {
+								tempx = 0;
+								for (var k = 3; k <= 5; k++) {
+									for (var m = 0; m <= 3; m++) {
+										matrizRigidezTotal[i + tempx][m + j] += element.rigidez[k][m];
+									}
+									tempx++;
+								}
+							} else {
+								console.log("IF esquina inf-derecha");
+								//esquina inferior derecha de la matriz rigidez k
+								if ((element.vectorX[0] == j) & (element.vectorY[0] == j)) {
+									tempx = 0;
+									for (var k = 3; k <= 5; k++) {
+										tempy = 0;
+										for (var m = 3; m <= 5; m++) {
+											matrizRigidezTotal[i + tempx][tempy + j] += element.rigidez[k][m];
+											tempy++;
+										}
+										tempx++;
+									}
+								}
+							}
+						}
+					}
+					return matrizRigidezTotal;
+				});
+			}
+		}
+		console.log("matriz de rigidez total", matrizRigidezTotal);
+		return matrizRigidezTotal;
+	};
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -695,6 +807,7 @@ function Calculus() {
 						addMatricesRigGlobal();
 						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
 						console.log("codigo genético P", codigoGeneticoP);
+						//rigidezTotal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
