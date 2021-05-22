@@ -629,6 +629,27 @@ function Calculus() {
 		});
 	}
 
+	var codigoGeneticoP = [];
+
+	function codigoGenetico() {
+		var vectorGenetico = [];
+		vectorGenetico = vectorConectividadf;
+		var vector = [];
+		vector = matrizRigidGlogal();
+		//console.log("vectorGenetico", vectorGenetico);
+		var n = 0;
+		//console.log("vector rigidez global", vector);
+		var final = vectorGenetico.map(function(element, index, array) {
+			element["rigidez"] = vector[n];
+			n++;
+			return element;
+		});
+		//console.log("final", final);
+		vectorGenetico = [];
+		//vectorGenetico=final;
+		return final;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -672,6 +693,8 @@ function Calculus() {
 						vectorMatrizRigGlobal = matrizRigidGlogal();
 						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
 						addMatricesRigGlobal();
+						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
+						console.log("codigo genético P", codigoGeneticoP);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -723,6 +746,9 @@ function Calculus() {
 				<h2> 3-. Matrices de Rigidez en coordenadas Globales para cada elemento</h2>
 			</div>
 			<div className="col justify-content-center" id="matrices-rigid-global" />
+			<div className="text-sm-left">
+				<h2> 4-. Ensamblaje de la Matriz de Rigidez Total</h2>
+			</div>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
