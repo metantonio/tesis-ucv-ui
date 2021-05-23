@@ -743,7 +743,7 @@ function Calculus() {
 								tempx = 0;
 								stop = 0;
 								for (var k = 3; k <= 5; k++) {
-									for (var m = 0; m <= 3; m++) {
+									for (var m = 0; m <= 2; m++) {
 										//console.log("IF esquina inf-izquierda pos,", k, m);
 										matrizRigidezTotal[i + tempx][m + j] += element.rigidez[k][m];
 										//console.log(matrizRigidezTotal);
