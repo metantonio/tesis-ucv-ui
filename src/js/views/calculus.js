@@ -761,19 +761,19 @@ function Calculus() {
 								if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
 									tempx = 0;
 									stop = 0;
-									console.log("esquina inf-derecha en el IF,", i, j);
+									//console.log("esquina inf-derecha en el IF,", i, j);
 									for (var k = 3; k <= 5; k++) {
 										tempy = 0;
 										for (var m = 3; m <= 5; m++) {
-											console.log("tempx, tempy, ", tempx, tempy);
-											console.log("IF esquina inf-derecha pos, ", k, m);
-											console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
+											//console.log("tempx, tempy, ", tempx, tempy);
+											//.log("IF esquina inf-derecha pos, ", k, m);
+											//console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
 											matrizRigidezTotal[i + tempx][tempy + j] += element.rigidez[k][m];
 											stop++;
 											if (stop > numNodosu * 100) {
 												break;
 											}
-											console.log(matrizRigidezTotal);
+											//console.log(matrizRigidezTotal);
 											tempy++;
 										}
 										tempx++;
