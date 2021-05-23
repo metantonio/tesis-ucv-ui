@@ -693,7 +693,7 @@ function Calculus() {
 		var stop = 0;
 		//console.log(actions.getNoPisos(), actions.getNoColumnas());
 		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
-		console.log("No de nodos", numNodosu);
+		//console.log("No de nodos", numNodosu);
 		for (var a = 0; a < numNodosu; a++) {
 			matrizRigidezTotal[a] = new Array(numNodosu).fill(0);
 			for (var b = 0; b < numNodosu; b++) {
@@ -703,7 +703,7 @@ function Calculus() {
 		//console.log(matrizRigidezTotal);
 		for (var i = 0; i <= numNodosu - 2; i += 3) {
 			for (var j = 0; j <= numNodosu - 2; j += 3) {
-				console.log("Posición Matriz Rig Total:", i, j);
+				//console.log("Posición Matriz Rig Total:", i, j);
 				codigoGeneticoP.forEach(element => {
 					//esquina superior izquierda de la matriz rigidez k
 					//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
@@ -756,7 +756,7 @@ function Calculus() {
 								}
 							} else {
 								//esquina inferior derecha de la matriz rigidez k
-								console.log("esquina inf-derecha,", i, j);
+								//console.log("esquina inf-derecha,", i, j);
 								//console.log("element.vectoyY[0]", element.vectoyY[0]);
 								if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
 									tempx = 0;
@@ -789,6 +789,42 @@ function Calculus() {
 		console.log("matriz de rigidez total", matrizRigidezTotal);
 		return matrizRigidezTotal;
 	};
+
+	function addMatricesRigTotal() {
+		var vectorMatrizRigT = matrizRigidezTotal;
+		var numNodosu = 0;
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+
+		var a = "<div className='row justify-content-center'/>";
+		a += "<div className='col-6'>";
+		a += "<h2>Matriz Rigidez Total";
+		a += " =</h2>";
+		a += "<table className='table table-bordered col-10' padding='5px'>";
+		a += "<thead>";
+		a += "<tr>";
+		for (var j = 0; j < numNodosu; j++) {
+			//console.log("ij", i, j);
+			a += "<th/>";
+		}
+		a += "<tr/>";
+		a += "</thead>";
+		a += "<tbody>";
+		for (var i = 0; i < numNodosu; i++) {
+			//console.log("item", item[i]);
+			a += "<tr>";
+			for (var j = 0; j < numNodosu; j++) {
+				//console.log("ij", i, j);
+				a += "<td>";
+				a += vectorMatrizRigT[i][j];
+				a += "  </td>";
+			}
+			a += "<tr/>";
+		}
+		a += "</tbody></table><br/></div></div>";
+		//a += "<div className='row justify-content-center'/>";
+		document.getElementById("matrices-rigid-total").innerHTML += a;
+		return a;
+	}
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -836,6 +872,7 @@ function Calculus() {
 						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
 						console.log("codigo genético P", codigoGeneticoP);
 						rigidezTotal();
+						addMatricesRigTotal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -890,6 +927,7 @@ function Calculus() {
 			<div className="text-sm-left">
 				<h2> 4-. Ensamblaje de la Matriz de Rigidez Total</h2>
 			</div>
+			<div className="col justify-content-center" id="matrices-rigid-total" />
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
