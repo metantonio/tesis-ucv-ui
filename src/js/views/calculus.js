@@ -786,7 +786,7 @@ function Calculus() {
 				});
 			}
 		}
-		console.log("matriz de rigidez total", matrizRigidezTotal);
+		//console.log("matriz de rigidez total", matrizRigidezTotal);
 		return matrizRigidezTotal;
 	};
 
