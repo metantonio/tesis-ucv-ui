@@ -690,7 +690,8 @@ function Calculus() {
 		let numNodosu = 0;
 		var tempy = 0;
 		var tempx = 0;
-		console.log(actions.getNoPisos(), actions.getNoColumnas());
+		var stop = 0;
+		//console.log(actions.getNoPisos(), actions.getNoColumnas());
 		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
 		console.log("No de nodos", numNodosu);
 		for (var a = 0; a < numNodosu; a++) {
@@ -700,57 +701,84 @@ function Calculus() {
 			}
 		}
 		//console.log(matrizRigidezTotal);
-		for (var i = 0; i < numNodosu - 3; i += 3) {
-			for (var j = 0; i < numNodosu - 3; j += 3) {
-				console.log("Posición Matriz Rig Total", i, j);
+		for (var i = 0; i <= numNodosu - 2; i += 3) {
+			for (var j = 0; j <= numNodosu - 2; j += 3) {
+				console.log("Posición Matriz Rig Total:", i, j);
 				codigoGeneticoP.forEach(element => {
 					//esquina superior izquierda de la matriz rigidez k
-					//console.log(element);
+					//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
 					if ((element.vectorX[0] == i) & (element.vectorX[0] == j)) {
+						stop = 0;
 						for (var k = 0; k <= 2; k++) {
 							for (var m = 0; m <= 2; m++) {
-								//console.log(element.vectorX[0]);
+								//console.log("Esquina sup-izq posicion", k, m);
 								matrizRigidezTotal[i + k][m + j] += element.rigidez[k][m];
-								//console.log(matrizRigidezTotal[i + k][m + j]);
+								stop++;
+								if (stop > numNodosu * 10) {
+									break;
+								}
+								//console.log(matrizRigidezTotal);
 							}
 						}
 					} else {
-						console.log("IF esquina sup-derecha");
 						//esquina superior derecha de la matriz rigidez k
 						if ((element.vectorX[0] == i) & (element.vectorY[0] == j)) {
+							stop = 0;
 							for (var k = 0; k <= 2; k++) {
 								tempy = 0;
 								for (var m = 3; m <= 5; m++) {
+									//console.log("IF esquina sup-derecha pos,", k, m);
 									matrizRigidezTotal[i + k][tempy + j] += element.rigidez[k][m];
 									tempy++;
-									//console.log(matrizRigidezTotal[i + k][tempy + j]);
+									//console.log(matrizRigidezTotal);
+									stop++;
+									if (stop > numNodosu * 10) {
+										break;
+									}
 								}
 							}
 						} else {
-							console.log("IF esquina inf-izquierda");
 							//esquina inferior izquierda de la matriz rigidez k
-							if ((element.vectorY[0] == j) & (element.vectorY[0] == i)) {
+							if ((element.vectorX[0] == j) & (element.vectorY[0] == i)) {
 								tempx = 0;
+								stop = 0;
 								for (var k = 3; k <= 5; k++) {
 									for (var m = 0; m <= 3; m++) {
+										//console.log("IF esquina inf-izquierda pos,", k, m);
 										matrizRigidezTotal[i + tempx][m + j] += element.rigidez[k][m];
+										//console.log(matrizRigidezTotal);
+										stop++;
+										if (stop > numNodosu * 10) {
+											break;
+										}
 									}
 									tempx++;
 								}
 							} else {
-								console.log("IF esquina inf-derecha");
 								//esquina inferior derecha de la matriz rigidez k
-								if ((element.vectorX[0] == j) & (element.vectorY[0] == j)) {
+								console.log("esquina inf-derecha,", i, j);
+								//console.log("element.vectoyY[0]", element.vectoyY[0]);
+								if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
 									tempx = 0;
+									stop = 0;
+									console.log("esquina inf-derecha en el IF,", i, j);
 									for (var k = 3; k <= 5; k++) {
 										tempy = 0;
 										for (var m = 3; m <= 5; m++) {
+											console.log("tempx, tempy, ", tempx, tempy);
+											console.log("IF esquina inf-derecha pos, ", k, m);
+											console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
 											matrizRigidezTotal[i + tempx][tempy + j] += element.rigidez[k][m];
+											stop++;
+											if (stop > numNodosu * 100) {
+												break;
+											}
+											console.log(matrizRigidezTotal);
 											tempy++;
 										}
 										tempx++;
 									}
-								}
+								} //aquí cierra el IF comentado
 							}
 						}
 					}
@@ -807,7 +835,7 @@ function Calculus() {
 						addMatricesRigGlobal();
 						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
 						console.log("codigo genético P", codigoGeneticoP);
-						//rigidezTotal();
+						rigidezTotal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
