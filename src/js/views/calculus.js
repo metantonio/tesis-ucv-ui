@@ -885,11 +885,27 @@ function Calculus() {
 	//función para construir vector de fuerzas internas
 	let vectorFuerzasInternas = [];
 	let funcionFuerzasInt = () => {
-		let vectorFuerzas1 = [];
+		let value = 0;
+		let vectorFuerzas1 = new Array(
+			(parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3
+		).fill(0);
+		//console.log(vectorFuerzas1);
 		let barras = codigoGeneticoP;
+		//console.log("barras", barras);
 		barras.forEach(element => {
-			return;
+			for (var i = 0; i < element["vectorX"].length; i++) {
+				value = element["vectorX"][i];
+				vectorFuerzas1[value] += element["fuerzainterna"][i];
+			}
+			for (var j = 0; j < element["vectorY"].length; j++) {
+				value = element["vectorY"][j];
+				vectorFuerzas1[value] += element["fuerzainterna"][j + 3];
+			}
+			return vectorFuerzas1;
 		});
+
+		//console.log("vector Fuerzas internas funcion", vectorFuerzas1);
+		return vectorFuerzas1;
 	};
 
 	useEffect(() => {
@@ -939,7 +955,8 @@ function Calculus() {
 						console.log("codigo genético P", codigoGeneticoP);
 						rigidezTotal();
 						addMatricesRigTotal();
-						funcionFuerzasInt();
+						vectorFuerzasInternas = funcionFuerzasInt();
+						console.log("vector Fuerzas internas def", vectorFuerzasInternas);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
