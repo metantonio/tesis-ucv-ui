@@ -46,6 +46,10 @@ const injectContext = PassedComponent => {
 			state.actions.setCargas();
 			state.actions.getCargasP();
 			state.actions.getCargasV();
+			state.actions.getCargaViento();
+			state.actions.getCargaLosaPermanente();
+			state.actions.getCargaTechoPermanente();
+			state.actions.getCargaTechoVariable();
 
 			state.actions.getVectorConect();
 		}, []);

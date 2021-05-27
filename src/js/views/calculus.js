@@ -216,6 +216,19 @@ function Calculus() {
 				}
 				elementos["sin"] = Math.sin(elementos["teta"]).toFixed(3);
 				elementos["tipo"] = "Columna";
+				//unidades estan en kg, kg, kg-cm
+				if ((elementos["puntoIni"][0] == 0) & (elementos["puntoFin"][0] == 0)) {
+					elementos["fuerzainterna"] = [
+						(actions.getCargaViento() * elementos["longitud"]) / 2,
+						0,
+						(-actions.getCargaViento() * ((elementos["longitud"] * 100) ^ 2)) / 12,
+						(actions.getCargaViento() * elementos["longitud"]) / 2,
+						0,
+						(actions.getCargaViento() * ((elementos["longitud"] * 100) ^ 2)) / 12
+					];
+				} else {
+					elementos["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+				}
 				//item = [];
 				//console.log(elementos);
 				ele2 = elementos;
@@ -242,7 +255,8 @@ function Calculus() {
 				nodoFin: [],
 				tipo: "",
 				vectorX: [],
-				vectorY: []
+				vectorY: [],
+				fuerzainterna: [0, 0, 0, 0, 0, 0]
 			};
 		} // aquí termina el for
 		vectorConectividadf = union;
@@ -389,6 +403,47 @@ function Calculus() {
 				}
 				elementos["sin"] = Math.sin(elementos["teta"]).toFixed(3);
 				elementos["tipo"] = "Viga";
+				//unidades kg -cm, kg
+				if (elementos["puntoIni"][1] == elementos["puntoFin"][1]) {
+					elementos["fuerzainterna"] = [
+						0,
+						-((actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) * elementos["longitud"]) /
+							2,
+						(-(actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) *
+							((elementos["longitud"] * 100) ^ 2)) /
+							12,
+						0,
+						-((actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) * elementos["longitud"]) /
+							2,
+						((actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) *
+							((elementos["longitud"] * 100) ^ 2)) /
+							12
+					];
+				}
+				if (
+					(elementos["puntoIni"][1] == actions.getNoPisos() * actions.getEntrePiso()) &
+					(elementos["puntoFin"][1] == actions.getNoPisos() * actions.getEntrePiso())
+				) {
+					elementos["fuerzainterna"] = [
+						0,
+						-(
+							(actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+							elementos["longitud"]
+						) / 2,
+						(-(actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+							((elementos["longitud"] * 100) ^ 2)) /
+							12,
+						0,
+						-(
+							(actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+							elementos["longitud"]
+						) / 2,
+						((actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+							((elementos["longitud"] * 100) ^ 2)) /
+							12
+					];
+				}
+
 				//item = [];
 				//console.log(elementos);
 				ele2 = elementos;
@@ -417,7 +472,8 @@ function Calculus() {
 				nodoFin: [],
 				tipo: "",
 				vectorX: [],
-				vectorY: []
+				vectorY: [],
+				fuerzainterna: [0, 0, 0, 0, 0, 0]
 			};
 		} // aquí termina el for
 		//console.log("union de vigas", union);
@@ -826,6 +882,16 @@ function Calculus() {
 		return a;
 	}
 
+	//función para construir vector de fuerzas internas
+	let vectorFuerzasInternas = [];
+	let funcionFuerzasInt = () => {
+		let vectorFuerzas1 = [];
+		let barras = codigoGeneticoP;
+		barras.forEach(element => {
+			return;
+		});
+	};
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -873,6 +939,7 @@ function Calculus() {
 						console.log("codigo genético P", codigoGeneticoP);
 						rigidezTotal();
 						addMatricesRigTotal();
+						funcionFuerzasInt();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>

@@ -254,6 +254,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return store.cargasP;
 			},
 
+			getCargaViento: () => {
+				const store = getStore();
+				//console.log(`getCargaViento ${store.cargaVientoEstado}`);
+				return store.cargaVientoEstado;
+			},
+
+			getCargaLosaPermanente: () => {
+				const store = getStore();
+				//console.log(`getCargaViento ${store.cargaVientoEstado}`);
+				return store.cargaPLosaEntrePisoEstado;
+			},
+
+			getCargaLosaVariable: () => {
+				const store = getStore();
+				//console.log(`getCargaViento ${store.cargaVientoEstado}`);
+				return store.cargaVLosaEntrePisoEstado;
+			},
+
+			getCargaTechoVariable: () => {
+				const store = getStore();
+				//console.log(`getCargaViento ${store.cargaVientoEstado}`);
+				return store.cargaVTechoEstado;
+			},
+
+			getCargaTechoPermanente: () => {
+				const store = getStore();
+				//console.log(`getCargaViento ${store.cargaVientoEstado}`);
+				return store.cargaPTechoEstado;
+			},
+
 			getPerfilIPN: () => {
 				const store = getStore();
 				console.log(`getIPN ${store.perfilIPN}`);
