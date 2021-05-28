@@ -908,6 +908,197 @@ function Calculus() {
 		return vectorFuerzas1;
 	};
 
+	function addVectorFuerza() {
+		var vectorFuer = vectorFuerzasInternas;
+		var numNodosu = 0;
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+
+		var a = "<div className='row justify-content-center'/>";
+		a += "<h2>Vector de Fuerzas totales";
+		a += " =</h2>";
+		a += "<div className='col-6 justify-content-center' id='vector-fint'>";
+
+		a += "<table className='table table-bordered col-10' padding='5px'>";
+		a += "<thead>";
+		a += "<tr/>";
+		a += "</thead>";
+		a += "<tbody>";
+		for (var j = 0; j < vectorFuer.length; j++) {
+			a += "<tr>";
+			a += vectorFuer[j].toFixed(5);
+			a += "</tr>";
+			a += "<br/>";
+		}
+
+		a += "</tbody></table><br/></div>";
+		document.getElementById("vector-fuerzas").innerHTML += a;
+		return a;
+	}
+
+	function deleteRow(arr, row, quantity) {
+		arr = arr.slice(0); // make copy
+		arr.splice(row - 1, quantity);
+		return arr;
+	}
+
+	let matrizRigidezRedux = [];
+	let rigidezReducida = () => {
+		let numNodosu = 0;
+		var tempy = 0;
+		var tempx = 0;
+		var stop = 0;
+		//console.log(actions.getNoPisos(), actions.getNoColumnas());
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+		//console.log("No de nodos", numNodosu);
+		for (var a = 0; a < numNodosu; a++) {
+			matrizRigidezRedux[a] = new Array(numNodosu).fill(0);
+			for (var b = 0; b < numNodosu; b++) {
+				matrizRigidezRedux[a][b] = 0;
+			}
+		}
+		//console.log(matrizRigidezTotal);
+		// for (var i = 0; i <= numNodosu - 2; i += 3) {
+		// 	for (var j = 0; j <= numNodosu - 2; j += 3) {
+		// 		//console.log("Posición Matriz Rig Total:", i, j);
+		// 		codigoGeneticoP.forEach(element => {
+		// 			//esquina superior izquierda de la matriz rigidez k
+		// 			//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
+		// 			if ((element.vectorX[0] == i) & (element.vectorX[0] == j) & (element.nodoIni[1] != 0)) {
+		// 				stop = 0;
+		// 				for (var k = 0; k <= 2; k++) {
+		// 					for (var m = 0; m <= 2; m++) {
+		// 						//console.log("Esquina sup-izq posicion", k, m);
+		// 						matrizRigidezRedux[i + k][m + j] += element.rigidez[k][m];
+		// 						stop++;
+		// 						if (stop > numNodosu * 10) {
+		// 							break;
+		// 						}
+		// 						//console.log(matrizRigidezTotal);
+		// 					}
+		// 				}
+		// 			} else {
+		// 				//esquina superior derecha de la matriz rigidez k
+		// 				if ((element.vectorX[0] == i) & (element.vectorY[0] == j) & (element.nodoIni[1] != 0)) {
+		// 					stop = 0;
+		// 					for (var k = 0; k <= 2; k++) {
+		// 						tempy = 0;
+		// 						for (var m = 3; m <= 5; m++) {
+		// 							//console.log("IF esquina sup-derecha pos,", k, m);
+		// 							matrizRigidezRedux[i + k][tempy + j] += element.rigidez[k][m];
+		// 							tempy++;
+		// 							//console.log(matrizRigidezTotal);
+		// 							stop++;
+		// 							if (stop > numNodosu * 10) {
+		// 								break;
+		// 							}
+		// 						}
+		// 					}
+		// 				} else {
+		// 					//esquina inferior izquierda de la matriz rigidez k
+		// 					if ((element.vectorX[0] == j) & (element.vectorY[0] == i) & (element.nodoIni[1] != 0)) {
+		// 						tempx = 0;
+		// 						stop = 0;
+		// 						for (var k = 3; k <= 5; k++) {
+		// 							for (var m = 0; m <= 2; m++) {
+		// 								//console.log("IF esquina inf-izquierda pos,", k, m);
+		// 								matrizRigidezRedux[i + tempx][m + j] += element.rigidez[k][m];
+		// 								//console.log(matrizRigidezTotal);
+		// 								stop++;
+		// 								if (stop > numNodosu * 10) {
+		// 									break;
+		// 								}
+		// 							}
+		// 							tempx++;
+		// 						}
+		// 					} else {
+		// 						//esquina inferior derecha de la matriz rigidez k
+		// 						//console.log("esquina inf-derecha,", i, j);
+		// 						//console.log("element.vectoyY[0]", element.vectoyY[0]);
+		// 						if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
+		// 							tempx = 0;
+		// 							stop = 0;
+		// 							//console.log("esquina inf-derecha en el IF,", i, j);
+		// 							for (var k = 3; k <= 5; k++) {
+		// 								tempy = 0;
+		// 								for (var m = 3; m <= 5; m++) {
+		// 									//console.log("tempx, tempy, ", tempx, tempy);
+		// 									//.log("IF esquina inf-derecha pos, ", k, m);
+		// 									//console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
+		// 									matrizRigidezRedux[i + tempx][tempy + j] += element.rigidez[k][m];
+		// 									stop++;
+		// 									if (stop > numNodosu * 100) {
+		// 										break;
+		// 									}
+		// 									//console.log(matrizRigidezTotal);
+		// 									tempy++;
+		// 								}
+		// 								tempx++;
+		// 							}
+		// 						} //aquí cierra el IF comentado
+		// 					}
+		// 				}
+		// 			}
+		// 			return matrizRigidezRedux;
+		// 		});
+		// 	}
+		// }
+
+		//console.log("matriz de rigidez reducida", matrizRigidezTotal);
+		// let matrizApoyo = [];
+		// matrizRigidezRedux = matrizRigidezTotal;
+		// for (var i = matrizRigidezRedux.length - 1; i >= 0; i--) {
+		// 	for (var j = matrizRigidezRedux.length - 1; j >= 0; j--) {
+		// 		codigoGeneticoP.forEach(element => {
+		// 			if ((element.nodoIni[1] == 0) & (j == element.vectorX[0])) {
+		// 				//matrizRigidezRedux[i - 3].splice(j - 3, 1);
+		// 				matrizRigidezRedux = deleteRow(matrizRigidezRedux, 1, 3);
+
+		// 				//matrizRigidezRedux.splice(i, 3);
+		// 			}
+		// 			return matrizRigidezRedux;
+		// 		});
+		// 	}
+		// }
+		console.log(matrizRigidezRedux);
+		return matrizRigidezRedux;
+	};
+
+	function addMatricesRigRedux() {
+		var vectorMatrizRigT = matrizRigidezRedux;
+		var numNodosu = 0;
+		numNodosu = vectorMatrizRigT.length;
+
+		var a = "<div className='row justify-content-center'/>";
+		a += "<div className='col-6'>";
+		a += "<h2>Matriz Rigidez Reducida";
+		a += " =</h2>";
+		a += "<table className='table table-bordered col-10' padding='5px'>";
+		a += "<thead>";
+		a += "<tr>";
+		for (var j = 0; j < numNodosu; j++) {
+			//console.log("ij", i, j);
+			a += "<th/>";
+		}
+		a += "<tr/>";
+		a += "</thead>";
+		a += "<tbody>";
+		for (var i = 0; i < numNodosu; i++) {
+			//console.log("item", item[i]);
+			a += "<tr>";
+			for (var j = 0; j < numNodosu; j++) {
+				//console.log("ij", i, j);
+				a += "<td>";
+				a += vectorMatrizRigT[i][j];
+				a += "  </td>";
+			}
+			a += "<tr/>";
+		}
+		a += "</tbody></table><br/></div></div>";
+		//a += "<div className='row justify-content-center'/>";
+		document.getElementById("matriz-reducida").innerHTML += a;
+		return a;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -957,6 +1148,9 @@ function Calculus() {
 						addMatricesRigTotal();
 						vectorFuerzasInternas = funcionFuerzasInt();
 						console.log("vector Fuerzas internas def", vectorFuerzasInternas);
+						addVectorFuerza();
+						rigidezReducida();
+						addMatricesRigRedux();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -1012,6 +1206,14 @@ function Calculus() {
 				<h2> 4-. Ensamblaje de la Matriz de Rigidez Total</h2>
 			</div>
 			<div className="col justify-content-center" id="matrices-rigid-total" />
+			<div className="text-sm-left">
+				<h2> 5-. Vector de Fuerzas (Fuerzas Externas - Fuerzas Internas)</h2>
+			</div>
+			<div className="col justify-content-center" id="vector-fuerzas" />
+			<div className="text-sm-left">
+				<h2> 6-. Matriz Reducida</h2>
+			</div>
+			<div className="col justify-content-center" id="matriz-reducida" />
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">

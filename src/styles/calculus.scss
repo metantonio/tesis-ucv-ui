@@ -17,3 +17,21 @@ table {
     border-left: solid black 1px;
     padding: 5px;
 }
+
+#vector-fuerzas *:only-child{
+    border-right: solid black 1px;
+    border-left: solid black 1px;
+    padding: 5px;
+    justify-content: center;
+    justify-self: center;
+    align-content: space-around;
+}
+
+svg {
+    margin: 2rem;
+    border: 1px solid black;
+    fill: #383838;
+    /* percentage of viewport - height will autocalculate */
+    width: auto;
+    height: auto;
+  }
