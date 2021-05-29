@@ -941,6 +941,25 @@ function Calculus() {
 		return arr;
 	}
 
+	function getCol(matrix, col) {
+		//Función para obtener una columna de una matriz (bidimensional)
+		var column = [];
+		for (var i = 0; i < matrix.lenght; i++) {
+			column.push(matrix[i][col]);
+		}
+		return column;
+	}
+
+	function getRow(matrix, row) {
+		//Función para obtener una fila de una matriz (bidimensional), o un valor de un array
+		var rows = [];
+		rows = matrix.map(function(value, index) {
+			return value[row];
+		});
+		//console.log("rows", rows);
+		return rows;
+	}
+
 	let matrizRigidezRedux = [];
 	let rigidezReducida = () => {
 		let numNodosu = 0;
@@ -1044,21 +1063,37 @@ function Calculus() {
 		// }
 
 		//console.log("matriz de rigidez reducida", matrizRigidezTotal);
-		// let matrizApoyo = [];
-		// matrizRigidezRedux = matrizRigidezTotal;
+		let matrizApoyo = [];
+		matrizRigidezRedux = matrizRigidezTotal;
 		// for (var i = matrizRigidezRedux.length - 1; i >= 0; i--) {
-		// 	for (var j = matrizRigidezRedux.length - 1; j >= 0; j--) {
+		// 	for (var j = matrizRigidezRedux[i].length - 1; j >= 0; j--) {
 		// 		codigoGeneticoP.forEach(element => {
-		// 			if ((element.nodoIni[1] == 0) & (j == element.vectorX[0])) {
+		// 			if (
+		// 				(element.nodoIni[1] == 0) &
+		// 				(j == element.vectorX[0] || j == element.vectorX[1] || j == element.vectorX[2])
+		// 			) {
 		// 				//matrizRigidezRedux[i - 3].splice(j - 3, 1);
-		// 				matrizRigidezRedux = deleteRow(matrizRigidezRedux, 1, 3);
+		// 				//matrizRigidezRedux = deleteRow(matrizRigidezRedux, 1, 3);
 
-		// 				//matrizRigidezRedux.splice(i, 3);
+		// 				matrizRigidezRedux[i].splice(j, 1);
 		// 			}
 		// 			return matrizRigidezRedux;
 		// 		});
 		// 	}
 		// }
+		var filasM = [];
+		for (var i = 0; i < matrizRigidezRedux.length; i += 3) {
+			codigoGeneticoP.forEach(element => {
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0] || i == element.vectorY[0])) {
+					filasM.push(getRow(matrizRigidezRedux, i));
+					filasM.push(getRow(matrizRigidezRedux, i + 1));
+					filasM.push(getRow(matrizRigidezRedux, i + 2));
+				}
+				return filasM;
+			});
+		}
+		console.log("FilasM", filasM);
+
 		console.log(matrizRigidezRedux);
 		return matrizRigidezRedux;
 	};
