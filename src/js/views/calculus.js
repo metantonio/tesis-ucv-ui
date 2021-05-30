@@ -943,11 +943,12 @@ function Calculus() {
 
 	function getCol(matrix, col) {
 		//Función para obtener una columna de una matriz (bidimensional)
-		var column = [];
+		var column = 0;
 		for (var i = 0; i < matrix.lenght; i++) {
-			column.push(matrix[i][col]);
+			column = matrix[i][col];
 		}
-		return column;
+		console.log("getCol", matrix[i][col]);
+		return matrix[i][col];
 	}
 
 	function getRow(matrix, row) {
@@ -957,6 +958,16 @@ function Calculus() {
 			return value[row];
 		});
 		//console.log("rows", rows);
+		return rows;
+	}
+
+	function getCol2(matrix, col) {
+		//Función para obtener una fila de una matriz (bidimensional), o un valor de un array
+		var rows = [];
+		rows = matrix.map(function(value, index) {
+			return value[index][col];
+		});
+		//console.log("col2", rows);
 		return rows;
 	}
 
@@ -975,112 +986,10 @@ function Calculus() {
 				matrizRigidezRedux[a][b] = 0;
 			}
 		}
-		//console.log(matrizRigidezTotal);
-		// for (var i = 0; i <= numNodosu - 2; i += 3) {
-		// 	for (var j = 0; j <= numNodosu - 2; j += 3) {
-		// 		//console.log("Posición Matriz Rig Total:", i, j);
-		// 		codigoGeneticoP.forEach(element => {
-		// 			//esquina superior izquierda de la matriz rigidez k
-		// 			//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
-		// 			if ((element.vectorX[0] == i) & (element.vectorX[0] == j) & (element.nodoIni[1] != 0)) {
-		// 				stop = 0;
-		// 				for (var k = 0; k <= 2; k++) {
-		// 					for (var m = 0; m <= 2; m++) {
-		// 						//console.log("Esquina sup-izq posicion", k, m);
-		// 						matrizRigidezRedux[i + k][m + j] += element.rigidez[k][m];
-		// 						stop++;
-		// 						if (stop > numNodosu * 10) {
-		// 							break;
-		// 						}
-		// 						//console.log(matrizRigidezTotal);
-		// 					}
-		// 				}
-		// 			} else {
-		// 				//esquina superior derecha de la matriz rigidez k
-		// 				if ((element.vectorX[0] == i) & (element.vectorY[0] == j) & (element.nodoIni[1] != 0)) {
-		// 					stop = 0;
-		// 					for (var k = 0; k <= 2; k++) {
-		// 						tempy = 0;
-		// 						for (var m = 3; m <= 5; m++) {
-		// 							//console.log("IF esquina sup-derecha pos,", k, m);
-		// 							matrizRigidezRedux[i + k][tempy + j] += element.rigidez[k][m];
-		// 							tempy++;
-		// 							//console.log(matrizRigidezTotal);
-		// 							stop++;
-		// 							if (stop > numNodosu * 10) {
-		// 								break;
-		// 							}
-		// 						}
-		// 					}
-		// 				} else {
-		// 					//esquina inferior izquierda de la matriz rigidez k
-		// 					if ((element.vectorX[0] == j) & (element.vectorY[0] == i) & (element.nodoIni[1] != 0)) {
-		// 						tempx = 0;
-		// 						stop = 0;
-		// 						for (var k = 3; k <= 5; k++) {
-		// 							for (var m = 0; m <= 2; m++) {
-		// 								//console.log("IF esquina inf-izquierda pos,", k, m);
-		// 								matrizRigidezRedux[i + tempx][m + j] += element.rigidez[k][m];
-		// 								//console.log(matrizRigidezTotal);
-		// 								stop++;
-		// 								if (stop > numNodosu * 10) {
-		// 									break;
-		// 								}
-		// 							}
-		// 							tempx++;
-		// 						}
-		// 					} else {
-		// 						//esquina inferior derecha de la matriz rigidez k
-		// 						//console.log("esquina inf-derecha,", i, j);
-		// 						//console.log("element.vectoyY[0]", element.vectoyY[0]);
-		// 						if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
-		// 							tempx = 0;
-		// 							stop = 0;
-		// 							//console.log("esquina inf-derecha en el IF,", i, j);
-		// 							for (var k = 3; k <= 5; k++) {
-		// 								tempy = 0;
-		// 								for (var m = 3; m <= 5; m++) {
-		// 									//console.log("tempx, tempy, ", tempx, tempy);
-		// 									//.log("IF esquina inf-derecha pos, ", k, m);
-		// 									//console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
-		// 									matrizRigidezRedux[i + tempx][tempy + j] += element.rigidez[k][m];
-		// 									stop++;
-		// 									if (stop > numNodosu * 100) {
-		// 										break;
-		// 									}
-		// 									//console.log(matrizRigidezTotal);
-		// 									tempy++;
-		// 								}
-		// 								tempx++;
-		// 							}
-		// 						} //aquí cierra el IF comentado
-		// 					}
-		// 				}
-		// 			}
-		// 			return matrizRigidezRedux;
-		// 		});
-		// 	}
-		// }
 
-		//console.log("matriz de rigidez reducida", matrizRigidezTotal);
 		let matrizApoyo = [];
 		matrizRigidezRedux = matrizRigidezTotal;
-		// for (var i = matrizRigidezRedux.length - 1; i >= 0; i--) {
-		// 	for (var j = matrizRigidezRedux[i].length - 1; j >= 0; j--) {
-		// 		codigoGeneticoP.forEach(element => {
-		// 			if (
-		// 				(element.nodoIni[1] == 0) &
-		// 				(j == element.vectorX[0] || j == element.vectorX[1] || j == element.vectorX[2])
-		// 			) {
-		// 				//matrizRigidezRedux[i - 3].splice(j - 3, 1);
-		// 				//matrizRigidezRedux = deleteRow(matrizRigidezRedux, 1, 3);
 
-		// 				matrizRigidezRedux[i].splice(j, 1);
-		// 			}
-		// 			return matrizRigidezRedux;
-		// 		});
-		// 	}
-		// }
 		var filasM = [];
 		for (var i = 0; i < matrizRigidezRedux.length; i += 3) {
 			codigoGeneticoP.forEach(element => {
@@ -1092,11 +1001,58 @@ function Calculus() {
 				return filasM;
 			});
 		}
-		console.log("FilasM", filasM);
+		//hasta este punto funciona la reducción de filas en revisión 29-5-21 6:30pm
+		//console.log("FilasM", filasM);
 
-		console.log(matrizRigidezRedux);
+		var columnasM = [];
+		console.log("FilasM lenght: ", filasM.lenght);
+		//columnasM = new Array(filasM.lenght).fill(0);
+		// for (var a = 0; a < filasM.lenght; a++) {
+		// 	columnasM[a] = new Array(filasM.lenght).fill(0);
+		// 	for (var b = 0; b < filasM.lenght; b++) {
+		// 		columnasM[a][b] = 0;
+		// 	}
+		// }
+		console.log("def colM:", columnasM);
+		var k = 0;
+		for (var i = 0; i < filasM.length; i += 3) {
+			codigoGeneticoP.forEach(element => {
+				k = 0;
+				columnasM[i] = new Array(filasM.lenght);
+				for (var j = 0; j < numNodosu; j += 3) {
+					//revisar este for
+					console.log("k: ", k);
+					if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
+						console.log("k++: ", k);
+						//console.log("filasM ij:", filasM[i][j]);
+						columnasM[i][k] = filasM[i][j];
+						//console.log("columnasM ij:", columnasM[i][j]);
+						columnasM[i][k + 1] = filasM[i][j + 1];
+						columnasM[i][k + 2] = filasM[i][j + 2];
+						k++;
+					}
+				}
+				return columnasM;
+			});
+		}
+		console.log("columnasM:", columnasM);
+		matrizRigidezRedux = [];
+		matrizRigidezRedux = copiarMatriz(columnasM);
+		console.log("matrizRigidezRedux", matrizRigidezRedux);
+
 		return matrizRigidezRedux;
 	};
+
+	function copiarMatriz(arr) {
+		var array2 = [];
+		// for (var i = 0; i < array1.lenght; i++) {
+		// 	array2 = new Array(array1[i].lenght);
+		// 	for (var j = 0; j < array1[i].lenght; j++) {
+		// 		array2[i][j] = array1[i][j];
+		// 	}
+		// }
+		return arr.map(o => [...o]);
+	}
 
 	function addMatricesRigRedux() {
 		var vectorMatrizRigT = matrizRigidezRedux;
@@ -1117,10 +1073,10 @@ function Calculus() {
 		a += "<tr/>";
 		a += "</thead>";
 		a += "<tbody>";
-		for (var i = 0; i < numNodosu; i++) {
+		for (var i = 0; i < vectorMatrizRigT.lenght; i++) {
 			//console.log("item", item[i]);
 			a += "<tr>";
-			for (var j = 0; j < numNodosu; j++) {
+			for (var j = 0; j < vectorMatrizRigT[i].lenght; j++) {
 				//console.log("ij", i, j);
 				a += "<td>";
 				a += vectorMatrizRigT[i][j];
