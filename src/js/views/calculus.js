@@ -980,58 +980,116 @@ function Calculus() {
 		//console.log(actions.getNoPisos(), actions.getNoColumnas());
 		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
 		//console.log("No de nodos", numNodosu);
-		for (var a = 0; a < numNodosu; a++) {
-			matrizRigidezRedux[a] = new Array(numNodosu).fill(0);
-			for (var b = 0; b < numNodosu; b++) {
-				matrizRigidezRedux[a][b] = 0;
-			}
-		}
+		// for (var a = 0; a < numNodosu; a++) {
+		// 	matrizRigidezRedux[a] = new Array(numNodosu).fill(0);
+		// 	for (var b = 0; b < numNodosu; b++) {
+		// 		matrizRigidezRedux[a][b] = 0;
+		// 	}
+		// }
 
 		let matrizApoyo = [];
-		matrizRigidezRedux = matrizRigidezTotal;
-
-		var filasM = [];
-		for (var i = 0; i < matrizRigidezRedux.length; i += 3) {
-			codigoGeneticoP.forEach(element => {
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0] || i == element.vectorY[0])) {
-					filasM.push(getRow(matrizRigidezRedux, i));
-					filasM.push(getRow(matrizRigidezRedux, i + 1));
-					filasM.push(getRow(matrizRigidezRedux, i + 2));
-				}
-				return filasM;
-			});
-		}
+		matrizRigidezRedux = copiarMatriz(matrizRigidezTotal);
+		console.log("matrizRigidezRedux copiada de la total. Length", matrizRigidezRedux.length);
+		// var filasM = [];
+		// var n = 0;
+		// for (var i = 0; i <= matrizRigidezRedux.length; i += 1) {
+		// 	codigoGeneticoP.forEach(element => {
+		// 		if (
+		// 			(element.nodoIni[1] != 0) &
+		// 			(i == element.vectorX[0] ||
+		// 				i == element.vectorX[1] ||
+		// 				i == element.vectorX[2] ||
+		// 				i == element.vectorY[0] ||
+		// 				i == element.vectorY[1] ||
+		// 				i == element.vectorY[2])
+		// 		) {
+		// 			// filasM.push(getRow(matrizRigidezRedux, i));
+		// 			// filasM.push(getRow(matrizRigidezRedux, i + 1));
+		// 			// filasM.push(getRow(matrizRigidezRedux, i + 2));
+		// 			filasM.push(matrizRigidezRedux[i]);
+		// 			n++;
+		// 		}
+		// 		return filasM;
+		// 	});
+		// }
 		//hasta este punto funciona la reducción de filas en revisión 29-5-21 6:30pm
-		var filasM_length = filasM.length;
-		console.log("FilasM", filasM);
+		//var filasM_length = filasM.length;
+		//console.log("FilasM", filasM);
 		//console.log("FilasM length: ", filasM_length);
 
-		var columnasM = [];
-		//console.log("def colM:", columnasM);
-		var k = 0;
-		for (var i = 0; i < filasM.length; i++) {
-			codigoGeneticoP.forEach(element => {
-				k = 0;
-				columnasM[i] = new Array(filasM.length);
-				for (var j = 0; j <= filasM[i].length; j += 3) {
-					//revisar este for
-					console.log("k: ", k);
-					if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
-						console.log("k++: ", k);
-						//console.log("filasM ij:", filasM[i][j]);
-						columnasM[i][k] = filasM[i][j];
-						//console.log("columnasM ij:", columnasM[i][j]);
-						columnasM[i][k + 1] = filasM[i][j + 1];
-						columnasM[i][k + 2] = filasM[i][j + 2];
-						k += 3;
+		//Apartado*********************
+		var conx = 0;
+		var cony = 0;
+		for (var i = 0; i < matrizRigidezRedux.length; i += 1) {
+			matrizApoyo[i] = new Array();
+			cony = 0;
+			for (var j = 0; j < matrizRigidezRedux[i].length; j++) {
+				codigoGeneticoP.forEach(element => {
+					if (
+						(element.nodoIni[1] != 0) &
+						(i == element.vectorX[0] ||
+							i == element.vectorX[1] ||
+							i == element.vectorX[2] ||
+							i == element.vectorY[0] ||
+							i == element.vectorY[1] ||
+							i == element.vectorY[2])
+					) {
+						if (
+							(element.nodoIni[1] != 0) &
+							(j == element.vectorX[0] ||
+								j == element.vectorX[1] ||
+								j == element.vectorX[2] ||
+								j == element.vectorY[0] ||
+								j == element.vectorY[1] ||
+								j == element.vectorY[2])
+						) {
+							matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
+							cony++;
+						}
 					}
-				}
-				return columnasM;
-			});
+					//console.log("MatrizApoyo[i][j]", matrizApoyo[conx][cony])
+					return matrizApoyo;
+				});
+			}
+			conx++;
 		}
-		console.log("columnasM:", columnasM);
+		//hasta este punto devuelve corrctamente los valores pero agrega ciertas listas vacias
+		var matrizApoyo2 = [];
+		for (var i = 0; i < matrizApoyo.length; i++) {
+			if (matrizApoyo[i].length > 0) {
+				matrizApoyo2.push(matrizApoyo[i]);
+			}
+		}
+		console.log("MatrizApoyo2", matrizApoyo2);
+
+		//************************** */
+		// var columnasM = [];
+		// //console.log("def colM:", columnasM);
+		// var k = 0;
+		// for (var i = 0; i < filasM.length; i++) {
+		// 	codigoGeneticoP.forEach(element => {
+		// 		k = 0;
+		// 		columnasM[i] = new Array(filasM.length);
+		// 		for (var j = 0; j <= filasM[i].length; j += 3) {
+		// 			//revisar este for
+		// 			//console.log("k: ", k);
+		// 			if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
+		// 				//console.log("k++: ", k);
+		// 				//console.log("filasM ij:", filasM[i][j]);
+		// 				columnasM[i][k] = filasM[i][j];
+		// 				//console.log("columnasM ij:", columnasM[i][j]);
+		// 				columnasM[i][k + 1] = filasM[i][j + 1];
+		// 				columnasM[i][k + 2] = filasM[i][j + 2];
+		// 				k += 3;
+		// 			}
+		// 		}
+		// 		return columnasM;
+		// 	});
+		// }
+
+		//console.log("columnasM:", columnasM);
 		matrizRigidezRedux = [];
-		matrizRigidezRedux = copiarMatriz(columnasM);
+		matrizRigidezRedux = copiarMatriz(matrizApoyo2);
 		console.log("matrizRigidezRedux", matrizRigidezRedux);
 
 		return matrizRigidezRedux;
