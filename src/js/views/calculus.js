@@ -1090,7 +1090,7 @@ function Calculus() {
 		//console.log("columnasM:", columnasM);
 		matrizRigidezRedux = [];
 		matrizRigidezRedux = copiarMatriz(matrizApoyo2);
-		console.log("matrizRigidezRedux", matrizRigidezRedux);
+		//console.log("matrizRigidezRedux", matrizRigidezRedux);
 
 		return matrizRigidezRedux;
 	};
@@ -1110,7 +1110,7 @@ function Calculus() {
 		var vectorMatrizRigT = copiarMatriz(matrizRigidezRedux);
 		var numNodosu = 0;
 		numNodosu = vectorMatrizRigT.length;
-		console.log("vectorMatrizRigT", vectorMatrizRigT);
+		//console.log("vectorMatrizRigT", vectorMatrizRigT);
 		var a = "<div className='row justify-content-center'/>";
 		a += "<div className='col-6'>";
 		a += "<h2>Matriz Rigidez Reducida";
