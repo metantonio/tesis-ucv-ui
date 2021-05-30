@@ -944,7 +944,7 @@ function Calculus() {
 	function getCol(matrix, col) {
 		//Función para obtener una columna de una matriz (bidimensional)
 		var column = 0;
-		for (var i = 0; i < matrix.lenght; i++) {
+		for (var i = 0; i < matrix.length; i++) {
 			column = matrix[i][col];
 		}
 		console.log("getCol", matrix[i][col]);
@@ -1002,24 +1002,18 @@ function Calculus() {
 			});
 		}
 		//hasta este punto funciona la reducción de filas en revisión 29-5-21 6:30pm
-		//console.log("FilasM", filasM);
+		var filasM_length = filasM.length;
+		console.log("FilasM", filasM);
+		//console.log("FilasM length: ", filasM_length);
 
 		var columnasM = [];
-		console.log("FilasM lenght: ", filasM.lenght);
-		//columnasM = new Array(filasM.lenght).fill(0);
-		// for (var a = 0; a < filasM.lenght; a++) {
-		// 	columnasM[a] = new Array(filasM.lenght).fill(0);
-		// 	for (var b = 0; b < filasM.lenght; b++) {
-		// 		columnasM[a][b] = 0;
-		// 	}
-		// }
-		console.log("def colM:", columnasM);
+		//console.log("def colM:", columnasM);
 		var k = 0;
-		for (var i = 0; i < filasM.length; i += 3) {
+		for (var i = 0; i < filasM.length; i++) {
 			codigoGeneticoP.forEach(element => {
 				k = 0;
-				columnasM[i] = new Array(filasM.lenght);
-				for (var j = 0; j < numNodosu; j += 3) {
+				columnasM[i] = new Array(filasM.length);
+				for (var j = 0; j <= filasM[i].length; j += 3) {
 					//revisar este for
 					console.log("k: ", k);
 					if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
@@ -1029,7 +1023,7 @@ function Calculus() {
 						//console.log("columnasM ij:", columnasM[i][j]);
 						columnasM[i][k + 1] = filasM[i][j + 1];
 						columnasM[i][k + 2] = filasM[i][j + 2];
-						k++;
+						k += 3;
 					}
 				}
 				return columnasM;
@@ -1045,9 +1039,9 @@ function Calculus() {
 
 	function copiarMatriz(arr) {
 		var array2 = [];
-		// for (var i = 0; i < array1.lenght; i++) {
-		// 	array2 = new Array(array1[i].lenght);
-		// 	for (var j = 0; j < array1[i].lenght; j++) {
+		// for (var i = 0; i < array1.length; i++) {
+		// 	array2 = new Array(array1[i].length);
+		// 	for (var j = 0; j < array1[i].length; j++) {
 		// 		array2[i][j] = array1[i][j];
 		// 	}
 		// }
@@ -1055,10 +1049,10 @@ function Calculus() {
 	}
 
 	function addMatricesRigRedux() {
-		var vectorMatrizRigT = matrizRigidezRedux;
+		var vectorMatrizRigT = copiarMatriz(matrizRigidezRedux);
 		var numNodosu = 0;
 		numNodosu = vectorMatrizRigT.length;
-
+		console.log("vectorMatrizRigT", vectorMatrizRigT);
 		var a = "<div className='row justify-content-center'/>";
 		a += "<div className='col-6'>";
 		a += "<h2>Matriz Rigidez Reducida";
@@ -1073,10 +1067,10 @@ function Calculus() {
 		a += "<tr/>";
 		a += "</thead>";
 		a += "<tbody>";
-		for (var i = 0; i < vectorMatrizRigT.lenght; i++) {
+		for (var i = 0; i < vectorMatrizRigT.length; i++) {
 			//console.log("item", item[i]);
 			a += "<tr>";
-			for (var j = 0; j < vectorMatrizRigT[i].lenght; j++) {
+			for (var j = 0; j < vectorMatrizRigT[i].length; j++) {
 				//console.log("ij", i, j);
 				a += "<td>";
 				a += vectorMatrizRigT[i][j];
