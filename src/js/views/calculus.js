@@ -643,8 +643,15 @@ function Calculus() {
 	};
 
 	//Matrices de ejemplo para probar la función de multiplicar matrices
-	let matrizEA = [[1, 2, 3], [4, 5, 6]];
-	let matrizEB = [[5, -1], [1, 0], [-2, 3]];
+	let matrizEA = [
+		[1, 2, 3],
+		[4, 5, 6]
+	];
+	let matrizEB = [
+		[5, -1],
+		[1, 0],
+		[-2, 3]
+	];
 
 	function addMatricesRigLocal() {
 		var vectorMatrizRigL = matrizRigidLocal();
@@ -1020,11 +1027,18 @@ function Calculus() {
 		//Apartado*********************
 		var conx = 0;
 		var cony = 0;
+		var mem = 0;
+		//console.log("Código Genetico P", codigoGeneticoP);
 		for (var i = 0; i < matrizRigidezRedux.length; i += 1) {
 			matrizApoyo[i] = new Array();
 			cony = 0;
-			for (var j = 0; j < matrizRigidezRedux[i].length; j++) {
-				codigoGeneticoP.forEach(element => {
+			mem = 0;
+			//esta no es la manera más óptima, ya que este map debería estar dentro del for
+
+			for (var j = 0; j <= matrizRigidezRedux.length; j += 3) {
+				mem += 3;
+				for (let element of codigoGeneticoP) {
+					//console.log("element", element);
 					if (
 						(element.nodoIni[1] != 0) &
 						(i == element.vectorX[0] ||
@@ -1034,25 +1048,44 @@ function Calculus() {
 							i == element.vectorY[1] ||
 							i == element.vectorY[2])
 					) {
-						if (
-							(element.nodoIni[1] != 0) &
-							(j == element.vectorX[0] ||
-								j == element.vectorX[1] ||
-								j == element.vectorX[2] ||
-								j == element.vectorY[0] ||
-								j == element.vectorY[1] ||
-								j == element.vectorY[2])
-						) {
+						if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
 							matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
-							cony++;
+							matrizApoyo[conx][cony + 1] = matrizRigidezRedux[i][j + 1];
+							matrizApoyo[conx][cony + 2] = matrizRigidezRedux[i][j + 2];
+							cony += 3;
+
+							break;
 						}
 					}
-					//console.log("MatrizApoyo[i][j]", matrizApoyo[conx][cony])
-					return matrizApoyo;
-				});
+				}
+				//salto loop interno
+
+				// codigoGeneticoP.forEach(element => {
+				// 	if (
+				// 		(element.nodoIni[1] != 0) &
+				// 		(i == element.vectorX[0] ||
+				// 			i == element.vectorX[1] ||
+				// 			i == element.vectorX[2] ||
+				// 			i == element.vectorY[0] ||
+				// 			i == element.vectorY[1] ||
+				// 			i == element.vectorY[2])
+				// 	) {
+				// 		if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
+				// 			matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
+				// 			matrizApoyo[conx][cony + 1] = matrizRigidezRedux[i][j + 1];
+				// 			matrizApoyo[conx][cony + 2] = matrizRigidezRedux[i][j + 2];
+				// 			cony += 3;
+
+				// 			return matrizApoyo;
+				// 		}
+				// 	}
+				// 	//console.log("MatrizApoyo[i][j]", matrizApoyo[conx][cony])
+				// 	return matrizApoyo;
+				// });
 			}
 			conx++;
 		}
+		console.log("MatrizApoyo", matrizApoyo);
 		//hasta este punto devuelve corrctamente los valores pero agrega ciertas listas vacias
 		var matrizApoyo2 = [];
 		for (var i = 0; i < matrizApoyo.length; i++) {
