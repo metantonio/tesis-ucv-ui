@@ -997,28 +997,7 @@ function Calculus() {
 		let matrizApoyo = [];
 		matrizRigidezRedux = copiarMatriz(matrizRigidezTotal);
 		console.log("matrizRigidezRedux copiada de la total. Length", matrizRigidezRedux.length);
-		// var filasM = [];
-		// var n = 0;
-		// for (var i = 0; i <= matrizRigidezRedux.length; i += 1) {
-		// 	codigoGeneticoP.forEach(element => {
-		// 		if (
-		// 			(element.nodoIni[1] != 0) &
-		// 			(i == element.vectorX[0] ||
-		// 				i == element.vectorX[1] ||
-		// 				i == element.vectorX[2] ||
-		// 				i == element.vectorY[0] ||
-		// 				i == element.vectorY[1] ||
-		// 				i == element.vectorY[2])
-		// 		) {
-		// 			// filasM.push(getRow(matrizRigidezRedux, i));
-		// 			// filasM.push(getRow(matrizRigidezRedux, i + 1));
-		// 			// filasM.push(getRow(matrizRigidezRedux, i + 2));
-		// 			filasM.push(matrizRigidezRedux[i]);
-		// 			n++;
-		// 		}
-		// 		return filasM;
-		// 	});
-		// }
+
 		//hasta este punto funciona la reducción de filas en revisión 29-5-21 6:30pm
 		//var filasM_length = filasM.length;
 		//console.log("FilasM", filasM);
@@ -1035,20 +1014,22 @@ function Calculus() {
 			mem = 0;
 			//esta no es la manera más óptima, ya que este map debería estar dentro del for
 
-			for (var j = 0; j <= matrizRigidezRedux.length; j += 3) {
-				mem += 3;
+			for (var j = 0; j < matrizRigidezRedux.length; j += 3) {
+				//mem += 3;
+				console.log("j", j);
 				for (let element of codigoGeneticoP) {
 					//console.log("element", element);
 					if (
-						(element.nodoIni[1] != 0) &
-						(i == element.vectorX[0] ||
-							i == element.vectorX[1] ||
-							i == element.vectorX[2] ||
-							i == element.vectorY[0] ||
-							i == element.vectorY[1] ||
-							i == element.vectorY[2])
+						element.nodoIni[1] != 0 //&
+						// (i == element.vectorX[0] ||
+						// 	i == element.vectorX[1] ||
+						// 	i == element.vectorX[2] ||
+						// 	i == element.vectorY[0] ||
+						// 	i == element.vectorY[1] ||
+						// 	i == element.vectorY[2])
 					) {
-						if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
+						if (j == element.vectorX[0] || j == element.vectorY[0]) {
+							console.log("cony,j", cony, j);
 							matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
 							matrizApoyo[conx][cony + 1] = matrizRigidezRedux[i][j + 1];
 							matrizApoyo[conx][cony + 2] = matrizRigidezRedux[i][j + 2];
@@ -1094,7 +1075,24 @@ function Calculus() {
 			}
 		}
 		console.log("MatrizApoyo2", matrizApoyo2);
+		//en este punto obtuve todas las columnas importantes, ahora faltan las filas
 
+		var filasM = [];
+		var n = 0;
+		for (var i = 0; i < matrizApoyo2.length; i += 3) {
+			for (let element of codigoGeneticoP) {
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0] || i == element.vectorY[0])) {
+					filasM[n] = matrizApoyo2[i];
+					filasM[n + 1] = matrizApoyo2[i + 1];
+					filasM[n + 2] = matrizApoyo2[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					break;
+				}
+				//return filasM;
+			}
+		}
+		console.log("filasM:", filasM);
 		//************************** */
 		// var columnasM = [];
 		// //console.log("def colM:", columnasM);
@@ -1122,7 +1120,7 @@ function Calculus() {
 
 		//console.log("columnasM:", columnasM);
 		matrizRigidezRedux = [];
-		matrizRigidezRedux = copiarMatriz(matrizApoyo2);
+		matrizRigidezRedux = copiarMatriz(filasM);
 		//console.log("matrizRigidezRedux", matrizRigidezRedux);
 
 		return matrizRigidezRedux;
