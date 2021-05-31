@@ -1016,7 +1016,7 @@ function Calculus() {
 
 			for (var j = 0; j < matrizRigidezRedux.length; j += 3) {
 				//mem += 3;
-				console.log("j", j);
+				//console.log("j", j);
 				for (let element of codigoGeneticoP) {
 					//console.log("element", element);
 					if (
@@ -1029,7 +1029,7 @@ function Calculus() {
 						// 	i == element.vectorY[2])
 					) {
 						if (j == element.vectorX[0] || j == element.vectorY[0]) {
-							console.log("cony,j", cony, j);
+							//console.log("cony,j", cony, j);
 							matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
 							matrizApoyo[conx][cony + 1] = matrizRigidezRedux[i][j + 1];
 							matrizApoyo[conx][cony + 2] = matrizRigidezRedux[i][j + 2];
@@ -1066,7 +1066,7 @@ function Calculus() {
 			}
 			conx++;
 		}
-		console.log("MatrizApoyo", matrizApoyo);
+		//console.log("MatrizApoyo", matrizApoyo);
 		//hasta este punto devuelve corrctamente los valores pero agrega ciertas listas vacias
 		var matrizApoyo2 = [];
 		for (var i = 0; i < matrizApoyo.length; i++) {
@@ -1074,7 +1074,7 @@ function Calculus() {
 				matrizApoyo2.push(matrizApoyo[i]);
 			}
 		}
-		console.log("MatrizApoyo2", matrizApoyo2);
+		//console.log("MatrizApoyo2", matrizApoyo2);
 		//en este punto obtuve todas las columnas importantes, ahora faltan las filas
 
 		var filasM = [];
@@ -1092,7 +1092,7 @@ function Calculus() {
 				//return filasM;
 			}
 		}
-		console.log("filasM:", filasM);
+		//console.log("filasM:", filasM);
 		//************************** */
 		// var columnasM = [];
 		// //console.log("def colM:", columnasM);
