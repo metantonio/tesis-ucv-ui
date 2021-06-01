@@ -5,6 +5,9 @@ import { Context } from "../store/appContext";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
 import { array } from "prop-types";
+import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
+import { create, all } from "mathjs";
+const math = create(all, {});
 
 function Calculus() {
 	const { store, actions } = useContext(Context);
@@ -643,15 +646,8 @@ function Calculus() {
 	};
 
 	//Matrices de ejemplo para probar la función de multiplicar matrices
-	let matrizEA = [
-		[1, 2, 3],
-		[4, 5, 6]
-	];
-	let matrizEB = [
-		[5, -1],
-		[1, 0],
-		[-2, 3]
-	];
+	let matrizEA = [[1, 2, 3], [4, 5, 6]];
+	let matrizEB = [[5, -1], [1, 0], [-2, 3]];
 
 	function addMatricesRigLocal() {
 		var vectorMatrizRigL = matrizRigidLocal();
@@ -1173,6 +1169,15 @@ function Calculus() {
 		return a;
 	}
 
+	var matrizEjemplo = [[1, 2], [-2, 3]]; //inversa de esta matriz: [[3/7,-2/7],[2/7,1/7]]
+
+	let matrizInversa = matriz => {
+		var matriz2 = math.matrix(matriz);
+		var matrizInv = math.inv(matriz2);
+		console.log("matriz inversa:", matrizInv._data);
+		return matrizInv._data;
+	};
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -1225,6 +1230,7 @@ function Calculus() {
 						addVectorFuerza();
 						rigidezReducida();
 						addMatricesRigRedux();
+						//matrizInversa(matrizEjemplo);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -1285,9 +1291,17 @@ function Calculus() {
 			</div>
 			<div className="col justify-content-center" id="vector-fuerzas" />
 			<div className="text-sm-left">
-				<h2> 6-. Matriz Reducida</h2>
+				<h2> 6-. Matriz de Rigidez Reducida</h2>
 			</div>
 			<div className="col justify-content-center" id="matriz-reducida" />
+			<div className="text-sm-left">
+				<h2> 7-. Inversa de la Matriz de Rigidez Reducida</h2>
+			</div>
+			<div className="col justify-content-center" id="matriz-reducida-inversa" />
+			<div className="text-sm-left">
+				<h2> 8-. Vector de Fuerzas Asociado a Matriz de Rigidez Reducida</h2>
+			</div>
+			<div className="col justify-content-center" id="vector-reducido" />
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
