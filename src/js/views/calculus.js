@@ -1174,9 +1174,55 @@ function Calculus() {
 	let matrizInversa = matriz => {
 		var matriz2 = math.matrix(matriz);
 		var matrizInv = math.inv(matriz2);
-		console.log("matriz inversa:", matrizInv._data);
+		//console.log("matriz inversa:", matrizInv._data);
 		return matrizInv._data;
 	};
+
+	var matrizReduxInversa = [];
+
+	function matrizRigidezReduxInversa() {
+		var matrix1 = copiarMatriz(matrizRigidezRedux);
+		var inversaMatriz = matrizInversa(matrix1);
+		return inversaMatriz;
+	}
+
+	var matrizReducidaInversa = [];
+
+	function addMatricesRigReduxInversa() {
+		var vectorMatrizRigT = copiarMatriz(matrizReducidaInversa);
+		var numNodosu = 0;
+		numNodosu = vectorMatrizRigT.length;
+		//console.log("vectorMatrizRigT", vectorMatrizRigT);
+		var a = "<div className='row justify-content-center'/>";
+		a += "<div className='col-6'>";
+		a += "<h2>Inversa Matriz Rigidez Reducida";
+		a += " =</h2>";
+		a += "<table className='table table-bordered col-10' padding='5px'>";
+		a += "<thead>";
+		a += "<tr>";
+		for (var j = 0; j < numNodosu; j++) {
+			//console.log("ij", i, j);
+			a += "<th/>";
+		}
+		a += "<tr/>";
+		a += "</thead>";
+		a += "<tbody>";
+		for (var i = 0; i < vectorMatrizRigT.length; i++) {
+			//console.log("item", item[i]);
+			a += "<tr>";
+			for (var j = 0; j < vectorMatrizRigT[i].length; j++) {
+				//console.log("ij", i, j);
+				a += "<td>";
+				a += vectorMatrizRigT[i][j];
+				a += "  </td>";
+			}
+			a += "<tr/>";
+		}
+		a += "</tbody></table><br/></div></div>";
+		//a += "<div className='row justify-content-center'/>";
+		document.getElementById("matriz-reducida-inversa").innerHTML += a;
+		return a;
+	}
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -1230,6 +1276,8 @@ function Calculus() {
 						addVectorFuerza();
 						rigidezReducida();
 						addMatricesRigRedux();
+						matrizReducidaInversa = matrizRigidezReduxInversa();
+						addMatricesRigReduxInversa();
 						//matrizInversa(matrizEjemplo);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
