@@ -993,7 +993,7 @@ function Calculus() {
 
 		let matrizApoyo = [];
 		matrizRigidezRedux = copiarMatriz(matrizRigidezTotal);
-		console.log("matrizRigidezRedux copiada de la total. Length", matrizRigidezRedux.length);
+		//console.log("matrizRigidezRedux copiada de la total. Length", matrizRigidezRedux.length);
 
 		//hasta este punto funciona la reducción de filas en revisión 29-5-21 6:30pm
 		//var filasM_length = filasM.length;
@@ -1270,7 +1270,7 @@ function Calculus() {
 		a += "<tbody>";
 		for (var j = 0; j < vectorFuer.length; j++) {
 			a += "<tr>";
-			a += vectorFuer[j].toFixed(5);
+			a += vectorFuer[j];
 			a += "</tr>";
 			a += "<br/>";
 		}
@@ -1279,6 +1279,15 @@ function Calculus() {
 		//console.log(vectorFuer);
 		document.getElementById(getElementID).innerHTML += a;
 		return a;
+	}
+
+	var vectorDesplazamientos = [];
+	function matrizPorVector(matriz, vector) {
+		var vectorD = math.matrix(vector);
+		var matrizamul = math.matrix(matriz);
+		var vectorDespl = math.multiply(matrizamul, vectorD);
+		//console.log(vectorDespl._data);
+		return vectorDespl._data;
 	}
 
 	useEffect(() => {
@@ -1329,7 +1338,7 @@ function Calculus() {
 						rigidezTotal();
 						addMatricesRigTotal();
 						vectorFuerzasInternas = funcionFuerzasInt();
-						console.log("vector Fuerzas internas def", vectorFuerzasInternas);
+						//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
 						addVectorFuerza();
 						rigidezReducida();
 						addMatricesRigRedux();
@@ -1338,6 +1347,8 @@ function Calculus() {
 						//matrizInversa(matrizEjemplo);
 						vectorFuerzasInternasRedux = vectorFReducido();
 						addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
+						vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -1409,6 +1420,10 @@ function Calculus() {
 				<h2> 8-. Vector de Fuerzas Asociado a Matriz de Rigidez Reducida</h2>
 			</div>
 			<div className="col justify-content-center" id="vector-reducido" />
+			<div className="text-sm-left">
+				<h2> 9-. Dezplazamiento de Nodos (Asociados a Matriz de Rigidez Reducida)</h2>
+			</div>
+			<div className="col justify-content-center" id="desplazamiento-nodos" />
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
