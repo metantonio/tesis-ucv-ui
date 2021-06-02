@@ -1225,6 +1225,62 @@ function Calculus() {
 		return a;
 	}
 
+	var vectorFuerzasInternasRedux = [];
+	function vectorFReducido() {
+		var vectorFuerzaReducida = vectorFuerzasInternas;
+		var filasN = [];
+		//console.log("vector antes de reducir", vectorFuerzaReducida);
+		var n = 0;
+		for (var i = 0; i < vectorFuerzaReducida.length; i += 3) {
+			//console.log(i);
+			//console.log(vectorFuerzaReducida[i]);
+			for (let element of codigoGeneticoP) {
+				//console.log(element);
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0] || i == element.vectorY[0])) {
+					filasN[n] = vectorFuerzaReducida[i];
+					filasN[n + 1] = vectorFuerzaReducida[i + 1];
+					filasN[n + 2] = vectorFuerzaReducida[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					//console.log(filasM[n]);
+					break;
+				}
+				//return filasM;
+			}
+		}
+		//console.log("filasN", filasN);
+		return filasN;
+	}
+
+	function addVector(vector, idInterno, getElementID) {
+		var vectorFuer = vector;
+		var numNodosu = 0;
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+
+		var a = "<div className='row justify-content-center'>";
+		a += "<h2>Vector:";
+		a += " =</h2>";
+		a += "</div>";
+		a += "<div className='col-6 justify-content-center' id='vector-fint-'" + "'" + idInterno + "'" + ">";
+
+		a += "<table className='table table-bordered col-10' padding='5px'>";
+		a += "<thead>";
+		a += "<tr/>";
+		a += "</thead>";
+		a += "<tbody>";
+		for (var j = 0; j < vectorFuer.length; j++) {
+			a += "<tr>";
+			a += vectorFuer[j].toFixed(5);
+			a += "</tr>";
+			a += "<br/>";
+		}
+
+		a += "</tbody></table><br/></div>";
+		//console.log(vectorFuer);
+		document.getElementById(getElementID).innerHTML += a;
+		return a;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -1280,6 +1336,8 @@ function Calculus() {
 						matrizReducidaInversa = matrizRigidezReduxInversa();
 						addMatricesRigReduxInversa();
 						//matrizInversa(matrizEjemplo);
+						vectorFuerzasInternasRedux = vectorFReducido();
+						addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
