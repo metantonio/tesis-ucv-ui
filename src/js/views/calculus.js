@@ -1270,7 +1270,7 @@ function Calculus() {
 		a += "<tbody>";
 		for (var j = 0; j < vectorFuer.length; j++) {
 			a += "<tr>";
-			a += vectorFuer[j];
+			a += vectorFuer[j].toFixed(4);
 			a += "</tr>";
 			a += "<br/>";
 		}
@@ -1421,7 +1421,7 @@ function Calculus() {
 			</div>
 			<div className="col justify-content-center" id="vector-reducido" />
 			<div className="text-sm-left">
-				<h2> 9-. Dezplazamiento de Nodos (Asociados a Matriz de Rigidez Reducida)</h2>
+				<h2> 9-. Dezplazamiento de Nodos (Asociados a Matriz de Rigidez Reducida) (cm,cm,rad)</h2>
 			</div>
 			<div className="col justify-content-center" id="desplazamiento-nodos" />
 			<p>
