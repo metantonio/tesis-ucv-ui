@@ -916,9 +916,10 @@ function Calculus() {
 		var numNodosu = 0;
 		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
 
-		var a = "<div className='row justify-content-center'/>";
+		var a = "<div className='row justify-content-center'>";
 		a += "<h2>Vector de Fuerzas totales";
 		a += " =</h2>";
+		a += "</div>";
 		a += "<div className='col-6 justify-content-center' id='vector-fint'>";
 
 		a += "<table className='table table-bordered col-10' padding='5px'>";

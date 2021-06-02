@@ -18,13 +18,12 @@ table {
     padding: 5px;
 }
 
-#vector-fuerzas *:only-child{
+#vector-fuerzas #vector-fint {
     border-right: solid black 1px;
     border-left: solid black 1px;
     padding: 5px;
-    justify-content: center;
-    justify-self: center;
-    align-content: space-around;
+    text-align: center;
+    
 }
 
 svg {
