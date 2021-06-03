@@ -43,7 +43,7 @@ function Calculus() {
 				actions.getLuzVano() * (i - 1) +
 				'" ' +
 				'y1="' +
-				40.2 +
+				40 +
 				'" ' +
 				'x2="' +
 				actions.getLuzVano() * (i - 1) +
@@ -1464,18 +1464,9 @@ function Calculus() {
 						matrizRigidezTotal[element.vectorY[2]][element.vectorY[2]]
 					]
 				];
-				// for(var i=0; i<matrizRigidezTotal.length;i+=3){
-				// 	multiplicacionM2[i] = new Array();
-				// 	for(var j=0; j<matrizRigidezTotal.length;j+=3){
-				// 		if(element.vecto)
-				// 		multiplicacionM2[n][p]=matrizRigidezTotal[i][j];
-				// 		p+=3;
-				// 	}
-				// 	n+=3;
-				// }
-				//console.log(multiplicacionM2);
 				element["reaccionExterna"] = matrizPorVector(multiplicacionM2, element.desplazamientoNodoIni);
 			}
+			//falta agregar derivas, condiciones
 		}
 	}
 
@@ -1541,6 +1532,35 @@ function Calculus() {
 		});
 		return final;
 	}
+	var draw = "";
+	var drawLines3 = "";
+
+	let dibujoDesplazamiento = () => {
+		for (var i = 0; i < codigoGeneticoP.length; i++) {
+			draw +=
+				'<line x1="' +
+				(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100).toFixed(3) +
+				codigoGeneticoP[i]["puntoIni"][0] +
+				'" ' +
+				'y1="' +
+				40 +
+				(codigoGeneticoP[i]["desplazamientoNodoIni"][1] / 100).toFixed(3) +
+				codigoGeneticoP[i]["puntoIni"][1] +
+				'" ' +
+				'x2="' +
+				(codigoGeneticoP[i]["desplazamientoNodoIni"][3] / 100).toFixed(3) +
+				codigoGeneticoP[i]["puntoFin"][0] +
+				'" ' +
+				'y2="' +
+				(40 + codigoGeneticoP[i]["desplazamientoNodoIni"][4] / 100).toFixed(3) +
+				codigoGeneticoP[i]["puntoFin"][1] +
+				'" ' +
+				'stroke="red" strokeWidth="5px"></line>';
+
+			//return draw;
+		}
+		return draw;
+	};
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -1571,8 +1591,7 @@ function Calculus() {
 						var luzVano = actions.getLuzVano();
 						drawLines = dibujo();
 						drawLines2 = dibujoVigas();
-						drawLines = drawLines + drawLines2 + drawText;
-						document.getElementById("caja-dibujo2").innerHTML = drawLines;
+
 						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 						// console.log(drawLines, drawLines2);
 						tablaConectividad();
@@ -1605,6 +1624,9 @@ function Calculus() {
 						desplazamientoEnCodigo();
 						calculosFinales();
 						addTablaFinal();
+						drawLines3 = dibujoDesplazamiento();
+						drawLines = drawLines + drawLines2 + drawLines3 + drawText;
+						document.getElementById("caja-dibujo2").innerHTML = drawLines;
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
