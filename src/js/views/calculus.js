@@ -259,7 +259,8 @@ function Calculus() {
 				tipo: "",
 				vectorX: [],
 				vectorY: [],
-				fuerzainterna: [0, 0, 0, 0, 0, 0]
+				fuerzainterna: [0, 0, 0, 0, 0, 0],
+				fuerzasGlobales: [0, 0, 0, 0, 0, 0]
 			};
 		} // aquí termina el for
 		vectorConectividadf = union;
@@ -476,7 +477,8 @@ function Calculus() {
 				tipo: "",
 				vectorX: [],
 				vectorY: [],
-				fuerzainterna: [0, 0, 0, 0, 0, 0]
+				fuerzainterna: [0, 0, 0, 0, 0, 0],
+				fuerzasGlobales: [0, 0, 0, 0, 0, 0]
 			};
 		} // aquí termina el for
 		//console.log("union de vigas", union);
@@ -1236,7 +1238,22 @@ function Calculus() {
 			//console.log(vectorFuerzaReducida[i]);
 			for (let element of codigoGeneticoP) {
 				//console.log(element);
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0] || i == element.vectorY[0])) {
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+					element["fuerzasGlobales"][0] = vectorFuerzaReducida[i];
+					element["fuerzasGlobales"][1] = vectorFuerzaReducida[i + 1];
+					element["fuerzasGlobales"][2] = vectorFuerzaReducida[i + 2];
+					filasN[n] = vectorFuerzaReducida[i];
+					filasN[n + 1] = vectorFuerzaReducida[i + 1];
+					filasN[n + 2] = vectorFuerzaReducida[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					//console.log(filasM[n]);
+					break;
+				}
+				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+					element["fuerzasGlobales"][3] = vectorFuerzaReducida[i];
+					element["fuerzasGlobales"][4] = vectorFuerzaReducida[i + 1];
+					element["fuerzasGlobales"][5] = vectorFuerzaReducida[i + 2];
 					filasN[n] = vectorFuerzaReducida[i];
 					filasN[n + 1] = vectorFuerzaReducida[i + 1];
 					filasN[n + 2] = vectorFuerzaReducida[i + 2];
@@ -1334,7 +1351,7 @@ function Calculus() {
 						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
 						addMatricesRigGlobal();
 						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
-						console.log("codigo genético P", codigoGeneticoP);
+
 						rigidezTotal();
 						addMatricesRigTotal();
 						vectorFuerzasInternas = funcionFuerzasInt();
@@ -1349,6 +1366,7 @@ function Calculus() {
 						addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
 						vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
+						console.log("codigo genético P", codigoGeneticoP);
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
