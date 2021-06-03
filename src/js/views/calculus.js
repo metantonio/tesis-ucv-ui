@@ -1387,6 +1387,98 @@ function Calculus() {
 		}
 	}
 
+	function calculosFinales() {
+		var multiplicacionM = [];
+		var multiplicacionM2 = [];
+		var matrizL = [];
+		var n = 0;
+		var p = 0;
+		for (let element of codigoGeneticoP) {
+			multiplicacionM = [];
+			//multiplicacionM2 = [];
+			matrizL = [
+				[+element.cos, +element.sin, 0, 0, 0, 0],
+				[-element.sin, +element.cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +element.cos, +element.sin, 0],
+				[0, 0, 0, -element.sin, +element.cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+			multiplicacionM = multiplicarMatrices(element.rigidez, matrizL);
+			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
+			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
+
+			//cálculo de reacciones externas
+			if (element.nodoIni[1] != 0) {
+				element["reaccionExterna"] = [0, 0, 0, 0, 0, 0];
+			} else {
+				n = 0;
+				p = 0;
+				multiplicacionM2 = [
+					[
+						matrizRigidezTotal[element.vectorX[0]][element.vectorX[0]],
+						matrizRigidezTotal[element.vectorX[0]][element.vectorX[1]],
+						matrizRigidezTotal[element.vectorX[0]][element.vectorX[2]],
+						matrizRigidezTotal[element.vectorX[0]][element.vectorY[0]],
+						matrizRigidezTotal[element.vectorX[0]][element.vectorY[1]],
+						matrizRigidezTotal[element.vectorX[0]][element.vectorY[2]]
+					],
+					[
+						matrizRigidezTotal[element.vectorX[1]][element.vectorX[0]],
+						matrizRigidezTotal[element.vectorX[1]][element.vectorX[1]],
+						matrizRigidezTotal[element.vectorX[1]][element.vectorX[2]],
+						matrizRigidezTotal[element.vectorX[1]][element.vectorY[0]],
+						matrizRigidezTotal[element.vectorX[1]][element.vectorY[1]],
+						matrizRigidezTotal[element.vectorX[1]][element.vectorY[2]]
+					],
+					[
+						matrizRigidezTotal[element.vectorX[2]][element.vectorX[0]],
+						matrizRigidezTotal[element.vectorX[2]][element.vectorX[1]],
+						matrizRigidezTotal[element.vectorX[2]][element.vectorX[2]],
+						matrizRigidezTotal[element.vectorX[2]][element.vectorY[0]],
+						matrizRigidezTotal[element.vectorX[2]][element.vectorY[1]],
+						matrizRigidezTotal[element.vectorX[2]][element.vectorY[2]]
+					],
+					[
+						matrizRigidezTotal[element.vectorY[0]][element.vectorX[0]],
+						matrizRigidezTotal[element.vectorY[0]][element.vectorX[1]],
+						matrizRigidezTotal[element.vectorY[0]][element.vectorX[2]],
+						matrizRigidezTotal[element.vectorY[0]][element.vectorY[0]],
+						matrizRigidezTotal[element.vectorY[0]][element.vectorY[1]],
+						matrizRigidezTotal[element.vectorY[0]][element.vectorY[2]]
+					],
+					[
+						matrizRigidezTotal[element.vectorY[1]][element.vectorX[0]],
+						matrizRigidezTotal[element.vectorY[1]][element.vectorX[1]],
+						matrizRigidezTotal[element.vectorY[1]][element.vectorX[2]],
+						matrizRigidezTotal[element.vectorY[1]][element.vectorY[0]],
+						matrizRigidezTotal[element.vectorY[1]][element.vectorY[1]],
+						matrizRigidezTotal[element.vectorY[1]][element.vectorY[2]]
+					],
+					[
+						matrizRigidezTotal[element.vectorY[2]][element.vectorX[0]],
+						matrizRigidezTotal[element.vectorY[2]][element.vectorX[1]],
+						matrizRigidezTotal[element.vectorY[2]][element.vectorX[2]],
+						matrizRigidezTotal[element.vectorY[2]][element.vectorY[0]],
+						matrizRigidezTotal[element.vectorY[2]][element.vectorY[1]],
+						matrizRigidezTotal[element.vectorY[2]][element.vectorY[2]]
+					]
+				];
+				// for(var i=0; i<matrizRigidezTotal.length;i+=3){
+				// 	multiplicacionM2[i] = new Array();
+				// 	for(var j=0; j<matrizRigidezTotal.length;j+=3){
+				// 		if(element.vecto)
+				// 		multiplicacionM2[n][p]=matrizRigidezTotal[i][j];
+				// 		p+=3;
+				// 	}
+				// 	n+=3;
+				// }
+				//console.log(multiplicacionM2);
+				element["reaccionExterna"] = matrizPorVector(multiplicacionM2, element.desplazamientoNodoIni);
+			}
+		}
+	}
+
 	function addTablaFinal() {
 		var fila = "";
 
@@ -1399,7 +1491,8 @@ function Calculus() {
 			a += "<th>Longitud(cm)</th>";
 			a += "<th>Peso(kg)</th>";
 			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
-
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
 			//serían los encabezados de la tabla
 			var html = "<thead><tr>" + a + "</tr></thead>";
 
@@ -1426,9 +1519,20 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>" +
+				"<td>(" +
 				element.desplazamientoNodoIni +
-				"</td>" +
+				")</td>" +
+				"<td>(" +
+				element.esfuerzosInternos +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExterna[0] +
+				"," +
+				" " +
+				element.reaccionExterna[1] +
+				", " +
+				element.reaccionExterna[2] +
+				")</td>" +
 				"</tr>";
 			//+"<br/>";
 			document.getElementById("tabla-final").innerHTML = html + fila;
@@ -1499,6 +1603,7 @@ function Calculus() {
 						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
 						console.log("codigo genético P", codigoGeneticoP);
 						desplazamientoEnCodigo();
+						calculosFinales();
 						addTablaFinal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
