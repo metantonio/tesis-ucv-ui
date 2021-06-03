@@ -157,7 +157,8 @@ function Calculus() {
 			inercia: 1,
 			elasticidad: 2100000,
 			longitud: 10,
-			peso: 0
+			peso: 0,
+			desplazamientoNodoIni: [0, 0, 0]
 		};
 		var ele2 = {};
 		for (var i = 0; i < nodosCoordenadas.length - 1; i++) {
@@ -260,7 +261,8 @@ function Calculus() {
 				vectorX: [],
 				vectorY: [],
 				fuerzainterna: [0, 0, 0, 0, 0, 0],
-				fuerzasGlobales: [0, 0, 0, 0, 0, 0]
+				fuerzasGlobales: [0, 0, 0, 0, 0, 0],
+				desplazamientoNodoIni: [0, 0, 0]
 			};
 		} // aquí termina el for
 		vectorConectividadf = union;
@@ -343,7 +345,9 @@ function Calculus() {
 			inercia: 1,
 			elasticidad: 2100000,
 			longitud: 10,
-			peso: 0
+			peso: 0,
+
+			desplazamientoNodoIni: [0, 0, 0]
 		};
 		var ele2 = {};
 		//let temp = parseInt(actions.getNoPisos());
@@ -478,7 +482,9 @@ function Calculus() {
 				vectorX: [],
 				vectorY: [],
 				fuerzainterna: [0, 0, 0, 0, 0, 0],
-				fuerzasGlobales: [0, 0, 0, 0, 0, 0]
+				fuerzasGlobales: [0, 0, 0, 0, 0, 0],
+
+				desplazamientoNodoIni: [0, 0, 0]
 			};
 		} // aquí termina el for
 		//console.log("union de vigas", union);
@@ -1080,7 +1086,15 @@ function Calculus() {
 		var n = 0;
 		for (var i = 0; i < matrizApoyo2.length; i += 3) {
 			for (let element of codigoGeneticoP) {
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0] || i == element.vectorY[0])) {
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+					filasM[n] = matrizApoyo2[i];
+					filasM[n + 1] = matrizApoyo2[i + 1];
+					filasM[n + 2] = matrizApoyo2[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					break;
+				}
+				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
 					filasM[n] = matrizApoyo2[i];
 					filasM[n + 1] = matrizApoyo2[i + 1];
 					filasM[n + 2] = matrizApoyo2[i + 2];
@@ -1307,6 +1321,22 @@ function Calculus() {
 		return vectorDespl._data;
 	}
 
+	function desplazamientoEnCodigo() {
+		var n = 0;
+		for (let element of codigoGeneticoP) {
+			if (element.nodoIni[1] != 0) {
+				element["desplazamientoNodoIni"][0] = vectorDesplazamientos[n];
+				element["desplazamientoNodoIni"][1] = vectorDesplazamientos[n + 1];
+				element["desplazamientoNodoIni"][2] = vectorDesplazamientos[n + 2];
+				n += 3;
+			} else {
+				element["desplazamientoNodoIni"][0] = 0;
+				element["desplazamientoNodoIni"][1] = 0;
+				element["desplazamientoNodoIni"][2] = 0;
+			}
+		}
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -1367,6 +1397,7 @@ function Calculus() {
 						vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
 						console.log("codigo genético P", codigoGeneticoP);
+						desplazamientoEnCodigo();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
