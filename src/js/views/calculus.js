@@ -506,7 +506,7 @@ function Calculus() {
 		// console.log(vectorConectividadf2);
 		// vectorTemp.push(vectorConectividadf, vectorConectividadf2);
 		// console.log("vectorTemp", vectorTemp);
-		console.log("Vector Conectividadf", vectorConectividadf);
+		//console.log("Vector Conectividadf", vectorConectividadf);
 
 		var final = vectorConectividadf.map(function(vectorConectividadf, index, array) {
 			var a = "<th scope='row'>No</th>";
@@ -1387,6 +1387,57 @@ function Calculus() {
 		}
 	}
 
+	function addTablaFinal() {
+		var fila = "";
+
+		var final = codigoGeneticoP.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>" +
+				element.desplazamientoNodoIni +
+				"</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById("tabla-final").innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -1448,6 +1499,7 @@ function Calculus() {
 						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
 						console.log("codigo genético P", codigoGeneticoP);
 						desplazamientoEnCodigo();
+						addTablaFinal();
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
 					<span>Calcular</span>
@@ -1523,6 +1575,26 @@ function Calculus() {
 				<h2> 9-. Dezplazamiento de Nodos (Asociados a Matriz de Rigidez Reducida) (cm,cm,rad)</h2>
 			</div>
 			<div className="col justify-content-center" id="desplazamiento-nodos" />
+			<div className="col-sm-12" id="tabla-resumen">
+				<table className="table table-striped" id="tabla-final" onLoad="">
+					<thead>
+						<tr>
+							<th scope="row">No</th>
+							<th>Perfil</th>
+							<th>Coordenada Inicial</th>
+							<th>Coordenada Final</th>
+							<th>A</th>
+							<th>B</th>
+							<th>C</th>
+							<th>D</th>
+							<th>E</th>
+							<th>θ</th>
+							<th>coseno</th>
+							<th>seno</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
