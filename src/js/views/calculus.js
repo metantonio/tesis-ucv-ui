@@ -1537,26 +1537,26 @@ function Calculus() {
 
 	let dibujoDesplazamiento = () => {
 		for (var i = 0; i < codigoGeneticoP.length; i++) {
+			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
-				(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100).toFixed(3) +
-				codigoGeneticoP[i]["puntoIni"][0] +
+				(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100 + codigoGeneticoP[i]["puntoIni"][0]).toFixed(3) +
 				'" ' +
 				'y1="' +
-				40 +
-				(codigoGeneticoP[i]["desplazamientoNodoIni"][1] / 100).toFixed(3) +
-				codigoGeneticoP[i]["puntoIni"][1] +
+				(40 - codigoGeneticoP[i]["desplazamientoNodoIni"][1] / 100 - codigoGeneticoP[i]["puntoIni"][1]).toFixed(
+					3
+				) +
 				'" ' +
 				'x2="' +
-				(codigoGeneticoP[i]["desplazamientoNodoIni"][3] / 100).toFixed(3) +
-				codigoGeneticoP[i]["puntoFin"][0] +
+				(codigoGeneticoP[i]["desplazamientoNodoIni"][3] / 100 + codigoGeneticoP[i]["puntoFin"][0]).toFixed(3) +
 				'" ' +
 				'y2="' +
-				(40 + codigoGeneticoP[i]["desplazamientoNodoIni"][4] / 100).toFixed(3) +
-				codigoGeneticoP[i]["puntoFin"][1] +
+				(40 - codigoGeneticoP[i]["desplazamientoNodoIni"][4] / 100 - codigoGeneticoP[i]["puntoFin"][1]).toFixed(
+					3
+				) +
 				'" ' +
-				'stroke="red" strokeWidth="5px"></line>';
-
+				'stroke="red" strokeWidth="1px"></line>';
+			//console.log(draw);
 			//return draw;
 		}
 		return draw;
