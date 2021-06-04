@@ -1467,6 +1467,15 @@ function Calculus() {
 				element["reaccionExterna"] = matrizPorVector(multiplicacionM2, element.desplazamientoNodoIni);
 			}
 			//falta agregar derivas, condiciones
+
+			//Derivas
+			if (element.tipo == "Columna") {
+				element["deriva"] = (element["desplazamientoNodoIni"][3] - element["desplazamientoNodoIni"][0]).toFixed(
+					3
+				);
+			} else {
+				element["deriva"] = 0;
+			}
 		}
 	}
 
@@ -1484,6 +1493,7 @@ function Calculus() {
 			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
 			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
 			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
 			//serían los encabezados de la tabla
 			var html = "<thead><tr>" + a + "</tr></thead>";
 
@@ -1524,6 +1534,9 @@ function Calculus() {
 				", " +
 				element.reaccionExterna[2] +
 				")</td>" +
+				"<td>" +
+				element.deriva +
+				"</td>" +
 				"</tr>";
 			//+"<br/>";
 			document.getElementById("tabla-final").innerHTML = html + fila;
