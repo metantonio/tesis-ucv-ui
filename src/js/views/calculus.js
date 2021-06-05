@@ -1719,6 +1719,7 @@ function Calculus() {
 		//tablaConectividad();
 		//console.log(listaPerfiles);
 		vectorMatrizRigGlobal = matrizRigidGlogal();
+		//svg.selectAll("*").remove();
 		document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 	});
 
@@ -1890,6 +1891,59 @@ function Calculus() {
 					</svg>
 				</div>
 			</div>
+			<p className="save-btn">
+				<button
+					className="btnPaso text-center mt-12 title"
+					onClick={() => {
+						var numeroCol = actions.getNoColumnas();
+						var numeroPisos = actions.getNoPisos();
+						var alturaEntrePiso = actions.getEntrePiso();
+						var luzVano = actions.getLuzVano();
+						//drawLines = dibujo();
+						//drawLines2 = dibujoVigas();
+
+						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
+						// console.log(drawLines, drawLines2);
+						tablaConectividad();
+						tablaConectividad2();
+						addTableConnect();
+						//matrizRigidLocal();
+						//console.log(multiplicarMatrices(matrizEA, matrizEB));
+						addMatricesRigLocal();
+						//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
+						vectorMatrizRigGlobal = matrizRigidGlogal();
+						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
+						addMatricesRigGlobal();
+						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
+
+						rigidezTotal();
+						addMatricesRigTotal();
+						vectorFuerzasInternas = funcionFuerzasInt();
+						//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
+						addVectorFuerza();
+						rigidezReducida();
+						addMatricesRigRedux();
+						matrizReducidaInversa = matrizRigidezReduxInversa();
+						addMatricesRigReduxInversa();
+						//matrizInversa(matrizEjemplo);
+						vectorFuerzasInternasRedux = vectorFReducido();
+						addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
+						vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
+						console.log("codigo genético P", codigoGeneticoP);
+						desplazamientoEnCodigo();
+						calculosFinales();
+						addTablaFinal();
+						drawLines3 = dibujoDesplazamiento();
+						drawini = dibujoIni();
+						drawLines = drawLines3 + drawText;
+						document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
+						document.getElementById("caja-dibujo2").innerHTML = drawLines;
+						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+					}}>
+					<span>Calcular</span>
+				</button>
+			</p>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
