@@ -324,6 +324,10 @@ function Calculus() {
 		return match;
 	};
 
+	function aleatorio(min, max) {
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	}
+
 	let tablaConectividad2 = () => {
 		//Vigas
 		//console.log("función tablaConectividad2");
@@ -346,7 +350,8 @@ function Calculus() {
 			elasticidad: 2100000,
 			longitud: 10,
 			peso: 0,
-
+			fuerzainterna: [0, 0, 0, 0, 0, 0],
+			fuerzasGlobales: [0, 0, 0, 0, 0, 0],
 			desplazamientoNodoIni: [0, 0, 0]
 		};
 		var ele2 = {};
@@ -486,8 +491,97 @@ function Calculus() {
 
 				desplazamientoNodoIni: [0, 0, 0]
 			};
-		} // aquí termina el for
-		//console.log("union de vigas", union);
+		} // aquí termina el for de Vigas
+
+		for (var i = 0; i < aleatorio(1, actions.getNoPisos() * actions.getNoColumnas()); i++) {
+			item = listUPL[Math.floor(Math.random() * listUPL.length)]; //de donde copiará los perfiles aleatorios
+			//console.log(item);
+			elementos["elemento"] = item["designacion"];
+			elementos["inercia"] = item["ix"];
+			//console.log(i);
+			elementos["puntoIni"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+			elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+			while (
+				elementos["puntoIni"][0] == elementos["puntoFin"][0] ||
+				elementos["puntoIni"][1] == elementos["puntoFin"][1]
+			) {
+				elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+			}
+			//var temp4 = i - temp + 1;
+			elementos["nodoIni"] = matchCoord(elementos["puntoIni"]);
+			//var temp2 = temp + temp4;
+			//console.log("temp2", temp2);
+			elementos["nodoFin"] = matchCoord(elementos["puntoFin"]);
+			elementos["vectorX"] = matchCoord2(elementos["puntoIni"]);
+			elementos["vectorY"] = matchCoord2(elementos["puntoFin"]);
+			//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
+			elementos["longitud"] = Math.sqrt(
+				Math.pow(elementos["puntoFin"][0] - elementos["puntoIni"][0], 2) +
+					Math.pow(elementos["puntoFin"][1] - elementos["puntoIni"][1], 2)
+			);
+			//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
+
+			if ((elementos["longitud"] != actions.getLuzVano()) & (elementos["longitud"] != actions.getEntrePiso())) {
+				elementos["area"] = item["area"];
+				elementos["a"] = (
+					(elementos["elasticidad"] * elementos["area"]) /
+					(elementos["longitud"] * 100)
+				).toFixed(3);
+				elementos["b"] = (0).toFixed(3);
+				elementos["c"] = (0).toFixed(3);
+				elementos["d"] = (0).toFixed(3);
+				elementos["e"] = (0).toFixed(3);
+				elementos["peso"] = (item["peso"] * elementos["longitud"]).toFixed(2); //peso del elemento
+				if (elementos["puntoFin"][0] - elementos["puntoIni"][0] != 0) {
+					elementos["teta"] = Math.atan(
+						(elementos["puntoFin"][1] - elementos["puntoIni"][1]) /
+							(elementos["puntoFin"][0] - elementos["puntoIni"][0])
+					);
+				} else {
+					elementos["teta"] = (Math.PI / 2).toFixed(6);
+				}
+				elementos["cos"] = Math.cos(elementos["teta"]).toFixed(3);
+				if (elementos["teta"] == Math.PI / 2) {
+					elementos["cos"] = 0;
+				}
+				elementos["sin"] = Math.sin(elementos["teta"]).toFixed(3);
+				elementos["tipo"] = "Diagonal";
+				//item = [];
+				//console.log(elementos);
+				ele2 = elementos;
+				union.push(ele2);
+				ele2 = {};
+				//temp4 = 0;
+				//temp2 = 0;
+			} //Aquí termina el IF de las vigas
+			elementos = {
+				elemento: "",
+				puntoIni: [],
+				puntoFin: [],
+				a: 0,
+				b: 0,
+				c: 0,
+				d: 0,
+				e: 0,
+				teta: 0,
+				cos: 0,
+				sin: 0,
+				inercia: 1,
+				elasticidad: 2100000,
+				longitud: 10,
+				peso: 0,
+				nodoIni: [],
+				nodoFin: [],
+				tipo: "",
+				vectorX: [],
+				vectorY: [],
+				fuerzainterna: [0, 0, 0, 0, 0, 0],
+				fuerzasGlobales: [0, 0, 0, 0, 0, 0],
+
+				desplazamientoNodoIni: [0, 0, 0]
+			};
+		} //aquí termina el for de Diagonales
+
 		vectorConectividadf2 = union;
 		//vectorConectividadf.push(vectorConectividadf2);
 		//console.log("Vector Conectividad f2 Vigas:");
@@ -1547,7 +1641,7 @@ function Calculus() {
 	}
 	var draw = "";
 	var drawLines3 = "";
-
+	var drawini = "";
 	let dibujoDesplazamiento = () => {
 		for (var i = 0; i < codigoGeneticoP.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
@@ -1572,6 +1666,47 @@ function Calculus() {
 			//console.log(draw);
 			//return draw;
 		}
+		for (var i = 0; i < codigoGeneticoP.length; i++) {
+			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
+			draw +=
+				'<line x1="' +
+				codigoGeneticoP[i]["puntoIni"][0].toFixed(3) +
+				'" ' +
+				'y1="' +
+				(40 - codigoGeneticoP[i]["puntoIni"][1]).toFixed(3) +
+				'" ' +
+				'x2="' +
+				codigoGeneticoP[i]["puntoFin"][0].toFixed(3) +
+				'" ' +
+				'y2="' +
+				(40 - codigoGeneticoP[i]["puntoFin"][1]).toFixed(3) +
+				'" ' +
+				'stroke="black" strokeWidth="10px"></line>';
+			//console.log(draw);
+			//return draw;
+		}
+		return draw;
+	};
+	let dibujoIni = () => {
+		for (var i = 0; i < codigoGeneticoP.length; i++) {
+			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
+			draw +=
+				'<line x1="' +
+				codigoGeneticoP[i]["puntoIni"][0].toFixed(3) +
+				'" ' +
+				'y1="' +
+				(40 - codigoGeneticoP[i]["puntoIni"][1]).toFixed(3) +
+				'" ' +
+				'x2="' +
+				codigoGeneticoP[i]["puntoFin"][0].toFixed(3) +
+				'" ' +
+				'y2="' +
+				(40 - codigoGeneticoP[i]["puntoFin"][1]).toFixed(3) +
+				'" ' +
+				'stroke="black" strokeWidth="10px"></line>';
+			//console.log(draw);
+			//return draw;
+		}
 		return draw;
 	};
 
@@ -1584,6 +1719,7 @@ function Calculus() {
 		//tablaConectividad();
 		//console.log(listaPerfiles);
 		vectorMatrizRigGlobal = matrizRigidGlogal();
+		document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 	});
 
 	return (
@@ -1602,8 +1738,8 @@ function Calculus() {
 						var numeroPisos = actions.getNoPisos();
 						var alturaEntrePiso = actions.getEntrePiso();
 						var luzVano = actions.getLuzVano();
-						drawLines = dibujo();
-						drawLines2 = dibujoVigas();
+						//drawLines = dibujo();
+						//drawLines2 = dibujoVigas();
 
 						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 						// console.log(drawLines, drawLines2);
@@ -1638,7 +1774,9 @@ function Calculus() {
 						calculosFinales();
 						addTablaFinal();
 						drawLines3 = dibujoDesplazamiento();
-						drawLines = drawLines + drawLines2 + drawLines3 + drawText;
+						drawini = dibujoIni();
+						drawLines = drawLines3 + drawText;
+						document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 						document.getElementById("caja-dibujo2").innerHTML = drawLines;
 						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
@@ -1646,14 +1784,14 @@ function Calculus() {
 				</button>
 			</p>
 			<div className="row justify-content">
-				<div className="col-md-12" id="caja-dibujo3">
+				<div className="col-md-12" id="caja-dibujo5">
 					<svg
 						width="500px"
 						height="500px"
 						viewBox="-5 -10 35 50"
 						preserveAspectRatio="xMidYMid meet"
 						xmlns="http://www.w3.org/2000/svg"
-						id="caja-dibujo2">
+						id="caja-dibujo4">
 						{}
 					</svg>
 				</div>
@@ -1715,6 +1853,9 @@ function Calculus() {
 				<h2> 9-. Dezplazamiento de Nodos (Asociados a Matriz de Rigidez Reducida) (cm,cm,rad)</h2>
 			</div>
 			<div className="col justify-content-center" id="desplazamiento-nodos" />
+			<div className="text-sm-left">
+				<h2> 10.1-. Tabla Combinación de cargas caso:</h2>
+			</div>
 			<div className="col-sm-12" id="tabla-resumen">
 				<table className="table table-striped" id="tabla-final" onLoad="">
 					<thead>
@@ -1734,6 +1875,20 @@ function Calculus() {
 						</tr>
 					</thead>
 				</table>
+			</div>
+			<p />
+			<div className="row justify-content">
+				<div className="col-md-12" id="caja-dibujo3">
+					<svg
+						width="500px"
+						height="500px"
+						viewBox="-5 -10 35 50"
+						preserveAspectRatio="xMidYMid meet"
+						xmlns="http://www.w3.org/2000/svg"
+						id="caja-dibujo2">
+						{}
+					</svg>
+				</div>
 			</div>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
