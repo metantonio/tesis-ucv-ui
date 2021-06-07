@@ -271,6 +271,33 @@ function Calculus() {
 		return vectorConectividadf;
 	};
 
+	function reescrituraConectividadf(cViento) {
+		//let vectorAux = vectorConectividadf;
+		for (var i = 0; i < vectorConectividadf.length; i++) {
+			//console.log("elemento", elementos, vectorAux);
+			if (
+				(vectorConectividadf[i].longitud == actions.getEntrePiso()) &
+				(vectorConectividadf[i].puntoIni[0] == vectorConectividadf[i].puntoFin[0])
+			) {
+				if ((vectorConectividadf[i].puntoIni[0] == 0) & (vectorConectividadf[i].puntoFin[0] == 0)) {
+					vectorConectividadf[i]["fuerzainterna"] = [
+						(cViento * actions.getCargaViento() * vectorConectividadf[i]["longitud"]) / 2,
+						0,
+						(-actions.getCargaViento() * cViento * ((vectorConectividadf[i]["longitud"] * 100) ^ 2)) / 12,
+						(cViento * actions.getCargaViento() * vectorConectividadf[i]["longitud"]) / 2,
+						0,
+						(cViento * actions.getCargaViento() * ((vectorConectividadf[i]["longitud"] * 100) ^ 2)) / 12
+					];
+				} else {
+					vectorConectividadf[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+				}
+			}
+		}
+		//vectorConectividadf = [];
+		//vectorConectividadf = vectorAux;
+		return vectorConectividadf;
+	}
+
 	let matchCoord = vector => {
 		let matchCoordenadas = {
 			coordMetro: nodosCoordenadas,
@@ -607,6 +634,74 @@ function Calculus() {
 		//vectorConectividadf.push(vectorConectividadf2);
 		return vectorConectividadf2;
 	};
+
+	function reescrituraConectividadf2(cVariable, cPermanente) {
+		for (var i = 0; i < vectorConectividadf2.length; i++) {
+			//vigas
+			if (
+				(vectorConectividadf2[i]["longitud"] == actions.getLuzVano()) &
+				(vectorConectividadf2[i]["puntoIni"][1] != 0)
+			) {
+				if (vectorConectividadf2[i]["puntoIni"][1] == vectorConectividadf2[i]["puntoFin"][1]) {
+					vectorConectividadf2[i]["fuerzainterna"] = [
+						0,
+						-(
+							(cPermanente * actions.getCargaLosaPermanente() +
+								cVariable * actions.getCargaLosaVariable()) *
+							vectorConectividadf2[i]["longitud"]
+						) / 2,
+						(-(
+							cPermanente * actions.getCargaLosaPermanente() +
+							cVariable * actions.getCargaLosaVariable()
+						) *
+							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+							12,
+						0,
+						-(
+							(cPermanente * actions.getCargaLosaPermanente() +
+								cVariable * actions.getCargaLosaVariable()) *
+							vectorConectividadf2[i]["longitud"]
+						) / 2,
+						((cPermanente * actions.getCargaLosaPermanente() + cVariable * actions.getCargaLosaVariable()) *
+							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+							12
+					];
+				}
+				if (
+					(vectorConectividadf2[i]["puntoIni"][1] == actions.getNoPisos() * actions.getEntrePiso()) &
+					(vectorConectividadf2[i]["puntoFin"][1] == actions.getNoPisos() * actions.getEntrePiso())
+				) {
+					vectorConectividadf2[i]["fuerzainterna"] = [
+						0,
+						-(
+							(cPermanente * actions.getCargaTechoPermanente() +
+								cVariable * actions.getCargaTechoVariable()) *
+							vectorConectividadf2[i]["longitud"]
+						) / 2,
+						(-(
+							cPermanente * actions.getCargaTechoPermanente() +
+							cVariable * actions.getCargaTechoVariable()
+						) *
+							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+							12,
+						0,
+						-(
+							(cPermanente * actions.getCargaTechoPermanente() +
+								cVariable * actions.getCargaTechoVariable()) *
+							vectorConectividadf2[i]["longitud"]
+						) / 2,
+						((cPermanente * actions.getCargaTechoPermanente() +
+							cVariable * actions.getCargaTechoVariable()) *
+							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+							12
+					];
+				}
+			}
+
+			//diagonales
+		}
+		return vectorConectividadf2;
+	}
 
 	function addTableConnect() {
 		var fila = "";
@@ -1774,6 +1869,53 @@ function Calculus() {
 		document.getElementById("caja-dibujo2").innerHTML = drawLines;
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
+	function botonCalcular2(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente) {
+		var numeroCol = actions.getNoColumnas();
+		var numeroPisos = actions.getNoPisos();
+		var alturaEntrePiso = actions.getEntrePiso();
+		var luzVano = actions.getLuzVano();
+		//drawLines = dibujo();
+		//drawLines2 = dibujoVigas();
+
+		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
+		// console.log(drawLines, drawLines2);
+		reescrituraConectividadf(coefViento);
+		reescrituraConectividadf2(coefVariable, coefPermanente);
+		addTableConnect();
+		//matrizRigidLocal();
+		//console.log(multiplicarMatrices(matrizEA, matrizEB));
+		addMatricesRigLocal();
+		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
+		vectorMatrizRigGlobal = matrizRigidGlogal();
+		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
+		addMatricesRigGlobal();
+		codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
+
+		rigidezTotal();
+		addMatricesRigTotal();
+		vectorFuerzasInternas = funcionFuerzasInt();
+		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
+		addVectorFuerza();
+		rigidezReducida();
+		addMatricesRigRedux();
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		addMatricesRigReduxInversa();
+		//matrizInversa(matrizEjemplo);
+		vectorFuerzasInternasRedux = vectorFReducido();
+		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
+		console.log("codigo genético P", codigoGeneticoP);
+		desplazamientoEnCodigo();
+		calculosFinales();
+		addTablaFinal(getElementByIdTablaFinal);
+		//drawLines3 = dibujoDesplazamiento();
+		// drawini = dibujoIni();
+		// drawLines = drawLines3 + drawText;
+		// document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
+		// document.getElementById("caja-dibujo2").innerHTML = drawLines;
+		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+	}
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -1803,6 +1945,10 @@ function Calculus() {
 						//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 						//caso 1.4 carga permanente
 						botonCalcular("tabla-final", 0, 0, 1.4);
+						//caso 1.2CP+1.6CV
+						botonCalcular2("tabla-final2", 0, 1.6, 1.2);
+						//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+						botonCalcular2("tabla-final3", 1.275, 1.275, 1.05);
 					}}>
 					<span>Calcular una estructura al azar</span>
 				</button>
@@ -1878,10 +2024,22 @@ function Calculus() {
 			</div>
 			<div className="col justify-content-center" id="desplazamiento-nodos" />
 			<div className="text-sm-left">
-				<h2> 10.1-. Tabla Combinación de cargas caso: 1.2D + 1.6L </h2>
+				<h2> 10.1-. Tabla Combinación de cargas caso: 1.4CP</h2>
 			</div>
 			<div className="col-sm-12" id="tabla-resumen">
 				<table className="table table-striped" id="tabla-final" onLoad="" />
+			</div>
+			<div className="text-sm-left">
+				<h2> 10.2-. Tabla Combinación de cargas caso: 1.2CP+1.6CV</h2>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final2" onLoad="" />
+			</div>
+			<div className="text-sm-left">
+				<h2> 10.3-. Tabla Combinación de cargas caso: 0.75*(1.4CP + 1.7CV + 1.7W)</h2>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final3" onLoad="" />
 			</div>
 			<p />
 			<div className="row justify-content">
