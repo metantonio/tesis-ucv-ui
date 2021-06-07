@@ -137,7 +137,7 @@ function Calculus() {
 		return nodosNumeros;
 	};
 
-	let tablaConectividad = () => {
+	let tablaConectividad = cViento => {
 		//Columnas
 		//console.log("función tablaConectividad");
 		var item = [];
@@ -223,12 +223,12 @@ function Calculus() {
 				//unidades estan en kg, kg, kg-cm
 				if ((elementos["puntoIni"][0] == 0) & (elementos["puntoFin"][0] == 0)) {
 					elementos["fuerzainterna"] = [
-						(actions.getCargaViento() * elementos["longitud"]) / 2,
+						(cViento * actions.getCargaViento() * elementos["longitud"]) / 2,
 						0,
-						(-actions.getCargaViento() * ((elementos["longitud"] * 100) ^ 2)) / 12,
-						(actions.getCargaViento() * elementos["longitud"]) / 2,
+						(-actions.getCargaViento() * cViento * ((elementos["longitud"] * 100) ^ 2)) / 12,
+						(cViento * actions.getCargaViento() * elementos["longitud"]) / 2,
 						0,
-						(actions.getCargaViento() * ((elementos["longitud"] * 100) ^ 2)) / 12
+						(cViento * actions.getCargaViento() * ((elementos["longitud"] * 100) ^ 2)) / 12
 					];
 				} else {
 					elementos["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
@@ -328,7 +328,7 @@ function Calculus() {
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
-	let tablaConectividad2 = () => {
+	let tablaConectividad2 = (cVariable, cPermanente) => {
 		//Vigas
 		//console.log("función tablaConectividad2");
 		var item = [];
@@ -420,15 +420,24 @@ function Calculus() {
 				if (elementos["puntoIni"][1] == elementos["puntoFin"][1]) {
 					elementos["fuerzainterna"] = [
 						0,
-						-((actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) * elementos["longitud"]) /
-							2,
-						(-(actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) *
+						-(
+							(cPermanente * actions.getCargaLosaPermanente() +
+								cVariable * actions.getCargaLosaVariable()) *
+							elementos["longitud"]
+						) / 2,
+						(-(
+							cPermanente * actions.getCargaLosaPermanente() +
+							cVariable * actions.getCargaLosaVariable()
+						) *
 							((elementos["longitud"] * 100) ^ 2)) /
 							12,
 						0,
-						-((actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) * elementos["longitud"]) /
-							2,
-						((actions.getCargaLosaPermanente() + actions.getCargaLosaVariable()) *
+						-(
+							(cPermanente * actions.getCargaLosaPermanente() +
+								cVariable * actions.getCargaLosaVariable()) *
+							elementos["longitud"]
+						) / 2,
+						((cPermanente * actions.getCargaLosaPermanente() + cVariable * actions.getCargaLosaVariable()) *
 							((elementos["longitud"] * 100) ^ 2)) /
 							12
 					];
@@ -440,18 +449,24 @@ function Calculus() {
 					elementos["fuerzainterna"] = [
 						0,
 						-(
-							(actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+							(cPermanente * actions.getCargaTechoPermanente() +
+								cVariable * actions.getCargaTechoVariable()) *
 							elementos["longitud"]
 						) / 2,
-						(-(actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+						(-(
+							cPermanente * actions.getCargaTechoPermanente() +
+							cVariable * actions.getCargaTechoVariable()
+						) *
 							((elementos["longitud"] * 100) ^ 2)) /
 							12,
 						0,
 						-(
-							(actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+							(cPermanente * actions.getCargaTechoPermanente() +
+								cVariable * actions.getCargaTechoVariable()) *
 							elementos["longitud"]
 						) / 2,
-						((actions.getCargaTechoPermanente() + actions.getCargaTechoVariable()) *
+						((cPermanente * actions.getCargaTechoPermanente() +
+							cVariable * actions.getCargaTechoVariable()) *
 							((elementos["longitud"] * 100) ^ 2)) /
 							12
 					];
@@ -1573,7 +1588,7 @@ function Calculus() {
 		}
 	}
 
-	function addTablaFinal() {
+	function addTablaFinal(getElementByIdf) {
 		var fila = "";
 
 		var final = codigoGeneticoP.map(function(element, index, array) {
@@ -1633,7 +1648,7 @@ function Calculus() {
 				"</td>" +
 				"</tr>";
 			//+"<br/>";
-			document.getElementById("tabla-final").innerHTML = html + fila;
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
 
 			return html + fila, fila;
 		});
@@ -1710,6 +1725,56 @@ function Calculus() {
 		return draw;
 	};
 
+	//var getElementByIdf = "";
+
+	function botonCalcular(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente) {
+		var numeroCol = actions.getNoColumnas();
+		var numeroPisos = actions.getNoPisos();
+		var alturaEntrePiso = actions.getEntrePiso();
+		var luzVano = actions.getLuzVano();
+		//drawLines = dibujo();
+		//drawLines2 = dibujoVigas();
+
+		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
+		// console.log(drawLines, drawLines2);
+		tablaConectividad(coefViento);
+		tablaConectividad2(coefVariable, coefPermanente);
+		addTableConnect();
+		//matrizRigidLocal();
+		//console.log(multiplicarMatrices(matrizEA, matrizEB));
+		addMatricesRigLocal();
+		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
+		vectorMatrizRigGlobal = matrizRigidGlogal();
+		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
+		addMatricesRigGlobal();
+		codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
+
+		rigidezTotal();
+		addMatricesRigTotal();
+		vectorFuerzasInternas = funcionFuerzasInt();
+		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
+		addVectorFuerza();
+		rigidezReducida();
+		addMatricesRigRedux();
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		addMatricesRigReduxInversa();
+		//matrizInversa(matrizEjemplo);
+		vectorFuerzasInternasRedux = vectorFReducido();
+		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
+		console.log("codigo genético P", codigoGeneticoP);
+		desplazamientoEnCodigo();
+		calculosFinales();
+		addTablaFinal(getElementByIdTablaFinal);
+		//drawLines3 = dibujoDesplazamiento();
+		drawini = dibujoIni();
+		drawLines = drawLines3 + drawText;
+		document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
+		document.getElementById("caja-dibujo2").innerHTML = drawLines;
+		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		nodosCoord();
@@ -1735,53 +1800,11 @@ function Calculus() {
 				<button
 					className="btnPaso text-center mt-12 title"
 					onClick={() => {
-						var numeroCol = actions.getNoColumnas();
-						var numeroPisos = actions.getNoPisos();
-						var alturaEntrePiso = actions.getEntrePiso();
-						var luzVano = actions.getLuzVano();
-						//drawLines = dibujo();
-						//drawLines2 = dibujoVigas();
-
-						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-						// console.log(drawLines, drawLines2);
-						tablaConectividad();
-						tablaConectividad2();
-						addTableConnect();
-						//matrizRigidLocal();
-						//console.log(multiplicarMatrices(matrizEA, matrizEB));
-						addMatricesRigLocal();
-						//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
-						vectorMatrizRigGlobal = matrizRigidGlogal();
-						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
-						addMatricesRigGlobal();
-						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
-
-						rigidezTotal();
-						addMatricesRigTotal();
-						vectorFuerzasInternas = funcionFuerzasInt();
-						//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
-						addVectorFuerza();
-						rigidezReducida();
-						addMatricesRigRedux();
-						matrizReducidaInversa = matrizRigidezReduxInversa();
-						addMatricesRigReduxInversa();
-						//matrizInversa(matrizEjemplo);
-						vectorFuerzasInternasRedux = vectorFReducido();
-						addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
-						vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
-						console.log("codigo genético P", codigoGeneticoP);
-						desplazamientoEnCodigo();
-						calculosFinales();
-						addTablaFinal();
-						drawLines3 = dibujoDesplazamiento();
-						drawini = dibujoIni();
-						drawLines = drawLines3 + drawText;
-						document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
-						document.getElementById("caja-dibujo2").innerHTML = drawLines;
-						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+						//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
+						//caso 1.4 carga permanente
+						botonCalcular("tabla-final", 0, 0, 1.4);
 					}}>
-					<span>Calcular</span>
+					<span>Calcular una estructura al azar</span>
 				</button>
 			</p>
 			<div className="row justify-content">
@@ -1855,27 +1878,10 @@ function Calculus() {
 			</div>
 			<div className="col justify-content-center" id="desplazamiento-nodos" />
 			<div className="text-sm-left">
-				<h2> 10.1-. Tabla Combinación de cargas caso:</h2>
+				<h2> 10.1-. Tabla Combinación de cargas caso: 1.2D + 1.6L </h2>
 			</div>
 			<div className="col-sm-12" id="tabla-resumen">
-				<table className="table table-striped" id="tabla-final" onLoad="">
-					<thead>
-						<tr>
-							<th scope="row">No</th>
-							<th>Perfil</th>
-							<th>Coordenada Inicial</th>
-							<th>Coordenada Final</th>
-							<th>A</th>
-							<th>B</th>
-							<th>C</th>
-							<th>D</th>
-							<th>E</th>
-							<th>θ</th>
-							<th>coseno</th>
-							<th>seno</th>
-						</tr>
-					</thead>
-				</table>
+				<table className="table table-striped" id="tabla-final" onLoad="" />
 			</div>
 			<p />
 			<div className="row justify-content">
@@ -1895,53 +1901,13 @@ function Calculus() {
 				<button
 					className="btnPaso text-center mt-12 title"
 					onClick={() => {
-						var numeroCol = actions.getNoColumnas();
-						var numeroPisos = actions.getNoPisos();
-						var alturaEntrePiso = actions.getEntrePiso();
-						var luzVano = actions.getLuzVano();
-						//drawLines = dibujo();
-						//drawLines2 = dibujoVigas();
-
-						//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-						// console.log(drawLines, drawLines2);
-						tablaConectividad();
-						tablaConectividad2();
-						addTableConnect();
-						//matrizRigidLocal();
-						//console.log(multiplicarMatrices(matrizEA, matrizEB));
-						addMatricesRigLocal();
-						//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
-						vectorMatrizRigGlobal = matrizRigidGlogal();
-						//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
-						addMatricesRigGlobal();
-						codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
-
-						rigidezTotal();
-						addMatricesRigTotal();
-						vectorFuerzasInternas = funcionFuerzasInt();
-						//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
-						addVectorFuerza();
-						rigidezReducida();
-						addMatricesRigRedux();
-						matrizReducidaInversa = matrizRigidezReduxInversa();
-						addMatricesRigReduxInversa();
-						//matrizInversa(matrizEjemplo);
-						vectorFuerzasInternasRedux = vectorFReducido();
-						addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
-						vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-						addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
-						console.log("codigo genético P", codigoGeneticoP);
-						desplazamientoEnCodigo();
-						calculosFinales();
-						addTablaFinal();
 						drawLines3 = dibujoDesplazamiento();
-						drawini = dibujoIni();
-						drawLines = drawLines3 + drawText;
-						document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
+
+						drawLines = drawLines3;
+
 						document.getElementById("caja-dibujo2").innerHTML = drawLines;
-						return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 					}}>
-					<span>Calcular</span>
+					<span>Dibujar deformada</span>
 				</button>
 			</p>
 			<p>
