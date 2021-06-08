@@ -646,9 +646,9 @@ function Calculus() {
 				(vectorConectividadf2[i]["longitud"] == actions.getLuzVano()) &
 				(vectorConectividadf2[i]["puntoIni"][1] != 0)
 			) {
-				console.log("entro en primer if reescrituraconectividadf2");
+				//console.log("entro en primer if reescrituraconectividadf2");
 				if (vectorConectividadf2[i]["puntoIni"][1] == vectorConectividadf2[i]["puntoFin"][1]) {
-					console.log("entro en if reescrituraconectividadf2");
+					//console.log("entro en if reescrituraconectividadf2");
 					vectorConectividadf2[i]["fuerzainterna"] = [
 						0,
 						-(
