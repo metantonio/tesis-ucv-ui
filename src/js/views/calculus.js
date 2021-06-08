@@ -639,7 +639,7 @@ function Calculus() {
 	};
 
 	function reescrituraConectividadf2(cVariable, cPermanente) {
-		console.log("vectorcConectividadf2", vectorConectividadf2);
+		//console.log("vectorcConectividadf2", vectorConectividadf2);
 		for (var i = 0; i < vectorConectividadf2.length; i++) {
 			//vigas
 			if (

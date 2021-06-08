@@ -260,14 +260,14 @@ function Profiles() {
 					</table>
 				</div>
 				<div className="btn sub-title col-md-12">
-					<p>
+					{/* <p>
 						<button
 							className="btnPaso text-center mt-12 title"
 							//onClick={e => }
 						>
 							<span>Guardar selección de Perfiles</span>
 						</button>
-					</p>
+					</p> */}
 					<p>
 						<button className="btnPaso2 text-center mt-12 title">
 							<Link to="/calculus">
