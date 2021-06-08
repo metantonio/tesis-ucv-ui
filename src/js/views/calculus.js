@@ -276,10 +276,11 @@ function Calculus() {
 		for (var i = 0; i < vectorConectividadf.length; i++) {
 			//console.log("elemento", elementos, vectorAux);
 			if (
-				(vectorConectividadf[i].longitud == actions.getEntrePiso()) &
-				(vectorConectividadf[i].puntoIni[0] == vectorConectividadf[i].puntoFin[0])
+				(vectorConectividadf[i]["longitud"] == actions.getEntrePiso()) &
+				(vectorConectividadf[i]["puntoIni"][0] == vectorConectividadf[i]["puntoFin"][0])
 			) {
-				if ((vectorConectividadf[i].puntoIni[0] == 0) & (vectorConectividadf[i].puntoFin[0] == 0)) {
+				if ((vectorConectividadf[i]["puntoIni"][0] == 0) & (vectorConectividadf[i]["puntoFin"][0] == 0)) {
+					console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
 					vectorConectividadf[i]["fuerzainterna"] = [
 						(cViento * actions.getCargaViento() * vectorConectividadf[i]["longitud"]) / 2,
 						0,
@@ -288,8 +289,10 @@ function Calculus() {
 						0,
 						(cViento * actions.getCargaViento() * ((vectorConectividadf[i]["longitud"] * 100) ^ 2)) / 12
 					];
+					//return vectorConectividadf[i]["fuerzainterna"];
 				} else {
 					vectorConectividadf[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+					//return vectorConectividadf[i]["fuerzainterna"];
 				}
 			}
 		}
@@ -666,35 +669,39 @@ function Calculus() {
 							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
 							12
 					];
-				}
-				if (
-					(vectorConectividadf2[i]["puntoIni"][1] == actions.getNoPisos() * actions.getEntrePiso()) &
-					(vectorConectividadf2[i]["puntoFin"][1] == actions.getNoPisos() * actions.getEntrePiso())
-				) {
-					vectorConectividadf2[i]["fuerzainterna"] = [
-						0,
-						-(
-							(cPermanente * actions.getCargaTechoPermanente() +
+					//if del techo empieza aquí>
+					if (
+						(vectorConectividadf2[i]["puntoIni"][1] == actions.getNoPisos() * actions.getEntrePiso()) &
+						(vectorConectividadf2[i]["puntoFin"][1] == actions.getNoPisos() * actions.getEntrePiso())
+					) {
+						vectorConectividadf2[i]["fuerzainterna"] = [
+							0,
+							-(
+								(cPermanente * actions.getCargaTechoPermanente() +
+									cVariable * actions.getCargaTechoVariable()) *
+								vectorConectividadf2[i]["longitud"]
+							) / 2,
+							(-(
+								cPermanente * actions.getCargaTechoPermanente() +
+								cVariable * actions.getCargaTechoVariable()
+							) *
+								((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+								12,
+							0,
+							-(
+								(cPermanente * actions.getCargaTechoPermanente() +
+									cVariable * actions.getCargaTechoVariable()) *
+								vectorConectividadf2[i]["longitud"]
+							) / 2,
+							((cPermanente * actions.getCargaTechoPermanente() +
 								cVariable * actions.getCargaTechoVariable()) *
-							vectorConectividadf2[i]["longitud"]
-						) / 2,
-						(-(
-							cPermanente * actions.getCargaTechoPermanente() +
-							cVariable * actions.getCargaTechoVariable()
-						) *
-							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
-							12,
-						0,
-						-(
-							(cPermanente * actions.getCargaTechoPermanente() +
-								cVariable * actions.getCargaTechoVariable()) *
-							vectorConectividadf2[i]["longitud"]
-						) / 2,
-						((cPermanente * actions.getCargaTechoPermanente() +
-							cVariable * actions.getCargaTechoVariable()) *
-							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
-							12
-					];
+								((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+								12
+						];
+						//return vectorConectividadf2[i]["fuerzainterna"];
+					}
+
+					return vectorConectividadf2[i]["fuerzainterna"];
 				}
 			}
 
@@ -1123,13 +1130,13 @@ function Calculus() {
 		return vectorFuerzas1;
 	};
 
-	function addVectorFuerza() {
+	function addVectorFuerza(caso) {
 		var vectorFuer = vectorFuerzasInternas;
 		var numNodosu = 0;
 		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
 
 		var a = "<div className='row justify-content-center'>";
-		a += "<h2>Vector de Fuerzas totales";
+		a += "<h2>Vector de Fuerzas totales caso: " + "'" + caso + "'";
 		a += " =</h2>";
 		a += "</div>";
 		a += "<div className='col-6 justify-content-center' id='vector-fint'>";
@@ -1487,13 +1494,13 @@ function Calculus() {
 		return filasN;
 	}
 
-	function addVector(vector, idInterno, getElementID) {
+	function addVector(vector, idInterno, getElementID, caso) {
 		var vectorFuer = vector;
 		var numNodosu = 0;
 		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
 
 		var a = "<div className='row justify-content-center'>";
-		a += "<h2>Vector:";
+		a += "<h2>Vector para la combinación: " + caso;
 		a += " =</h2>";
 		a += "</div>";
 		a += "<div className='col-6 justify-content-center' id='vector-fint-'" + "'" + idInterno + "'" + ">";
@@ -1674,6 +1681,7 @@ function Calculus() {
 
 			//Derivas
 			if (element.tipo == "Columna") {
+				//el elemento
 				element["deriva"] = (element["desplazamientoNodoIni"][3] - element["desplazamientoNodoIni"][0]).toFixed(
 					3
 				);
@@ -1822,7 +1830,7 @@ function Calculus() {
 
 	//var getElementByIdf = "";
 
-	function botonCalcular(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente) {
+	function botonCalcular(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
 		var numeroCol = actions.getNoColumnas();
 		var numeroPisos = actions.getNoPisos();
 		var alturaEntrePiso = actions.getEntrePiso();
@@ -1848,16 +1856,16 @@ function Calculus() {
 		addMatricesRigTotal();
 		vectorFuerzasInternas = funcionFuerzasInt();
 		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
-		addVectorFuerza();
+		addVectorFuerza(casos);
 		rigidezReducida();
 		addMatricesRigRedux();
 		matrizReducidaInversa = matrizRigidezReduxInversa();
 		addMatricesRigReduxInversa();
 		//matrizInversa(matrizEjemplo);
 		vectorFuerzasInternasRedux = vectorFReducido();
-		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
+		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido", casos);
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
+		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo();
 		calculosFinales();
@@ -1869,7 +1877,7 @@ function Calculus() {
 		document.getElementById("caja-dibujo2").innerHTML = drawLines;
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
-	function botonCalcular2(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente) {
+	function botonCalcular2(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
 		var numeroCol = actions.getNoColumnas();
 		var numeroPisos = actions.getNoPisos();
 		var alturaEntrePiso = actions.getEntrePiso();
@@ -1879,32 +1887,34 @@ function Calculus() {
 
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
+		//console.log(vectorConectividadf);
 		reescrituraConectividadf(coefViento);
+		//console.log(vectorConectividadf);
 		reescrituraConectividadf2(coefVariable, coefPermanente);
-		addTableConnect();
+		//addTableConnect();
 		//matrizRigidLocal();
 		//console.log(multiplicarMatrices(matrizEA, matrizEB));
-		addMatricesRigLocal();
+		//addMatricesRigLocal();
 		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
-		vectorMatrizRigGlobal = matrizRigidGlogal();
+		//vectorMatrizRigGlobal = matrizRigidGlogal();
 		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
-		addMatricesRigGlobal();
+		//addMatricesRigGlobal();
 		codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
 
 		rigidezTotal();
-		addMatricesRigTotal();
+		//addMatricesRigTotal();
 		vectorFuerzasInternas = funcionFuerzasInt();
 		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
-		addVectorFuerza();
+		addVectorFuerza(casos);
 		rigidezReducida();
-		addMatricesRigRedux();
+		//addMatricesRigRedux();
 		matrizReducidaInversa = matrizRigidezReduxInversa();
-		addMatricesRigReduxInversa();
+		//addMatricesRigReduxInversa();
 		//matrizInversa(matrizEjemplo);
 		vectorFuerzasInternasRedux = vectorFReducido();
-		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido");
+		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido", casos);
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos");
+		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo();
 		calculosFinales();
@@ -1944,11 +1954,13 @@ function Calculus() {
 					onClick={() => {
 						//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 						//caso 1.4 carga permanente
-						botonCalcular("tabla-final", 0, 0, 1.4);
+						botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
 						//caso 1.2CP+1.6CV
-						botonCalcular2("tabla-final2", 0, 1.6, 1.2);
+						botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
 						//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-						botonCalcular2("tabla-final3", 1.275, 1.275, 1.05);
+						botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
+						//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+						botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
 					}}>
 					<span>Calcular una estructura al azar</span>
 				</button>
@@ -2040,6 +2052,12 @@ function Calculus() {
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final3" onLoad="" />
+			</div>
+			<div className="text-sm-left">
+				<h2> 10.4-. Tabla Combinación de cargas caso: 0.75*(1.4CP + 1.7CV - 1.7W)</h2>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final4" onLoad="" />
 			</div>
 			<p />
 			<div className="row justify-content">
