@@ -280,7 +280,7 @@ function Calculus() {
 				(vectorConectividadf[i]["puntoIni"][0] == vectorConectividadf[i]["puntoFin"][0])
 			) {
 				if ((vectorConectividadf[i]["puntoIni"][0] == 0) & (vectorConectividadf[i]["puntoFin"][0] == 0)) {
-					console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
+					//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
 					vectorConectividadf[i]["fuerzainterna"] = [
 						(cViento * actions.getCargaViento() * vectorConectividadf[i]["longitud"]) / 2,
 						0,
@@ -363,7 +363,7 @@ function Calculus() {
 		//console.log("función tablaConectividad2");
 		var item = [];
 		let union = [];
-		let vectorConectividadf2 = [];
+		//let vectorConectividadf2 = [];
 		var elementos = {
 			elemento: "",
 			puntoIni: [],
@@ -639,13 +639,16 @@ function Calculus() {
 	};
 
 	function reescrituraConectividadf2(cVariable, cPermanente) {
+		console.log("vectorcConectividadf2", vectorConectividadf2);
 		for (var i = 0; i < vectorConectividadf2.length; i++) {
 			//vigas
 			if (
 				(vectorConectividadf2[i]["longitud"] == actions.getLuzVano()) &
 				(vectorConectividadf2[i]["puntoIni"][1] != 0)
 			) {
+				console.log("entro en primer if reescrituraconectividadf2");
 				if (vectorConectividadf2[i]["puntoIni"][1] == vectorConectividadf2[i]["puntoFin"][1]) {
+					console.log("entro en if reescrituraconectividadf2");
 					vectorConectividadf2[i]["fuerzainterna"] = [
 						0,
 						-(
@@ -1598,7 +1601,7 @@ function Calculus() {
 		}
 	}
 
-	function calculosFinales() {
+	function calculosFinales(cW, CV, CP) {
 		var multiplicacionM = [];
 		var multiplicacionM2 = [];
 		var matrizL = [];
@@ -1868,7 +1871,7 @@ function Calculus() {
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo();
-		calculosFinales();
+		calculosFinales(coefViento, coefVariable, coefPermanente);
 		addTablaFinal(getElementByIdTablaFinal);
 		//drawLines3 = dibujoDesplazamiento();
 		drawini = dibujoIni();
@@ -1917,7 +1920,7 @@ function Calculus() {
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo();
-		calculosFinales();
+		calculosFinales(coefViento, coefVariable, coefPermanente);
 		addTablaFinal(getElementByIdTablaFinal);
 		//drawLines3 = dibujoDesplazamiento();
 		// drawini = dibujoIni();
