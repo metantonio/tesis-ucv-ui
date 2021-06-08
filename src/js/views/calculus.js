@@ -1692,6 +1692,7 @@ function Calculus() {
 				element["deriva"] = 0;
 			}
 		}
+		return codigoGeneticoP;
 	}
 
 	function addTablaFinal(getElementByIdf) {
