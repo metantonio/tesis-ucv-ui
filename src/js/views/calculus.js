@@ -1621,7 +1621,7 @@ function Calculus() {
 			multiplicacionM = multiplicarMatrices(element.rigidez, matrizL);
 			//console.log("multiplicacionM", multiplicacionM);
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
-			console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
+			//console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
 
 			//cálculo de reacciones externas
