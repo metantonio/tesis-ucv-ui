@@ -1549,7 +1549,7 @@ function Calculus() {
 				element["desplazamientoNodoIni"][2] = 0;
 			}
 
-			if (element.puntoFin[1] == parseInt(actions.getNoPisos()) * parseFloat(actions.getEntrePiso())) {
+			if (element.puntoFin[1] == parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso())) {
 				element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
 				element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
 				element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
