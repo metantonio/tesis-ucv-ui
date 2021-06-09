@@ -1549,7 +1549,7 @@ function Calculus() {
 				element["desplazamientoNodoIni"][2] = 0;
 			}
 
-			if (element.puntoFin[1] == parseInt(actions.getNoPisos()) * parseInt(actions.getEntrePiso())) {
+			if (element.puntoFin[1] == parseInt(actions.getNoPisos()) * parseFloat(actions.getEntrePiso())) {
 				element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
 				element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
 				element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
@@ -1619,7 +1619,9 @@ function Calculus() {
 				[0, 0, 0, 0, 0, 1]
 			];
 			multiplicacionM = multiplicarMatrices(element.rigidez, matrizL);
+			//console.log("multiplicacionM", multiplicacionM);
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
+			console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
 
 			//cálculo de reacciones externas
