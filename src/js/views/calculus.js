@@ -1879,7 +1879,7 @@ function Calculus() {
 		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido", casos);
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
-		console.log("codigo genético P", codigoGeneticoP);
+		//console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo();
 		calculosFinales(coefViento, coefVariable, coefPermanente);
 		addTablaFinal(getElementByIdTablaFinal);
@@ -1928,7 +1928,7 @@ function Calculus() {
 		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido", casos);
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
-		console.log("codigo genético P", codigoGeneticoP);
+		//console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo();
 		calculosFinales(coefViento, coefVariable, coefPermanente);
 		addTablaFinal(getElementByIdTablaFinal);
@@ -1976,6 +1976,8 @@ function Calculus() {
 						botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
 						//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
 						botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
+						//ver código genético
+						console.log("codigo genético P", codigoGeneticoP);
 					}}>
 					<span>Calcular una estructura al azar</span>
 				</button>
