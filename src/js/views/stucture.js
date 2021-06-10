@@ -97,7 +97,7 @@ function Structure() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="2"
+								placeholder="Ej: 2"
 								id="no-columnas"
 								name="no-columnas"
 								min="2"
@@ -110,7 +110,7 @@ function Structure() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="1"
+								placeholder="Ej: 2"
 								id="no-columnas"
 								name="no-columnas"
 								min="1"
@@ -123,7 +123,7 @@ function Structure() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="1"
+								placeholder="Ej: 3.00"
 								id="no-columnas"
 								name="no-columnas"
 								min="1.00"
@@ -137,7 +137,7 @@ function Structure() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="3.00"
+								placeholder="Ej: 4.00"
 								id="no-columnas"
 								name="no-columnas"
 								min="0.50"

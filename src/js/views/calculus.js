@@ -474,8 +474,9 @@ function Calculus() {
 					];
 				}
 				if (
-					(elementos["puntoIni"][1] == actions.getNoPisos() * actions.getEntrePiso()) &
-					(elementos["puntoFin"][1] == actions.getNoPisos() * actions.getEntrePiso())
+					(elementos["puntoIni"][1] ==
+						parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso())) &
+					(elementos["puntoFin"][1] == parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso()))
 				) {
 					elementos["fuerzainterna"] = [
 						0,
@@ -675,8 +676,10 @@ function Calculus() {
 					];
 					//if del techo empieza aquí>
 					if (
-						(vectorConectividadf2[i]["puntoIni"][1] == actions.getNoPisos() * actions.getEntrePiso()) &
-						(vectorConectividadf2[i]["puntoFin"][1] == actions.getNoPisos() * actions.getEntrePiso())
+						(vectorConectividadf2[i]["puntoIni"][1] ==
+							actions.getNoPisos() * parseFloat(actions.getEntrePiso())) &
+						(vectorConectividadf2[i]["puntoFin"][1] ==
+							actions.getNoPisos() * parseFloat(actions.getEntrePiso()))
 					) {
 						vectorConectividadf2[i]["fuerzainterna"] = [
 							0,
@@ -1622,7 +1625,7 @@ function Calculus() {
 			multiplicacionM = multiplicarMatrices(element.rigidez, matrizL);
 			//console.log("multiplicacionM", multiplicacionM);
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
-			//console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
+			console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
 
 			//cálculo de reacciones externas
