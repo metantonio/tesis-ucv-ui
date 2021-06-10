@@ -1767,6 +1767,7 @@ function Calculus() {
 	var drawLines3 = "";
 	var drawini = "";
 	let dibujoDesplazamiento = () => {
+		draw = "";
 		for (var i = 0; i < codigoGeneticoP.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
@@ -1812,6 +1813,10 @@ function Calculus() {
 		return draw;
 	};
 	let dibujoIni = () => {
+		var encabezado =
+			"<svg width='500px' height='500px' viewBox='-5 -10 35 50' preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg' id='caja-dibujo4'>";
+		var pie = "</svg>";
+		draw = "";
 		for (var i = 0; i < codigoGeneticoP.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
@@ -1831,6 +1836,7 @@ function Calculus() {
 			//console.log(draw);
 			//return draw;
 		}
+		document.getElementById("caja-dibujo5").innerHTML = encabezado + draw + pie;
 		return draw;
 	};
 
@@ -1843,7 +1849,8 @@ function Calculus() {
 		var luzVano = actions.getLuzVano();
 		//drawLines = dibujo();
 		//drawLines2 = dibujoVigas();
-
+		//d3.selectAll("#caja-dibujo4 > *").remove();
+		d3.selectAll("#caja-dibujo4").remove();
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		tablaConectividad(coefViento);
@@ -1879,7 +1886,7 @@ function Calculus() {
 		//drawLines3 = dibujoDesplazamiento();
 		drawini = dibujoIni();
 		drawLines = drawLines3 + drawText;
-		document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
+		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 		document.getElementById("caja-dibujo2").innerHTML = drawLines;
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
@@ -1890,7 +1897,7 @@ function Calculus() {
 		var luzVano = actions.getLuzVano();
 		//drawLines = dibujo();
 		//drawLines2 = dibujoVigas();
-
+		//d3.selectAll("#caja-dibujo4").remove();
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		//console.log(vectorConectividadf);
@@ -1930,11 +1937,13 @@ function Calculus() {
 		// drawLines = drawLines3 + drawText;
 		// document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 		// document.getElementById("caja-dibujo2").innerHTML = drawLines;
+		//drawini = dibujoIni();
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
+
 		nodosCoord();
 		nodosNum();
 		nodosCoordVigas();
