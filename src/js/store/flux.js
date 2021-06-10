@@ -39,7 +39,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "4.68",
 					ry: "0.90",
 					j: "0.772",
-					cw: "86"
+					cw: "86",
+					bf: "34",
+					tf: "5.9",
+					tw: "4.2"
 				},
 				{
 					designacion: "IPN 100",
@@ -55,7 +58,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "8.19",
 					ry: "1.07",
 					j: "1.50",
-					cw: "263"
+					cw: "263",
+					bf: "50",
+					tf: "6.8",
+					tw: "4.5"
 				},
 				{
 					designacion: "IPN 120",
@@ -71,7 +77,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "12.5",
 					ry: "1.23",
 					j: "2.55",
-					cw: "673"
+					cw: "673",
+					bf: "58",
+					tf: "7.7",
+					tw: "5.1"
 				},
 				{
 					designacion: "IPN 140",
@@ -87,7 +96,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "18.0",
 					ry: "1.40",
 					j: "4.07",
-					cw: "1510"
+					cw: "1510",
+					bf: "66",
+					tf: "8.6",
+					tw: "5.7"
 				}
 			],
 			perfilUPL: [
@@ -105,7 +117,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "7.24",
 					ry: "1.00",
 					j: "0.995",
-					cw: "84.9"
+					cw: "84.9",
+					bf: "35",
+					tf: "7.0",
+					tw: "4.5"
 				},
 				{
 					designacion: "UPL 100",
@@ -121,7 +136,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "11.0",
 					ry: "1.15",
 					j: "1.71",
-					cw: "237"
+					cw: "237",
+					bf: "40",
+					tf: "8.0",
+					tw: "5.0"
 				},
 				{
 					designacion: "UPL 120",
@@ -137,7 +155,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "14.3",
 					ry: "1.27",
 					j: "1.96",
-					cw: "520"
+					cw: "520",
+					bf: "45",
+					tf: "8.0",
+					tw: "5.0"
 				},
 				{
 					designacion: "UPL 140",
@@ -153,7 +174,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					zy: "18.9",
 					ry: "1.41",
 					j: "2.53",
-					cw: "1060"
+					cw: "1060",
+					bf: "50",
+					tf: "8.5",
+					tw: "5.0"
 				}
 			],
 			vectorConect: []

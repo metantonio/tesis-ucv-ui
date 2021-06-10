@@ -168,6 +168,11 @@ function Calculus() {
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
+			elementos["inerciaY"] = item["iy"];
+			elementos["dmm"] = item["altura"];
+			elementos["bf"] = item["bf"];
+			elementos["tf"] = item["tf"];
+			elementos["tw"] = item["tw"];
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadas[i];
 			elementos["puntoFin"] = nodosCoordenadas[i + 1];
@@ -394,6 +399,11 @@ function Calculus() {
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
+			elementos["inerciaY"] = item["iy"];
+			elementos["dmm"] = item["altura"];
+			elementos["bf"] = item["bf"];
+			elementos["tf"] = item["tf"];
+			elementos["tw"] = item["tw"];
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadasV[i];
 			elementos["puntoFin"] = nodosCoordenadasV[i + 1];
@@ -546,6 +556,11 @@ function Calculus() {
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
+			elementos["inerciaY"] = item["iy"];
+			elementos["dmm"] = item["altura"];
+			elementos["bf"] = item["bf"];
+			elementos["tf"] = item["tf"];
+			elementos["tw"] = item["tw"];
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
 			elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
