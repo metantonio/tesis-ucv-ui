@@ -37,6 +37,14 @@ function Calculus() {
 	var listaPerfiles = listaPerfiles.concat(listUPL);
 	var repetir = 0;
 	var exagerar = 1;
+	var limitePlasticoIAla = 0.3 * Math.sqrt(2100000 / 4200);
+	var limiteCompactoIAla = 0.376 * Math.sqrt(2100000 / 4200);
+	var limiteNoCompactoIAla = 0.816 * Math.sqrt(2100000 / (4200 - 700));
+	var limitePlasticoIAlma = 3.0 * Math.sqrt(2100000 / 4200);
+	var limiteCompactoIAlma = 3.7 * Math.sqrt(2100000 / 4200);
+	var limiteNoCompactoIAlma = 5.61 * Math.sqrt(2100000 / 4200);
+	var limiteCompactoUAnchoEspesor = 0.3 * Math.sqrt(2100000 / 4200);
+	var limiteEsbeltezU = 5.78 ** Math.sqrt(2100000 / 4200); //si ND3
 
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
@@ -173,6 +181,14 @@ function Calculus() {
 			elementos["bf"] = item["bf"];
 			elementos["tf"] = item["tf"];
 			elementos["tw"] = item["tw"];
+			elementos["sx"] = item["sx"];
+			elementos["zx"] = item["zx"];
+			elementos["rx"] = item["rx"];
+			elementos["sy"] = item["sy"];
+			elementos["zy"] = item["zy"];
+			elementos["ry"] = item["ry"];
+			elementos["jj"] = item["j"];
+			elementos["cw"] = item["cw"];
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadas[i];
 			elementos["puntoFin"] = nodosCoordenadas[i + 1];
@@ -404,6 +420,14 @@ function Calculus() {
 			elementos["bf"] = item["bf"];
 			elementos["tf"] = item["tf"];
 			elementos["tw"] = item["tw"];
+			elementos["sx"] = item["sx"];
+			elementos["zx"] = item["zx"];
+			elementos["rx"] = item["rx"];
+			elementos["sy"] = item["sy"];
+			elementos["zy"] = item["zy"];
+			elementos["ry"] = item["ry"];
+			elementos["jj"] = item["j"];
+			elementos["cw"] = item["cw"];
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadasV[i];
 			elementos["puntoFin"] = nodosCoordenadasV[i + 1];
@@ -561,6 +585,14 @@ function Calculus() {
 			elementos["bf"] = item["bf"];
 			elementos["tf"] = item["tf"];
 			elementos["tw"] = item["tw"];
+			elementos["sx"] = item["sx"];
+			elementos["zx"] = item["zx"];
+			elementos["rx"] = item["rx"];
+			elementos["sy"] = item["sy"];
+			elementos["zy"] = item["zy"];
+			elementos["ry"] = item["ry"];
+			elementos["jj"] = item["j"];
+			elementos["cw"] = item["cw"];
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
 			elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
@@ -1630,9 +1662,14 @@ function Calculus() {
 		var matrizL = [];
 		var n = 0;
 		var p = 0;
+		var puntuacion = 0;
+		var lp = 0;
+		var lr = 0;
+		var momentoPlastico = 0;
+
 		for (let element of codigoGeneticoP) {
 			multiplicacionM = [];
-			//multiplicacionM2 = [];
+			puntuacion = 0;
 			matrizL = [
 				[+element.cos, +element.sin, 0, 0, 0, 0],
 				[-element.sin, +element.cos, 0, 0, 0, 0],
@@ -1719,6 +1756,63 @@ function Calculus() {
 				);
 			} else {
 				element["deriva"] = 0;
+			}
+
+			if (element.tipo != "Diagonal") {
+				//evaluación del ala
+				element["Alaλ"] = element.bf / element.tf;
+				if (element["Alaλ"] <= limiteCompactoIAla) {
+					element["AlaλOk"] = "Compacta";
+					puntuacion += 10;
+				} else {
+					if (element["Alaλ"] <= limiteNoCompactoIAla) {
+						element["AlaλOk"] = "No Compacta";
+						puntuacion += 4;
+					}
+				}
+
+				//evaluación del alma
+				element["Almaλ"] = element.dmm / element.tw;
+				if (element["Almaλ"] < limiteCompactoIAlma) {
+					element["AlmaλOk"] = "Compacta";
+					puntuacion += 10;
+				} else {
+					element["AlmaλOk"] = "No Compacta";
+				}
+				//hay que analizar flexión del eje fuerte y eje débil
+				lp = (1.78 * element.ry * Math.sqrt(2100000 / 4200)) / 100;
+				momentoPlastico = (element.zx * 4200) / 100;
+				if (element["Almaλ"] < lp) {
+					element["Mny"] = momentoPlastico;
+					//puntuacion+=10;
+				} else {
+					element["Mny"] =
+						2.38 *
+						(momentoPlastico - (0, 7 * 4200 * element.sx * ((element.longitud - lp) / (1 - lp))) / 100);
+				}
+				element["Mnx"] = (4200 * element.zy) / 100;
+				if (element["esfuerzosInternos"][2] < 0) {
+					lp = element["esfuerzosInternos"][2] * -1;
+				} else {
+					lp = element["esfuerzosInternos"][2];
+				}
+				if (lp / (0.9 * element["Mny"]) <= 1) {
+					element["AlmaλMnOk"] = "Cumple";
+					puntuacion += 10;
+				}
+
+				//chequeo pandeo del alma por corte
+				if (element["esfuerzosInternos"][1] < 0) {
+					lp = element["esfuerzosInternos"][1] * -1;
+				} else {
+					lp = element["esfuerzosInternos"][1];
+				}
+				if (lp < (0.6 * element.dmm * element.tw) / 100) {
+					element["padeoAlmaCorte"] = "Cumple";
+					puntuacion += 10;
+				} else {
+					element["padeoAlmaCorte"] = "No Cumple";
+				}
 			}
 
 			//guardar los desplazamientos de cada caso
