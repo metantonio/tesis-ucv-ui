@@ -36,6 +36,7 @@ function Calculus() {
 	var listUPL = actions.getPerfilUPL();
 	var listaPerfiles = listaPerfiles.concat(listUPL);
 	var repetir = 0;
+	var exagerar = 1;
 
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
@@ -1783,20 +1784,32 @@ function Calculus() {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
-				(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100 + codigoGeneticoP[i]["puntoIni"][0]).toFixed(3) +
+				exagerar *
+					(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100 + codigoGeneticoP[i]["puntoIni"][0]).toFixed(
+						3
+					) +
 				'" ' +
 				'y1="' +
-				(40 - codigoGeneticoP[i]["desplazamientoNodoIni"][1] / 100 - codigoGeneticoP[i]["puntoIni"][1]).toFixed(
-					3
-				) +
+				exagerar *
+					(
+						40 -
+						codigoGeneticoP[i]["desplazamientoNodoIni"][1] / 100 -
+						codigoGeneticoP[i]["puntoIni"][1]
+					).toFixed(3) +
 				'" ' +
 				'x2="' +
-				(codigoGeneticoP[i]["desplazamientoNodoIni"][3] / 100 + codigoGeneticoP[i]["puntoFin"][0]).toFixed(3) +
+				exagerar *
+					(codigoGeneticoP[i]["desplazamientoNodoIni"][3] / 100 + codigoGeneticoP[i]["puntoFin"][0]).toFixed(
+						3
+					) +
 				'" ' +
 				'y2="' +
-				(40 - codigoGeneticoP[i]["desplazamientoNodoIni"][4] / 100 - codigoGeneticoP[i]["puntoFin"][1]).toFixed(
-					3
-				) +
+				exagerar *
+					(
+						40 -
+						codigoGeneticoP[i]["desplazamientoNodoIni"][4] / 100 -
+						codigoGeneticoP[i]["puntoFin"][1]
+					).toFixed(3) +
 				'" ' +
 				'stroke="red" strokeWidth="1px"></line>';
 			//console.log(draw);
@@ -1872,6 +1885,7 @@ function Calculus() {
 			d3.selectAll("#vector-reducido > *").remove();
 			d3.selectAll("#desplazamiento-nodos > *").remove();
 		}
+		exagerar = 1;
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		tablaConectividad(coefViento);
@@ -2116,6 +2130,7 @@ function Calculus() {
 				<button
 					className="btnPaso text-center mt-12 title"
 					onClick={() => {
+						exagerar = document.getElementById("exageracion-box").value;
 						drawLines3 = dibujoDesplazamiento();
 
 						drawLines = drawLines3;
@@ -2124,6 +2139,20 @@ function Calculus() {
 					}}>
 					<span>Dibujar deformada</span>
 				</button>
+				<p>
+					<h4>Exagerar deformación</h4>
+					<input
+						className="no-columnas"
+						type="number"
+						placeholder="Ej: 1.05"
+						id="exageracion-box"
+						name="no-columnas"
+						min="0.50"
+						step="0.05"
+						max="3.00"
+						onChange={e => (exagerar = document.getElementById("exageracion-box").value)}
+					/>
+				</p>
 			</p>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
