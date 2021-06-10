@@ -1760,44 +1760,44 @@ function Calculus() {
 
 			if (element.tipo != "Diagonal") {
 				//evaluación del ala
-				element["Alaλ"] = element.bf / element.tf;
-				if (element["Alaλ"] <= limiteCompactoIAla) {
-					element["AlaλOk"] = "Compacta";
+				element["alaλ"] = element.bf / element.tf;
+				if (element["alaλ"] <= limiteCompactoIAla) {
+					element["alaλOk"] = "Compacta";
 					puntuacion += 10;
 				} else {
-					if (element["Alaλ"] <= limiteNoCompactoIAla) {
-						element["AlaλOk"] = "No Compacta";
+					if (element["alaλ"] <= limiteNoCompactoIAla) {
+						element["alaλOk"] = "No Compacta";
 						puntuacion += 4;
 					}
 				}
 
 				//evaluación del alma
-				element["Almaλ"] = element.dmm / element.tw;
-				if (element["Almaλ"] < limiteCompactoIAlma) {
-					element["AlmaλOk"] = "Compacta";
+				element["almaλ"] = element.dmm / element.tw;
+				if (element["almaλ"] < limiteCompactoIAlma) {
+					element["almaλOk"] = "Compacta";
 					puntuacion += 10;
 				} else {
-					element["AlmaλOk"] = "No Compacta";
+					element["almaλOk"] = "No Compacta";
 				}
 				//hay que analizar flexión del eje fuerte y eje débil
 				lp = (1.78 * element.ry * Math.sqrt(2100000 / 4200)) / 100;
 				momentoPlastico = (element.zx * 4200) / 100;
-				if (element["Almaλ"] < lp) {
-					element["Mny"] = momentoPlastico;
+				if (element["almaλ"] < lp) {
+					element["mny"] = momentoPlastico;
 					//puntuacion+=10;
 				} else {
-					element["Mny"] =
+					element["mny"] =
 						2.38 *
 						(momentoPlastico - (0, 7 * 4200 * element.sx * ((element.longitud - lp) / (1 - lp))) / 100);
 				}
-				element["Mnx"] = (4200 * element.zy) / 100;
+				element["mnx"] = (4200 * element.zy) / 100;
 				if (element["esfuerzosInternos"][2] < 0) {
 					lp = element["esfuerzosInternos"][2] * -1;
 				} else {
 					lp = element["esfuerzosInternos"][2];
 				}
-				if (lp / (0.9 * element["Mny"]) <= 1) {
-					element["AlmaλMnOk"] = "Cumple";
+				if (lp / (0.9 * element["mny"]) <= 1) {
+					element["almaλMnOk"] = "Cumple";
 					puntuacion += 10;
 				}
 
@@ -1812,6 +1812,47 @@ function Calculus() {
 					puntuacion += 10;
 				} else {
 					element["padeoAlmaCorte"] = "No Cumple";
+				}
+			}
+
+			//evaluación por compresión es distinta en ángulos y perfiles I
+			if (element["esfuerzosInternos"][0] < 0) {
+				lp = element["esfuerzosInternos"][0] * -1;
+			} else {
+				lp = element["esfuerzosInternos"][0];
+			}
+			//chequeo del ala
+			lr = element.bf / element.tf;
+			if (element["tipo"] == "Diagonal") {
+				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
+					element["alaCompresion"] = "Cumple";
+					puntuacion += 10;
+				} else {
+					element["alaCompresion"] = "No Cumple";
+				}
+			} else {
+				if (lr <= 0.56 * Math.sqrt(2100000 / 4200)) {
+					element["alaCompresion"] = "Cumple";
+					puntuacion += 10;
+				} else {
+					element["alaCompresion"] = "No Cumple";
+				}
+			}
+			//chequeo del alma
+			lr = element.dmm / element.tw;
+			if (element["tipo"] == "Diagonal") {
+				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
+					element["alaCompresion"] = "Cumple";
+					puntuacion += 10;
+				} else {
+					element["alaCompresion"] = "No Cumple";
+				}
+			} else {
+				if (lr <= 1.49 * Math.sqrt(2100000 / 4200)) {
+					element["alaCompresion"] = "Cumple";
+					puntuacion += 10;
+				} else {
+					element["alaCompresion"] = "No Cumple";
 				}
 			}
 
