@@ -2147,9 +2147,9 @@ function Calculus() {
 						placeholder="Ej: 1.05"
 						id="exageracion-box"
 						name="no-columnas"
-						min="0.50"
-						step="0.05"
-						max="3.00"
+						min="1"
+						step="0.01"
+						max="1.10"
 						onChange={e => (exagerar = document.getElementById("exageracion-box").value)}
 					/>
 				</p>
