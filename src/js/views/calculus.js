@@ -35,6 +35,7 @@ function Calculus() {
 	var listaIPN = actions.getPerfilIPN();
 	var listUPL = actions.getPerfilUPL();
 	var listaPerfiles = listaPerfiles.concat(listUPL);
+	var repetir = 0;
 
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
@@ -1851,6 +1852,16 @@ function Calculus() {
 		//drawLines2 = dibujoVigas();
 		//d3.selectAll("#caja-dibujo4 > *").remove();
 		d3.selectAll("#caja-dibujo4").remove();
+		if (repetir > 0) {
+			d3.selectAll("#matrices-rigid-local > *").remove();
+			d3.selectAll("#matrices-rigid-global > *").remove();
+			d3.selectAll("#matrices-rigid-total > *").remove();
+			d3.selectAll("#vector-fuerzas > *").remove();
+			d3.selectAll("#matriz-reducida > *").remove();
+			d3.selectAll("#matriz-reducida-inversa > *").remove();
+			d3.selectAll("#vector-reducido > *").remove();
+			d3.selectAll("#desplazamiento-nodos > *").remove();
+		}
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		tablaConectividad(coefViento);
@@ -1978,6 +1989,7 @@ function Calculus() {
 						botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
 						//ver código genético
 						console.log("codigo genético P", codigoGeneticoP);
+						repetir++;
 					}}>
 					<span>Calcular una estructura al azar</span>
 				</button>
