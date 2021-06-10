@@ -1631,7 +1631,7 @@ function Calculus() {
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
 			//console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
 			if (element["desplazamientoNodoIni"].length == 3) {
-				console.log("es true", element.desplazamientoNodoIni);
+				//console.log("es true", element.desplazamientoNodoIni);
 				desplazamientoEnCodigo();
 			}
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
@@ -1704,6 +1704,35 @@ function Calculus() {
 				);
 			} else {
 				element["deriva"] = 0;
+			}
+
+			//guardar los desplazamientos de cada caso
+			if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
+				element["derivaCombo1"] = element["deriva"];
+				element["esfuerzosInternosCombo1"] = element["esfuerzosInternos"];
+				element["reaccionExternaCombo1"] = element["reaccionExterna"];
+				element["desplazamientoNodoIniCombo1"] = element["desplazamientoNodoIni"];
+			}
+
+			if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
+				element["derivaCombo2"] = element["deriva"];
+				element["esfuerzosInternosCombo2"] = element["esfuerzosInternos"];
+				element["reaccionExternaCombo2"] = element["reaccionExterna"];
+				element["desplazamientoNodoIniCombo2"] = element["desplazamientoNodoIni"];
+			}
+
+			if (cW == 1.275) {
+				element["derivaCombo3"] = element["deriva"];
+				element["esfuerzosInternosCombo3"] = element["esfuerzosInternos"];
+				element["reaccionExternaCombo3"] = element["reaccionExterna"];
+				element["desplazamientoNodoIniCombo3"] = element["desplazamientoNodoIni"];
+			}
+
+			if (cW == -1.275) {
+				element["derivaCombo4"] = element["deriva"];
+				element["esfuerzosInternosCombo4"] = element["esfuerzosInternos"];
+				element["reaccionExternaCombo4"] = element["reaccionExterna"];
+				element["desplazamientoNodoIniCombo4"] = element["desplazamientoNodoIni"];
 			}
 		}
 		return codigoGeneticoP;
