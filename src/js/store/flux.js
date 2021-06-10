@@ -138,6 +138,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					ry: "1.27",
 					j: "1.96",
 					cw: "520"
+				},
+				{
+					designacion: "UPL 140",
+					altura: "140",
+					peso: "11.30",
+					area: "14.50",
+					ix: "435",
+					sx: "62.1",
+					zx: "73.5",
+					rx: "5.48",
+					iy: "29.0",
+					sy: "7.90",
+					zy: "18.9",
+					ry: "1.41",
+					j: "2.53",
+					cw: "1060"
 				}
 			],
 			vectorConect: []
