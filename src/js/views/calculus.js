@@ -1759,7 +1759,7 @@ function Calculus() {
 			}
 
 			if (element.tipo != "Diagonal") {
-				//evaluación del ala
+				//evaluación del ala flexión
 				element["alaλ"] = element.bf / element.tf;
 				if (element["alaλ"] <= limiteCompactoIAla) {
 					element["alaλOk"] = "Compacta";
@@ -1771,7 +1771,7 @@ function Calculus() {
 					}
 				}
 
-				//evaluación del alma
+				//evaluación del alma flexión
 				element["almaλ"] = element.dmm / element.tw;
 				if (element["almaλ"] < limiteCompactoIAlma) {
 					element["almaλOk"] = "Compacta";
