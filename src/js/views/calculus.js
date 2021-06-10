@@ -1541,6 +1541,7 @@ function Calculus() {
 
 	function desplazamientoEnCodigo() {
 		var n = 0;
+		var flotante = 0;
 		for (let element of codigoGeneticoP) {
 			if (element.nodoIni[1] != 0) {
 				element["desplazamientoNodoIni"][0] = vectorDesplazamientos[n];
@@ -1552,8 +1553,10 @@ function Calculus() {
 				element["desplazamientoNodoIni"][1] = 0;
 				element["desplazamientoNodoIni"][2] = 0;
 			}
-
-			if (element.puntoFin[1] == parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso())) {
+			flotante = element.puntoFin[1];
+			flotante = round(parseFloat(flotante), 2);
+			if (flotante == round(parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso()), 2)) {
+				//console.log("entró en la comparación");
 				element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
 				element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
 				element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
@@ -1625,7 +1628,11 @@ function Calculus() {
 			multiplicacionM = multiplicarMatrices(element.rigidez, matrizL);
 			//console.log("multiplicacionM", multiplicacionM);
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
-			console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
+			//console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
+			if (element["desplazamientoNodoIni"].length == 3) {
+				console.log("es true", element.desplazamientoNodoIni);
+				desplazamientoEnCodigo();
+			}
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
 
 			//cálculo de reacciones externas

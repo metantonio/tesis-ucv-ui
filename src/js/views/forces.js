@@ -35,7 +35,7 @@ function Forces() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="250.00"
+								placeholder="ej: 250.00"
 								id="cargaVEntrepiso"
 								name="no-columnas"
 								min="1.00"
@@ -51,7 +51,7 @@ function Forces() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="800.00"
+								placeholder="ej: 800.00"
 								id="cargaPEntrepiso"
 								name="no-columnas"
 								min="1.00"
@@ -71,7 +71,7 @@ function Forces() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="100.00"
+								placeholder="ej: 100.00"
 								id="cargaVTecho"
 								name="no-columnas"
 								min="40.00"
@@ -87,7 +87,7 @@ function Forces() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="150.00"
+								placeholder="ej: 150.00"
 								id="cargaPTecho"
 								name="no-columnas"
 								min="1.00"
@@ -103,7 +103,7 @@ function Forces() {
 							<input
 								className="no-columnas"
 								type="number"
-								placeholder="30.00"
+								placeholder="ej: 30.00"
 								id="cargaViento"
 								name="no-columnas"
 								min="30.00"
