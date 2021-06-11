@@ -1760,9 +1760,12 @@ function Calculus() {
 				element["deriva"] = (element["desplazamientoNodoIni"][3] - element["desplazamientoNodoIni"][0]).toFixed(
 					3
 				);
-				if (element.deriva / parseFloat(actions.getEntrePiso()) < 0.012) {
+				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) < 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
+					element["derivaChequeo"] = "Cumple";
 					puntuacion += 10;
+				} else {
+					element["derivaChequeo"] = "No Cumple";
 				}
 			} else {
 				element["deriva"] = 0;
@@ -1939,6 +1942,7 @@ function Calculus() {
 			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
 			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
 			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
 			a += "<th>Ala Flexión</th>";
 			a += "<th>Alma Flexión</th>";
 			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
@@ -1990,6 +1994,9 @@ function Calculus() {
 				")</td>" +
 				"<td>" +
 				element.deriva +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeo +
 				"</td>" +
 				"<td>(" +
 				element.alaλOk +
