@@ -1778,10 +1778,10 @@ function Calculus() {
 					element["alaλOk"] = "Compacta";
 					puntuacion += 10;
 				} else {
-					n++;
+					//n--;
 					if (element["alaλ"] <= limiteNoCompactoIAla) {
 						element["alaλOk"] = "No Compacta";
-						puntuacion += 4 / n;
+						//puntuacion += 4 * n;
 					}
 				}
 
@@ -1836,13 +1836,15 @@ function Calculus() {
 				lp = element["esfuerzosInternos"][0];
 			}
 			//chequeo del ala
+			n--;
 			lr = element.bf / element.tf;
 			if (element["tipo"] == "Diagonal") {
 				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
 					element["alaCompresion"] = "Cumple";
-					puntuacion += 10;
+					puntuacion += 10 / Math.abs(n);
 				} else {
 					element["alaCompresion"] = "No Cumple";
+					puntuacion += 2 * n;
 				}
 			} else {
 				if (lr <= 0.56 * Math.sqrt(2100000 / 4200)) {
@@ -1857,9 +1859,10 @@ function Calculus() {
 			if (element["tipo"] == "Diagonal") {
 				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
 					element["almaCompresion"] = "Cumple";
-					puntuacion += 10;
+					puntuacion += 10 / Math.abs(n);
 				} else {
 					element["almaCompresion"] = "No Cumple";
+					puntuacion += 7 * n;
 				}
 			} else {
 				if (lr <= 1.49 * Math.sqrt(2100000 / 4200)) {
