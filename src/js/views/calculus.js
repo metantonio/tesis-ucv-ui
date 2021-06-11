@@ -2107,57 +2107,59 @@ function Calculus() {
 	var draw = "";
 	var drawLines3 = "";
 	var drawini = "";
-	let dibujoDesplazamiento = () => {
+	let dibujoDesplazamiento = codigoGeneticoP1 => {
 		draw = "";
-		for (var i = 0; i < codigoGeneticoP.length; i++) {
+		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
 				exagerar *
-					(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100 + codigoGeneticoP[i]["puntoIni"][0]).toFixed(
-						3
-					) +
+					(
+						codigoGeneticoP1[i]["desplazamientoNodoIni"][0] / 100 +
+						codigoGeneticoP1[i]["puntoIni"][0]
+					).toFixed(3) +
 				'" ' +
 				'y1="' +
 				exagerar *
 					(
 						40 -
-						codigoGeneticoP[i]["desplazamientoNodoIni"][1] / 100 -
-						codigoGeneticoP[i]["puntoIni"][1]
+						codigoGeneticoP1[i]["desplazamientoNodoIni"][1] / 100 -
+						codigoGeneticoP1[i]["puntoIni"][1]
 					).toFixed(3) +
 				'" ' +
 				'x2="' +
 				exagerar *
-					(codigoGeneticoP[i]["desplazamientoNodoIni"][3] / 100 + codigoGeneticoP[i]["puntoFin"][0]).toFixed(
-						3
-					) +
+					(
+						codigoGeneticoP1[i]["desplazamientoNodoIni"][3] / 100 +
+						codigoGeneticoP1[i]["puntoFin"][0]
+					).toFixed(3) +
 				'" ' +
 				'y2="' +
 				exagerar *
 					(
 						40 -
-						codigoGeneticoP[i]["desplazamientoNodoIni"][4] / 100 -
-						codigoGeneticoP[i]["puntoFin"][1]
+						codigoGeneticoP1[i]["desplazamientoNodoIni"][4] / 100 -
+						codigoGeneticoP1[i]["puntoFin"][1]
 					).toFixed(3) +
 				'" ' +
 				'stroke="red" strokeWidth="1px"></line>';
 			//console.log(draw);
 			//return draw;
 		}
-		for (var i = 0; i < codigoGeneticoP.length; i++) {
+		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
-				codigoGeneticoP[i]["puntoIni"][0].toFixed(3) +
+				codigoGeneticoP1[i]["puntoIni"][0].toFixed(3) +
 				'" ' +
 				'y1="' +
-				(40 - codigoGeneticoP[i]["puntoIni"][1]).toFixed(3) +
+				(40 - codigoGeneticoP1[i]["puntoIni"][1]).toFixed(3) +
 				'" ' +
 				'x2="' +
-				codigoGeneticoP[i]["puntoFin"][0].toFixed(3) +
+				codigoGeneticoP1[i]["puntoFin"][0].toFixed(3) +
 				'" ' +
 				'y2="' +
-				(40 - codigoGeneticoP[i]["puntoFin"][1]).toFixed(3) +
+				(40 - codigoGeneticoP1[i]["puntoFin"][1]).toFixed(3) +
 				'" ' +
 				'stroke="black" strokeWidth="10px"></line>';
 			//console.log(draw);
@@ -2165,25 +2167,25 @@ function Calculus() {
 		}
 		return draw;
 	};
-	let dibujoIni = () => {
+	let dibujoIni = codigoGeneticoP1 => {
 		var encabezado =
 			"<svg width='500px' height='500px' viewBox='-5 -10 35 50' preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg' id='caja-dibujo4'>";
 		var pie = "</svg>";
 		draw = "";
-		for (var i = 0; i < codigoGeneticoP.length; i++) {
+		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
-				codigoGeneticoP[i]["puntoIni"][0].toFixed(3) +
+				codigoGeneticoP1[i]["puntoIni"][0].toFixed(3) +
 				'" ' +
 				'y1="' +
-				(40 - codigoGeneticoP[i]["puntoIni"][1]).toFixed(3) +
+				(40 - codigoGeneticoP1[i]["puntoIni"][1]).toFixed(3) +
 				'" ' +
 				'x2="' +
-				codigoGeneticoP[i]["puntoFin"][0].toFixed(3) +
+				codigoGeneticoP1[i]["puntoFin"][0].toFixed(3) +
 				'" ' +
 				'y2="' +
-				(40 - codigoGeneticoP[i]["puntoFin"][1]).toFixed(3) +
+				(40 - codigoGeneticoP1[i]["puntoFin"][1]).toFixed(3) +
 				'" ' +
 				'stroke="black" strokeWidth="10px"></line>';
 			//console.log(draw);
@@ -2248,7 +2250,7 @@ function Calculus() {
 		calculosFinales(coefViento, coefVariable, coefPermanente);
 		addTablaFinal(getElementByIdTablaFinal);
 		//drawLines3 = dibujoDesplazamiento();
-		drawini = dibujoIni();
+		drawini = dibujoIni(codigoGeneticoP);
 		drawLines = drawLines3 + drawText;
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 		document.getElementById("caja-dibujo2").innerHTML = drawLines;
@@ -2316,7 +2318,7 @@ function Calculus() {
 		//console.log(listaPerfiles);
 		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//svg.selectAll("*").remove();
-		document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
+		document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
 	});
 
 	return (
@@ -2457,18 +2459,6 @@ function Calculus() {
 				</div>
 			</div>
 			<p className="save-btn">
-				<button
-					className="btnPaso text-center mt-12 title"
-					onClick={() => {
-						exagerar = document.getElementById("exageracion-box").value;
-						drawLines3 = dibujoDesplazamiento();
-
-						drawLines = drawLines3;
-
-						document.getElementById("caja-dibujo2").innerHTML = drawLines;
-					}}>
-					<span>Dibujar deformada</span>
-				</button>
 				<p>
 					<h4>Exagerar deformación</h4>
 					<input
@@ -2483,6 +2473,18 @@ function Calculus() {
 						onChange={e => (exagerar = document.getElementById("exageracion-box").value)}
 					/>
 				</p>
+				<button
+					className="btnPaso text-center mt-12 title"
+					onClick={() => {
+						exagerar = document.getElementById("exageracion-box").value;
+						drawLines3 = dibujoDesplazamiento(estructurasLista[0]);
+
+						drawLines = drawLines3;
+
+						document.getElementById("caja-dibujo2").innerHTML = drawLines;
+					}}>
+					<span>Dibujar deformada</span>
+				</button>
 			</p>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
