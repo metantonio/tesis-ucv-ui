@@ -189,6 +189,7 @@ function Profiles() {
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
+		window.scroll(0, top);
 		addTableIPN();
 		addTableUPL();
 	});
