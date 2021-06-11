@@ -1671,6 +1671,7 @@ function Calculus() {
 		var esfuerzoEfectivo = 0;
 		var esfuerzoCritico = 0;
 		var resistenciaNominal = 0;
+		var resultado = 0;
 
 		for (let element of codigoGeneticoP) {
 			multiplicacionM = [];
@@ -1920,6 +1921,9 @@ function Calculus() {
 				}
 			}
 
+			//guarda el valor de la puntuación del elemento es una variable acumulativa temporal
+			resultado += element["puntuacion"];
+
 			//guardar los desplazamientos de cada caso
 			if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
 				element["derivaCombo1"] = element["deriva"];
@@ -1953,6 +1957,25 @@ function Calculus() {
 				element["puntuacionCombo4"] = element["puntuacion"];
 			}
 		}
+		codigoGeneticoP[0]["resultadoFinal"] = (resultado / codigoGeneticoP.length).toFixed(3);
+		if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
+			codigoGeneticoP[0]["resultadoCombo1"] = codigoGeneticoP[0]["resultadoFinal"];
+		}
+		if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
+			codigoGeneticoP[0]["resultadoCombo2"] = codigoGeneticoP[0]["resultadoFinal"];
+		}
+		if (cW == 1.275) {
+			codigoGeneticoP[0]["resultadoCombo3"] = codigoGeneticoP[0]["resultadoFinal"];
+		}
+		if (cW == -1.275) {
+			codigoGeneticoP[0]["resultadoCombo4"] = codigoGeneticoP[0]["resultadoFinal"];
+		}
+		//evaluación del codigo genético de genera correctamente después de correr los casos de carga
+		codigoGeneticoP[0]["evaluacionCodigoGenetico"] =
+			parseFloat(codigoGeneticoP[0]["resultadoCombo1"]) +
+			parseFloat(codigoGeneticoP[0]["resultadoCombo2"]) +
+			parseFloat(codigoGeneticoP[0]["resultadoCombo3"]) +
+			parseFloat(codigoGeneticoP[0]["resultadoCombo4"]);
 		return codigoGeneticoP;
 	}
 
@@ -1980,7 +2003,9 @@ function Calculus() {
 			a += "<th>Compresión del Alma</th>";
 			a += "<th>Tipo de Pandeo</th>";
 			a += "<th>Chequeo compresión</th>";
-			a += "<th>Puntuación</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
 			//serían los encabezados de la tabla
 			var html = "<thead><tr>" + a + "</tr></thead>";
 
@@ -2053,6 +2078,9 @@ function Calculus() {
 				")</td>" +
 				"<td>(" +
 				element.puntuacion +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP[0]["resultadoFinal"] +
 				")</td>" +
 				"</tr>";
 			//+"<br/>";
