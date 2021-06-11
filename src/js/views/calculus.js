@@ -45,7 +45,7 @@ function Calculus() {
 	var limiteNoCompactoIAlma = 5.61 * Math.sqrt(2100000 / 4200);
 	var limiteCompactoUAnchoEspesor = 0.3 * Math.sqrt(2100000 / 4200);
 	var limiteEsbeltezU = 5.78 ** Math.sqrt(2100000 / 4200); //si ND3
-
+	var generaciones = 1;
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
 			drawLines +=
@@ -2329,27 +2329,54 @@ function Calculus() {
 					condicionada a las deriva de piso mediante la aplicación de Algoritmos Genéticos
 				</h1>
 			</div>
-			<p className="save-btn">
-				<button
-					className="btnPaso text-center mt-12 title"
-					onClick={() => {
-						//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
-						//caso 1.4 carga permanente
-						botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
-						//caso 1.2CP+1.6CV
-						botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
-						//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-						botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
-						//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
-						botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
-						//ver código genético
-						console.log("codigo genético P", codigoGeneticoP);
-						repetir++; //sirve para borrar div en caso de que repetir>0
-						listaEstructuras(codigoGeneticoP);
-					}}>
-					<span>Calcular una estructura al azar</span>
-				</button>
-			</p>
+			<div className="row justify-content">
+				<div className="col-sm-4">
+					<p className="save-btn">
+						<button
+							className="btnPaso text-center mt-12 title"
+							onClick={() => {
+								//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
+								//caso 1.4 carga permanente
+								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+								//caso 1.2CP+1.6CV
+								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
+								//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
+								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
+								//ver código genético
+								console.log("codigo genético P", codigoGeneticoP);
+								repetir++; //sirve para borrar div en caso de que repetir>0
+								listaEstructuras(codigoGeneticoP);
+							}}>
+							<span>Calcular una estructura al azar</span>
+						</button>
+					</p>
+				</div>
+				<div className="col-sm-4">
+					<h4>Número de Generaciones</h4>
+					<input
+						className="no-columnas"
+						type="number"
+						placeholder="Ej: 1"
+						id="generacion-box"
+						name="no-columnas"
+						min="1"
+						step="0.01"
+						max="1.10"
+						onChange={e => (generaciones = document.getElementById("generacion-box").value)}
+					/>
+				</div>
+				<div className="col-sm-4">
+					<button
+						className="btnPaso text-center mt-12 title"
+						onClick={() => {
+							//correr algoritmo genético
+						}}>
+						<span>Calcular Generaciones Seleccionadas</span>
+					</button>
+				</div>
+			</div>
 			<div className="row justify-content">
 				<div className="col-md-12" id="caja-dibujo5">
 					<svg
