@@ -1666,6 +1666,11 @@ function Calculus() {
 		var lp = 0;
 		var lr = 0;
 		var momentoPlastico = 0;
+		var esbeltezx = 0;
+		var esbeltezy = 0;
+		var esfuerzoEfectivo = 0;
+		var esfuerzoCritico = 0;
+		var resistenciaNominal = 0;
 
 		for (let element of codigoGeneticoP) {
 			multiplicacionM = [];
@@ -1754,6 +1759,10 @@ function Calculus() {
 				element["deriva"] = (element["desplazamientoNodoIni"][3] - element["desplazamientoNodoIni"][0]).toFixed(
 					3
 				);
+				if (element.deriva / parseFloat(actions.getEntrePiso()) < 0.012) {
+					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
+					puntuacion += 10;
+				}
 			} else {
 				element["deriva"] = 0;
 			}
@@ -1855,6 +1864,27 @@ function Calculus() {
 					element["alaCompresion"] = "No Cumple";
 				}
 			}
+			//chequeo esbeltez global
+			esbeltezx = (element.longitud * 100) / element.rx;
+			esbeltezy = (element.longitud * 100) / element.ry;
+			esfuerzoEfectivo = (Math.pow(Math.PI, 2) * 2100000) / Math.pow(Math.max(esbeltezx, esbeltezy), 2);
+			if (Math.max(esbeltezy, esbeltezx) >= 4.71 * Math.sqrt(2100000 / 4200)) {
+				element["pandeoCompresion"] = "Pandeo Elástico";
+				esfuerzoCritico = 0.877 * esfuerzoEfectivo;
+			} else {
+				element["pandeoCompresion"] = "Pandeo Inelástico";
+				esfuerzoCritico = 4200 * Math.pow(0.658, 4200 / esfuerzoEfectivo);
+				puntuacion += 5;
+			}
+			resistenciaNominal = element.area * esfuerzoCritico;
+			if (resistenciaNominal * 0.9 >= lp) {
+				element["chequeoCompresion"] = "Cumple";
+				puntuacion += 10;
+			} else {
+				element["chequeoCompresion"] = "No Cumple";
+			}
+			//console.log("puntuación", puntuacion + 1 / element.peso);
+			element["puntuacion"] = puntuacion + 1 / element.peso;
 
 			//guardar los desplazamientos de cada caso
 			if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
@@ -1862,6 +1892,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo1"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo1"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo1"] = element["desplazamientoNodoIni"];
+				element["puntuacionCombo1"] = puntuacion + 1 / element.peso;
 			}
 
 			if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
@@ -1869,6 +1900,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo2"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo2"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo2"] = element["desplazamientoNodoIni"];
+				element["puntuacionCombo2"] = puntuacion + 1 / element.peso;
 			}
 
 			if (cW == 1.275) {
@@ -1876,6 +1908,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo3"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo3"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo3"] = element["desplazamientoNodoIni"];
+				element["puntuacionCombo3"] = puntuacion + 1 / element.peso;
 			}
 
 			if (cW == -1.275) {
@@ -1883,6 +1916,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo4"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo4"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo4"] = element["desplazamientoNodoIni"];
+				element["puntuacionCombo4"] = puntuacion + 1 / element.peso;
 			}
 		}
 		return codigoGeneticoP;
