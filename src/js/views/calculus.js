@@ -1979,6 +1979,20 @@ function Calculus() {
 		return codigoGeneticoP;
 	}
 
+	var estructurasLista = [];
+	function listaEstructuras(codigoGen) {
+		estructurasLista.push(codigoGen);
+		estructurasLista.sort(function(a, b) {
+			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
+		});
+		//console.log("lista de Estructuras", estructurasLista);
+		if (estructurasLista.length > 5) {
+			estructurasLista = estructurasLista.slice(0, 6);
+		}
+		console.log("lista de Estructuras", estructurasLista);
+		return estructurasLista;
+	}
+
 	function addTablaFinal(getElementByIdf) {
 		var fila = "";
 
@@ -2328,7 +2342,8 @@ function Calculus() {
 						botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
 						//ver código genético
 						console.log("codigo genético P", codigoGeneticoP);
-						repetir++;
+						repetir++; //sirve para borrar div en caso de que repetir>0
+						listaEstructuras(codigoGeneticoP);
 					}}>
 					<span>Calcular una estructura al azar</span>
 				</button>
