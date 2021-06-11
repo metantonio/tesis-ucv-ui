@@ -1834,7 +1834,7 @@ function Calculus() {
 					element["pandeoAlmaCorte"] = "Cumple";
 					puntuacion += 1;
 				} else {
-					element["pandeoAlmaCorte"] = "No Cumple";
+					element["pandeoAlmaCorte"] = "Rigidizar Alma";
 				}
 			}
 
@@ -1905,14 +1905,14 @@ function Calculus() {
 
 			//Puntuación del peso del elemento
 			if (element["tipo"] == "Diagonal") {
-				console.log("puntuación", puntuacion);
+				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.08 * element["longitud"]).toFixed(2) != 0) {
 					element["puntuacion"] = puntuacion + 2 / (element["peso"] - 6.08 * element["longitud"]);
 				} else {
 					element["puntuacion"] = puntuacion + 2;
 				}
 			} else {
-				console.log("puntuación", puntuacion);
+				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.1 * element["longitud"]).toFixed(2) != 0) {
 					element["puntuacion"] = puntuacion + 1 / (element["peso"] - 6.1 * element["longitud"]);
 				} else {
