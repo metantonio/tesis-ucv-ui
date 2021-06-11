@@ -1760,15 +1760,24 @@ function Calculus() {
 				element["deriva"] = (element["desplazamientoNodoIni"][3] - element["desplazamientoNodoIni"][0]).toFixed(
 					3
 				);
-				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) < 0.012) {
+				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) != 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
-					element["derivaChequeo"] = "Cumple";
-					puntuacion += 10;
+
+					puntuacion += 1 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
 				} else {
-					element["derivaChequeo"] = "No Cumple";
 				}
 			} else {
 				element["deriva"] = 0;
+			}
+
+			if (element.tipo == "Columna") {
+				//el elemento
+				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) <= 0.012) {
+					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
+					element["derivaChequeo"] = "Cumple";
+				} else {
+					element["derivaChequeo"] = "No Cumple";
+				}
 			}
 
 			if (element.tipo != "Diagonal") {
@@ -1776,7 +1785,7 @@ function Calculus() {
 				element["alaλ"] = element.bf / element.tf;
 				if (element["alaλ"] <= limiteCompactoIAla) {
 					element["alaλOk"] = "Compacta";
-					puntuacion += 10;
+					puntuacion += 1;
 				} else {
 					//n--;
 					if (element["alaλ"] <= limiteNoCompactoIAla) {
@@ -1789,7 +1798,7 @@ function Calculus() {
 				element["almaλ"] = element.dmm / element.tw;
 				if (element["almaλ"] < limiteCompactoIAlma) {
 					element["almaλOk"] = "Compacta";
-					puntuacion += 10;
+					puntuacion += 1;
 				} else {
 					element["almaλOk"] = "No Compacta";
 				}
@@ -1812,7 +1821,7 @@ function Calculus() {
 				}
 				if (lp / (0.9 * element["mny"]) <= 1) {
 					element["almaλMnOk"] = "Cumple";
-					puntuacion += 10;
+					puntuacion += 1;
 				}
 
 				//chequeo pandeo del alma por corte
@@ -1823,7 +1832,7 @@ function Calculus() {
 				}
 				if (lp < (0.6 * element.dmm * element.tw) / 100) {
 					element["pandeoAlmaCorte"] = "Cumple";
-					puntuacion += 10;
+					puntuacion += 1;
 				} else {
 					element["pandeoAlmaCorte"] = "No Cumple";
 				}
@@ -1836,20 +1845,21 @@ function Calculus() {
 				lp = element["esfuerzosInternos"][0];
 			}
 			//chequeo del ala
-			n--;
+
 			lr = element.bf / element.tf;
 			if (element["tipo"] == "Diagonal") {
+				n++;
 				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
 					element["alaCompresion"] = "Cumple";
-					puntuacion += 10 / Math.abs(n);
+					puntuacion += 0.5;
 				} else {
 					element["alaCompresion"] = "No Cumple";
-					puntuacion += 2 * n;
+					//puntuacion += 1 * n;
 				}
 			} else {
 				if (lr <= 0.56 * Math.sqrt(2100000 / 4200)) {
 					element["alaCompresion"] = "Cumple";
-					puntuacion += 10;
+					puntuacion += 2;
 				} else {
 					element["alaCompresion"] = "No Cumple";
 				}
@@ -1859,15 +1869,15 @@ function Calculus() {
 			if (element["tipo"] == "Diagonal") {
 				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
 					element["almaCompresion"] = "Cumple";
-					puntuacion += 10 / Math.abs(n);
+					puntuacion += 0.5;
 				} else {
 					element["almaCompresion"] = "No Cumple";
-					puntuacion += 7 * n;
+					//puntuacion += 1 * n;
 				}
 			} else {
 				if (lr <= 1.49 * Math.sqrt(2100000 / 4200)) {
 					element["almaCompresion"] = "Cumple";
-					puntuacion += 10;
+					puntuacion += 2;
 				} else {
 					element["almaCompresion"] = "No Cumple";
 				}
@@ -1882,17 +1892,33 @@ function Calculus() {
 			} else {
 				element["pandeoCompresion"] = "Pandeo Inelástico";
 				esfuerzoCritico = 4200 * Math.pow(0.658, 4200 / esfuerzoEfectivo);
-				puntuacion += 5;
+				puntuacion += 1;
 			}
 			resistenciaNominal = element.area * esfuerzoCritico;
 			if (resistenciaNominal * 0.9 >= lp) {
 				element["chequeoCompresion"] = "Cumple";
-				puntuacion += 10;
+				puntuacion += 1;
 			} else {
 				element["chequeoCompresion"] = "No Cumple";
 			}
 			//console.log("puntuación", puntuacion + 1 / element.peso);
-			element["puntuacion"] = puntuacion + 1000 / Math.pow(element["peso"], 2);
+
+			//Puntuación del peso del elemento
+			if (element["tipo"] == "Diagonal") {
+				console.log("puntuación", puntuacion);
+				if (element["peso"] - (6.08 * element["longitud"]).toFixed(2) != 0) {
+					element["puntuacion"] = puntuacion + 2 / (element["peso"] - 6.08 * element["longitud"]);
+				} else {
+					element["puntuacion"] = puntuacion + 2;
+				}
+			} else {
+				console.log("puntuación", puntuacion);
+				if (element["peso"] - (6.1 * element["longitud"]).toFixed(2) != 0) {
+					element["puntuacion"] = puntuacion + 1 / (element["peso"] - 6.1 * element["longitud"]);
+				} else {
+					element["puntuacion"] = puntuacion + 2;
+				}
+			}
 
 			//guardar los desplazamientos de cada caso
 			if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
@@ -1900,7 +1926,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo1"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo1"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo1"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo1"] = puntuacion + 1000 / Math.pow(element["peso"], 2);
+				element["puntuacionCombo1"] = element["puntuacion"];
 			}
 
 			if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
@@ -1908,7 +1934,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo2"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo2"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo2"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo2"] = puntuacion + 1000 / Math.pow(element["peso"], 2);
+				element["puntuacionCombo2"] = element["puntuacion"];
 			}
 
 			if (cW == 1.275) {
@@ -1916,7 +1942,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo3"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo3"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo3"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo3"] = puntuacion + 1000 / Math.pow(element["peso"], 2);
+				element["puntuacionCombo3"] = element["puntuacion"];
 			}
 
 			if (cW == -1.275) {
@@ -1924,7 +1950,7 @@ function Calculus() {
 				element["esfuerzosInternosCombo4"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo4"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo4"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo4"] = puntuacion + 1000 / Math.pow(element["peso"], 2);
+				element["puntuacionCombo4"] = element["puntuacion"];
 			}
 		}
 		return codigoGeneticoP;
