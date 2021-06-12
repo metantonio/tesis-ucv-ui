@@ -1940,7 +1940,7 @@ function Calculus() {
 		}
 	}
 
-	function calculosFinales(cW, CV, CP) {
+	function calculosFinales(cW, CV, CP, codigoGeneticoP1) {
 		var multiplicacionM = [];
 		var multiplicacionM2 = [];
 		var matrizL = [];
@@ -1957,7 +1957,7 @@ function Calculus() {
 		var resistenciaNominal = 0;
 		var resultado = 0;
 
-		for (let element of codigoGeneticoP) {
+		for (let element of codigoGeneticoP1) {
 			multiplicacionM = [];
 			puntuacion = 0;
 			n = 0;
@@ -2241,26 +2241,26 @@ function Calculus() {
 				element["puntuacionCombo4"] = element["puntuacion"];
 			}
 		}
-		codigoGeneticoP[0]["resultadoFinal"] = (resultado / codigoGeneticoP.length).toFixed(3);
+		codigoGeneticoP1[0]["resultadoFinal"] = (resultado / codigoGeneticoP1.length).toFixed(3);
 		if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
-			codigoGeneticoP[0]["resultadoCombo1"] = codigoGeneticoP[0]["resultadoFinal"];
+			codigoGeneticoP1[0]["resultadoCombo1"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
-			codigoGeneticoP[0]["resultadoCombo2"] = codigoGeneticoP[0]["resultadoFinal"];
+			codigoGeneticoP1[0]["resultadoCombo2"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		if (cW == 1.275) {
-			codigoGeneticoP[0]["resultadoCombo3"] = codigoGeneticoP[0]["resultadoFinal"];
+			codigoGeneticoP1[0]["resultadoCombo3"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		if (cW == -1.275) {
-			codigoGeneticoP[0]["resultadoCombo4"] = codigoGeneticoP[0]["resultadoFinal"];
+			codigoGeneticoP1[0]["resultadoCombo4"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		//evaluación del codigo genético de genera correctamente después de correr los casos de carga
-		codigoGeneticoP[0]["evaluacionCodigoGenetico"] =
-			parseFloat(codigoGeneticoP[0]["resultadoCombo1"]) +
-			parseFloat(codigoGeneticoP[0]["resultadoCombo2"]) +
-			parseFloat(codigoGeneticoP[0]["resultadoCombo3"]) +
-			parseFloat(codigoGeneticoP[0]["resultadoCombo4"]);
-		return codigoGeneticoP;
+		codigoGeneticoP1[0]["evaluacionCodigoGenetico"] =
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo1"]) +
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo2"]) +
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo3"]) +
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]);
+		return codigoGeneticoP1;
 	}
 
 	var estructurasLista = [];
@@ -2281,6 +2281,7 @@ function Calculus() {
 		if (listaE.length > 1) {
 			var cruce1 = [];
 			var cruce2 = [];
+			var listaCruce = [];
 			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos);
 			var mediaCol = Math.floor(cantidadCol / 2);
 			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos);
@@ -2305,7 +2306,13 @@ function Calculus() {
 			cruce2.push(listaE[0].slice(cantidadCol + mediaVig, cantidadCol + cantidadVig));
 			//aquí agregamos las diagonales
 			cruce2.push(listaE[1].slice(cantidadCol + cantidadVig, listaE[1].length));
+
+			listaCruce.push(cruce1);
+			listaCruce.push(cruce2);
+			//estructurasLista.push(cruce1);
+			//estructurasLista.push(cruce2);
 		}
+		return listaCruce;
 	}
 
 	function addTablaFinal(getElementByIdf, codigoGeneticoP1) {
@@ -2409,7 +2416,7 @@ function Calculus() {
 				element.puntuacion +
 				")</td>" +
 				"<td>(" +
-				codigoGeneticoP[0]["resultadoFinal"] +
+				codigoGeneticoP1[0]["resultadoFinal"] +
 				")</td>" +
 				"</tr>";
 			//+"<br/>";
@@ -2562,7 +2569,7 @@ function Calculus() {
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo(codigoGeneticoP);
-		calculosFinales(coefViento, coefVariable, coefPermanente);
+		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
 		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
 		drawini = dibujoIni(codigoGeneticoP);
@@ -2611,7 +2618,7 @@ function Calculus() {
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
 		desplazamientoEnCodigo(codigoGeneticoP);
-		calculosFinales(coefViento, coefVariable, coefPermanente);
+		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
 		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
 		// drawini = dibujoIni();
@@ -2620,6 +2627,22 @@ function Calculus() {
 		// document.getElementById("caja-dibujo2").innerHTML = drawLines;
 		//drawini = dibujoIni();
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+	}
+
+	function BotonCruce(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
+		var listaAEvaluar = [];
+		listaAEvaluar = [];
+		listaAEvaluar = cruceGenetico1(estructurasLista);
+
+		//evaluación del primer cruce
+		rigidezTotal2(listaAEvaluar[0]);
+		vectorFuerzasInternas = funcionFuerzasInt2(listaAEvaluar[0]);
+		rigidezReducida2(listaAEvaluar[0]);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido();
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(listaAEvaluar[0]);
+		calculosFinales(coefViento, coefVariable, coefPermanente);
 	}
 
 	useEffect(() => {
