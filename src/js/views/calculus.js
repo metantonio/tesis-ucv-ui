@@ -1123,6 +1123,111 @@ function Calculus() {
 		return matrizRigidezTotal;
 	};
 
+	let rigidezTotal2 = codigoGeneticoP1 => {
+		matrizRigidezTotal = [];
+		let numNodosu = 0;
+		var tempy = 0;
+		var tempx = 0;
+		var stop = 0;
+		//console.log(actions.getNoPisos(), actions.getNoColumnas());
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+		//console.log("No de nodos", numNodosu);
+		for (var a = 0; a < numNodosu; a++) {
+			matrizRigidezTotal[a] = new Array(numNodosu).fill(0);
+			for (var b = 0; b < numNodosu; b++) {
+				matrizRigidezTotal[a][b] = 0;
+			}
+		}
+		//console.log(matrizRigidezTotal);
+		for (var i = 0; i <= numNodosu - 2; i += 3) {
+			for (var j = 0; j <= numNodosu - 2; j += 3) {
+				//console.log("Posición Matriz Rig Total:", i, j);
+				codigoGeneticoP1.forEach(element => {
+					//esquina superior izquierda de la matriz rigidez k
+					//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
+					if ((element.vectorX[0] == i) & (element.vectorX[0] == j)) {
+						stop = 0;
+						for (var k = 0; k <= 2; k++) {
+							for (var m = 0; m <= 2; m++) {
+								//console.log("Esquina sup-izq posicion", k, m);
+								matrizRigidezTotal[i + k][m + j] += element.rigidez[k][m];
+								stop++;
+								if (stop > numNodosu * 10) {
+									break;
+								}
+								//console.log(matrizRigidezTotal);
+							}
+						}
+					} else {
+						//esquina superior derecha de la matriz rigidez k
+						if ((element.vectorX[0] == i) & (element.vectorY[0] == j)) {
+							stop = 0;
+							for (var k = 0; k <= 2; k++) {
+								tempy = 0;
+								for (var m = 3; m <= 5; m++) {
+									//console.log("IF esquina sup-derecha pos,", k, m);
+									matrizRigidezTotal[i + k][tempy + j] += element.rigidez[k][m];
+									tempy++;
+									//console.log(matrizRigidezTotal);
+									stop++;
+									if (stop > numNodosu * 10) {
+										break;
+									}
+								}
+							}
+						} else {
+							//esquina inferior izquierda de la matriz rigidez k
+							if ((element.vectorX[0] == j) & (element.vectorY[0] == i)) {
+								tempx = 0;
+								stop = 0;
+								for (var k = 3; k <= 5; k++) {
+									for (var m = 0; m <= 2; m++) {
+										//console.log("IF esquina inf-izquierda pos,", k, m);
+										matrizRigidezTotal[i + tempx][m + j] += element.rigidez[k][m];
+										//console.log(matrizRigidezTotal);
+										stop++;
+										if (stop > numNodosu * 10) {
+											break;
+										}
+									}
+									tempx++;
+								}
+							} else {
+								//esquina inferior derecha de la matriz rigidez k
+								//console.log("esquina inf-derecha,", i, j);
+								//console.log("element.vectoyY[0]", element.vectoyY[0]);
+								if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
+									tempx = 0;
+									stop = 0;
+									//console.log("esquina inf-derecha en el IF,", i, j);
+									for (var k = 3; k <= 5; k++) {
+										tempy = 0;
+										for (var m = 3; m <= 5; m++) {
+											//console.log("tempx, tempy, ", tempx, tempy);
+											//.log("IF esquina inf-derecha pos, ", k, m);
+											//console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
+											matrizRigidezTotal[i + tempx][tempy + j] += element.rigidez[k][m];
+											stop++;
+											if (stop > numNodosu * 100) {
+												break;
+											}
+											//console.log(matrizRigidezTotal);
+											tempy++;
+										}
+										tempx++;
+									}
+								} //aquí cierra el IF comentado
+							}
+						}
+					}
+					return matrizRigidezTotal;
+				});
+			}
+		}
+		//console.log("matriz de rigidez total", matrizRigidezTotal);
+		return matrizRigidezTotal;
+	};
+
 	function addMatricesRigTotal() {
 		var vectorMatrizRigT = matrizRigidezTotal;
 		var numNodosu = 0;
@@ -1168,6 +1273,30 @@ function Calculus() {
 		).fill(0);
 		//console.log(vectorFuerzas1);
 		let barras = codigoGeneticoP;
+		//console.log("barras", barras);
+		barras.forEach(element => {
+			for (var i = 0; i < element["vectorX"].length; i++) {
+				value = element["vectorX"][i];
+				vectorFuerzas1[value] += element["fuerzainterna"][i];
+			}
+			for (var j = 0; j < element["vectorY"].length; j++) {
+				value = element["vectorY"][j];
+				vectorFuerzas1[value] += element["fuerzainterna"][j + 3];
+			}
+			return vectorFuerzas1;
+		});
+
+		//console.log("vector Fuerzas internas funcion", vectorFuerzas1);
+		return vectorFuerzas1;
+	};
+
+	let funcionFuerzasInt2 = codigoGeneticoP1 => {
+		let value = 0;
+		let vectorFuerzas1 = new Array(
+			(parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3
+		).fill(0);
+		//console.log(vectorFuerzas1);
+		let barras = codigoGeneticoP1;
 		//console.log("barras", barras);
 		barras.forEach(element => {
 			for (var i = 0; i < element["vectorX"].length; i++) {
@@ -1405,6 +1534,161 @@ function Calculus() {
 		return matrizRigidezRedux;
 	};
 
+	let rigidezReducida2 = codigoGeneticoP1 => {
+		let numNodosu = 0;
+		var tempy = 0;
+		var tempx = 0;
+		var stop = 0;
+		//console.log(actions.getNoPisos(), actions.getNoColumnas());
+		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
+		//console.log("No de nodos", numNodosu);
+		// for (var a = 0; a < numNodosu; a++) {
+		// 	matrizRigidezRedux[a] = new Array(numNodosu).fill(0);
+		// 	for (var b = 0; b < numNodosu; b++) {
+		// 		matrizRigidezRedux[a][b] = 0;
+		// 	}
+		// }
+
+		let matrizApoyo = [];
+		matrizRigidezRedux = copiarMatriz(matrizRigidezTotal);
+		//console.log("matrizRigidezRedux copiada de la total. Length", matrizRigidezRedux.length);
+
+		//hasta este punto funciona la reducción de filas en revisión 29-5-21 6:30pm
+		//var filasM_length = filasM.length;
+		//console.log("FilasM", filasM);
+		//console.log("FilasM length: ", filasM_length);
+
+		//Apartado*********************
+		var conx = 0;
+		var cony = 0;
+		var mem = 0;
+		//console.log("Código Genetico P", codigoGeneticoP);
+		for (var i = 0; i < matrizRigidezRedux.length; i += 1) {
+			matrizApoyo[i] = new Array();
+			cony = 0;
+			mem = 0;
+			//esta no es la manera más óptima, ya que este map debería estar dentro del for
+
+			for (var j = 0; j < matrizRigidezRedux.length; j += 3) {
+				//mem += 3;
+				//console.log("j", j);
+				for (let element of codigoGeneticoP1) {
+					//console.log("element", element);
+					if (
+						element.nodoIni[1] != 0 //&
+						// (i == element.vectorX[0] ||
+						// 	i == element.vectorX[1] ||
+						// 	i == element.vectorX[2] ||
+						// 	i == element.vectorY[0] ||
+						// 	i == element.vectorY[1] ||
+						// 	i == element.vectorY[2])
+					) {
+						if (j == element.vectorX[0] || j == element.vectorY[0]) {
+							//console.log("cony,j", cony, j);
+							matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
+							matrizApoyo[conx][cony + 1] = matrizRigidezRedux[i][j + 1];
+							matrizApoyo[conx][cony + 2] = matrizRigidezRedux[i][j + 2];
+							cony += 3;
+
+							break;
+						}
+					}
+				}
+				//salto loop interno
+
+				// codigoGeneticoP.forEach(element => {
+				// 	if (
+				// 		(element.nodoIni[1] != 0) &
+				// 		(i == element.vectorX[0] ||
+				// 			i == element.vectorX[1] ||
+				// 			i == element.vectorX[2] ||
+				// 			i == element.vectorY[0] ||
+				// 			i == element.vectorY[1] ||
+				// 			i == element.vectorY[2])
+				// 	) {
+				// 		if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
+				// 			matrizApoyo[conx][cony] = matrizRigidezRedux[i][j];
+				// 			matrizApoyo[conx][cony + 1] = matrizRigidezRedux[i][j + 1];
+				// 			matrizApoyo[conx][cony + 2] = matrizRigidezRedux[i][j + 2];
+				// 			cony += 3;
+
+				// 			return matrizApoyo;
+				// 		}
+				// 	}
+				// 	//console.log("MatrizApoyo[i][j]", matrizApoyo[conx][cony])
+				// 	return matrizApoyo;
+				// });
+			}
+			conx++;
+		}
+		//console.log("MatrizApoyo", matrizApoyo);
+		//hasta este punto devuelve corrctamente los valores pero agrega ciertas listas vacias
+		var matrizApoyo2 = [];
+		for (var i = 0; i < matrizApoyo.length; i++) {
+			if (matrizApoyo[i].length > 0) {
+				matrizApoyo2.push(matrizApoyo[i]);
+			}
+		}
+		//console.log("MatrizApoyo2", matrizApoyo2);
+		//en este punto obtuve todas las columnas importantes, ahora faltan las filas
+
+		var filasM = [];
+		var n = 0;
+		for (var i = 0; i < matrizApoyo2.length; i += 3) {
+			for (let element of codigoGeneticoP1) {
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+					filasM[n] = matrizApoyo2[i];
+					filasM[n + 1] = matrizApoyo2[i + 1];
+					filasM[n + 2] = matrizApoyo2[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					break;
+				}
+				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+					filasM[n] = matrizApoyo2[i];
+					filasM[n + 1] = matrizApoyo2[i + 1];
+					filasM[n + 2] = matrizApoyo2[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					break;
+				}
+				//return filasM;
+			}
+		}
+		//console.log("filasM:", filasM);
+		//************************** */
+		// var columnasM = [];
+		// //console.log("def colM:", columnasM);
+		// var k = 0;
+		// for (var i = 0; i < filasM.length; i++) {
+		// 	codigoGeneticoP.forEach(element => {
+		// 		k = 0;
+		// 		columnasM[i] = new Array(filasM.length);
+		// 		for (var j = 0; j <= filasM[i].length; j += 3) {
+		// 			//revisar este for
+		// 			//console.log("k: ", k);
+		// 			if ((element.nodoIni[1] != 0) & (j == element.vectorX[0] || j == element.vectorY[0])) {
+		// 				//console.log("k++: ", k);
+		// 				//console.log("filasM ij:", filasM[i][j]);
+		// 				columnasM[i][k] = filasM[i][j];
+		// 				//console.log("columnasM ij:", columnasM[i][j]);
+		// 				columnasM[i][k + 1] = filasM[i][j + 1];
+		// 				columnasM[i][k + 2] = filasM[i][j + 2];
+		// 				k += 3;
+		// 			}
+		// 		}
+		// 		return columnasM;
+		// 	});
+		// }
+
+		//console.log("columnasM:", columnasM);
+		matrizRigidezRedux = [];
+		matrizRigidezRedux = copiarMatriz(filasM);
+		//console.log("matrizRigidezRedux", matrizRigidezRedux);
+
+		return matrizRigidezRedux;
+	};
+
 	function copiarMatriz(arr) {
 		var array2 = [];
 		// for (var i = 0; i < array1.length; i++) {
@@ -1587,10 +1871,10 @@ function Calculus() {
 		return vectorDespl._data;
 	}
 
-	function desplazamientoEnCodigo() {
+	function desplazamientoEnCodigo(codigoGeneticoP1) {
 		var n = 0;
 		var flotante = 0;
-		for (let element of codigoGeneticoP) {
+		for (let element of codigoGeneticoP1) {
 			if (element.nodoIni[1] != 0) {
 				element["desplazamientoNodoIni"][0] = vectorDesplazamientos[n];
 				element["desplazamientoNodoIni"][1] = vectorDesplazamientos[n + 1];
@@ -1611,46 +1895,46 @@ function Calculus() {
 				n += 3;
 			}
 		}
-		for (var i = 0; i < codigoGeneticoP.length; i++) {
+		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			for (let element of codigoGeneticoP) {
 				if (
-					(codigoGeneticoP[i]["vectorX"][0] == element["vectorX"][0]) &
-					(codigoGeneticoP[i]["desplazamientoNodoIni"][0] != undefined)
+					(codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0]) &
+					(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
 				) {
-					element["desplazamientoNodoIni"][0] = codigoGeneticoP[i]["desplazamientoNodoIni"][0];
-					element["desplazamientoNodoIni"][1] = codigoGeneticoP[i]["desplazamientoNodoIni"][1];
-					element["desplazamientoNodoIni"][2] = codigoGeneticoP[i]["desplazamientoNodoIni"][2];
+					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
 				}
 			}
 
-			for (let element of codigoGeneticoP) {
+			for (let element of codigoGeneticoP1) {
 				if (
 					(codigoGeneticoP[i]["vectorY"][0] == element["vectorY"][0]) &
 					(codigoGeneticoP[i]["desplazamientoNodoIni"][3] != undefined)
 				) {
-					element["desplazamientoNodoIni"][3] = codigoGeneticoP[i]["desplazamientoNodoIni"][3];
-					element["desplazamientoNodoIni"][4] = codigoGeneticoP[i]["desplazamientoNodoIni"][4];
-					element["desplazamientoNodoIni"][5] = codigoGeneticoP[i]["desplazamientoNodoIni"][5];
+					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
 				}
 			}
-			for (let element of codigoGeneticoP) {
+			for (let element of codigoGeneticoP1) {
 				if (
-					(codigoGeneticoP[i]["vectorX"][0] == element["vectorY"][0]) &
-					(codigoGeneticoP[i]["desplazamientoNodoIni"][0] != undefined)
+					(codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0]) &
+					(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
 				) {
-					element["desplazamientoNodoIni"][3] = codigoGeneticoP[i]["desplazamientoNodoIni"][0];
-					element["desplazamientoNodoIni"][4] = codigoGeneticoP[i]["desplazamientoNodoIni"][1];
-					element["desplazamientoNodoIni"][5] = codigoGeneticoP[i]["desplazamientoNodoIni"][2];
+					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
 				}
 			}
-			for (let element of codigoGeneticoP) {
+			for (let element of codigoGeneticoP1) {
 				if (
-					(codigoGeneticoP[i]["vectorY"][0] == element["vectorX"][0]) &
-					(codigoGeneticoP[i]["desplazamientoNodoIni"][3] != undefined)
+					(codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0]) &
+					(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
 				) {
-					element["desplazamientoNodoIni"][0] = codigoGeneticoP[i]["desplazamientoNodoIni"][3];
-					element["desplazamientoNodoIni"][1] = codigoGeneticoP[i]["desplazamientoNodoIni"][4];
-					element["desplazamientoNodoIni"][2] = codigoGeneticoP[i]["desplazamientoNodoIni"][5];
+					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
 				}
 			}
 		}
@@ -1993,10 +2277,15 @@ function Calculus() {
 		return estructurasLista;
 	}
 
-	function addTablaFinal(getElementByIdf) {
+	function cruceGenetico1(listaE) {
+		if (listaE.length > 1) {
+		}
+	}
+
+	function addTablaFinal(getElementByIdf, codigoGeneticoP1) {
 		var fila = "";
 
-		var final = codigoGeneticoP.map(function(element, index, array) {
+		var final = codigoGeneticoP1.map(function(element, index, array) {
 			var a = "<th scope='row'>No</th>";
 			a += "<th>Perfil</th>";
 			a += "<th>Tipo Elemento</th>";
@@ -2246,9 +2535,9 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
-		desplazamientoEnCodigo();
+		desplazamientoEnCodigo(codigoGeneticoP);
 		calculosFinales(coefViento, coefVariable, coefPermanente);
-		addTablaFinal(getElementByIdTablaFinal);
+		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
 		drawini = dibujoIni(codigoGeneticoP);
 		drawLines = drawLines3 + drawText;
@@ -2295,9 +2584,9 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
-		desplazamientoEnCodigo();
+		desplazamientoEnCodigo(codigoGeneticoP);
 		calculosFinales(coefViento, coefVariable, coefPermanente);
-		addTablaFinal(getElementByIdTablaFinal);
+		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
 		// drawini = dibujoIni();
 		// drawLines = drawLines3 + drawText;
@@ -2358,7 +2647,7 @@ function Calculus() {
 					<input
 						className="no-columnas"
 						type="number"
-						placeholder="Ej: 1"
+						placeholder="Ej: 10"
 						id="generacion-box"
 						name="no-columnas"
 						min="1"
