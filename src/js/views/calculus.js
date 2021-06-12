@@ -46,6 +46,11 @@ function Calculus() {
 	var limiteCompactoUAnchoEspesor = 0.3 * Math.sqrt(2100000 / 4200);
 	var limiteEsbeltezU = 5.78 ** Math.sqrt(2100000 / 4200); //si ND3
 	var generaciones = 1;
+	var historiapesoy = 0;
+	var historiax = 0;
+	var historia = [];
+	var historiaPeso = [];
+
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
 			drawLines +=
@@ -2278,40 +2283,57 @@ function Calculus() {
 	}
 
 	function cruceGenetico1(listaE) {
+		let cruce1 = [];
+		let cruce2 = [];
+		let listaCruce = [];
 		if (listaE.length > 1) {
-			var cruce1 = [];
-			var cruce2 = [];
-			var listaCruce = [];
 			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos);
 			var mediaCol = Math.floor(cantidadCol / 2);
 			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos);
 			var mediaVig = Math.floor(cantidadVig / 2);
 			var cantidadDiag1 = listaE[0].length - cantidadVig - cantidadCol;
 			var cantidadDiag2 = listaE[1].length - cantidadVig - cantidadCol;
-
-			//aquí empieza el 1er cruce:
-			cruce1 = listaE[0].slice(0, mediaCol);
-			cruce1.push(listaE[1].slice(mediaCol, cantidadCol));
-			//aquí se agregan las vigas:
-			cruce1.push(listaE[0].slice(cantidadCol, cantidadCol + mediaVig));
-			cruce1.push(listaE[1].slice(cantidadCol + mediaVig, cantidadCol + cantidadVig));
-			//aquí agregamos las diagonales
-			cruce1.push(listaE[0].slice(cantidadCol + cantidadVig, listaE[0].length));
-
-			//aquí empieza el do cruce:
-			cruce2 = listaE[1].slice(0, mediaCol);
-			cruce2.push(listaE[0].slice(mediaCol, cantidadCol));
-			//aquí se agregan las vigas:
-			cruce2.push(listaE[1].slice(cantidadCol, cantidadCol + mediaVig));
-			cruce2.push(listaE[0].slice(cantidadCol + mediaVig, cantidadCol + cantidadVig));
-			//aquí agregamos las diagonales
-			cruce2.push(listaE[1].slice(cantidadCol + cantidadVig, listaE[1].length));
-
+			//primer cruce:
+			//console.log("Lista[0]", listaE[0]);//hay que convertir listaE[0][0] en array (mapearlo)
+			for (var i = 0; i < mediaCol; i++) {
+				//cruce1.push(listaE[0][i]);
+				cruce1.push(Object.entries(listaE[0]));
+			}
+			for (var i = mediaCol; i < cantidadCol; i++) {
+				cruce1.push(listaE[1][i]);
+			}
+			for (var i = cantidadCol; i < cantidadCol + mediaVig; i++) {
+				cruce1.push(listaE[0][i]);
+			}
+			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
+				cruce1.push(listaE[1][i]);
+			}
+			for (var i = cantidadCol + cantidadVig; i < listaE[0].length; i++) {
+				cruce1.push(listaE[0][i]);
+			}
+			//segundo cruce:
+			for (var i = 0; i < mediaCol; i++) {
+				cruce2[i] = listaE[1][i];
+			}
+			for (var i = mediaCol; i < cantidadCol; i++) {
+				cruce2[i] = listaE[0][i];
+			}
+			for (var i = cantidadCol; i < cantidadCol + mediaVig; i++) {
+				cruce2[i] = listaE[1][i];
+			}
+			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
+				cruce2[i] = listaE[0][i];
+			}
+			for (var i = cantidadCol + cantidadVig; i < listaE[0].length; i++) {
+				cruce2[i] = listaE[1][i];
+			}
+			console.log("cruce1", cruce1);
 			listaCruce.push(cruce1);
 			listaCruce.push(cruce2);
 			//estructurasLista.push(cruce1);
 			//estructurasLista.push(cruce2);
 		}
+		console.log("listaCruce", listaCruce);
 		return listaCruce;
 	}
 
@@ -2629,12 +2651,15 @@ function Calculus() {
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
 
-	function BotonCruce(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
+	function BotonCruce() {
 		var listaAEvaluar = [];
 		listaAEvaluar = [];
 		listaAEvaluar = cruceGenetico1(estructurasLista);
-
+		console.log("linea 2641", listaAEvaluar);
+		repetir++;
+		listaAEvaluar = listaEstructuras(listaAEvaluar);
 		//evaluación del primer cruce
+		console.log("listaAEvaluar[0]", listaAEvaluar[0]);
 		rigidezTotal2(listaAEvaluar[0]);
 		vectorFuerzasInternas = funcionFuerzasInt2(listaAEvaluar[0]);
 		rigidezReducida2(listaAEvaluar[0]);
@@ -2642,7 +2667,27 @@ function Calculus() {
 		vectorFuerzasInternasRedux = vectorFReducido();
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(listaAEvaluar[0]);
-		calculosFinales(coefViento, coefVariable, coefPermanente);
+		calculosFinales(0, 0, 1.4, listaAEvaluar[0]);
+		calculosFinales(0, 1.6, 1.2, listaAEvaluar[0]);
+		calculosFinales(1.275, 1.275, 1.05, listaAEvaluar[0]);
+		calculosFinales(-1.275, 1.275, 1.05, listaAEvaluar[0]);
+		//sirve para borrar div en caso de que repetir>0
+		listaEstructuras(listaAEvaluar[0]);
+
+		//evaluación del segundo cruce
+		rigidezTotal2(listaAEvaluar[1][0]);
+		vectorFuerzasInternas = funcionFuerzasInt2(listaAEvaluar[1]);
+		rigidezReducida2(listaAEvaluar[1]);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido();
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(listaAEvaluar[1]);
+		calculosFinales(0, 0, 1.4, listaAEvaluar[1]);
+		calculosFinales(0, 1.6, 1.2, listaAEvaluar[1]);
+		calculosFinales(1.275, 1.275, 1.05, listaAEvaluar[1]);
+		calculosFinales(-1.275, 1.275, 1.05, listaAEvaluar[1]);
+		//sirve para borrar div en caso de que repetir>0
+		listaEstructuras(listaAEvaluar[1]);
 	}
 
 	useEffect(() => {
@@ -2710,6 +2755,33 @@ function Calculus() {
 						className="btnPaso text-center mt-12 title"
 						onClick={() => {
 							//correr algoritmo genético
+							generaciones = document.getElementById("generacion-box").value;
+							while (estructurasLista.length < 3) {
+								//caso 1.4 carga permanente
+								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+								//caso 1.2CP+1.6CV
+								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
+								//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
+								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
+								//ver código genético
+								console.log("codigo genético P", codigoGeneticoP);
+								repetir++; //sirve para borrar div en caso de que repetir>0
+								listaEstructuras(codigoGeneticoP);
+							}
+							for (var i = 0; i < generaciones; i++) {
+								historiax++;
+								historia.push(historiax);
+								historiapesoy = 0;
+								BotonCruce();
+								for (var j = 0; (j = estructurasLista[0].length); j++) {
+									if (estructurasLista[0][j]["peso"] != undefined) {
+										historiapesoy += estructurasLista[0][j]["peso"];
+									}
+								}
+								historiaPeso.push(historiapesoy);
+							}
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
