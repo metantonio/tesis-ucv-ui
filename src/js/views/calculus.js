@@ -2296,8 +2296,8 @@ function Calculus() {
 			//primer cruce:
 			//console.log("Lista[0]", listaE[0]);//hay que convertir listaE[0][0] en array (mapearlo)
 			for (var i = 0; i < mediaCol; i++) {
-				//cruce1.push(listaE[0][i]);
-				cruce1.push(Object.entries(listaE[0]));
+				cruce1.push(listaE[0][i]);
+				//cruce1.push(Object.entries(listaE[0]));
 			}
 			for (var i = mediaCol; i < cantidadCol; i++) {
 				cruce1.push(listaE[1][i]);
