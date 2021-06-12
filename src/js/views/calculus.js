@@ -2279,6 +2279,32 @@ function Calculus() {
 
 	function cruceGenetico1(listaE) {
 		if (listaE.length > 1) {
+			var cruce1 = [];
+			var cruce2 = [];
+			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos);
+			var mediaCol = Math.floor(cantidadCol / 2);
+			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos);
+			var mediaVig = Math.floor(cantidadVig / 2);
+			var cantidadDiag1 = listaE[0].length - cantidadVig - cantidadCol;
+			var cantidadDiag2 = listaE[1].length - cantidadVig - cantidadCol;
+
+			//aquí empieza el 1er cruce:
+			cruce1 = listaE[0].slice(0, mediaCol);
+			cruce1.push(listaE[1].slice(mediaCol, cantidadCol));
+			//aquí se agregan las vigas:
+			cruce1.push(listaE[0].slice(cantidadCol, cantidadCol + mediaVig));
+			cruce1.push(listaE[1].slice(cantidadCol + mediaVig, cantidadCol + cantidadVig));
+			//aquí agregamos las diagonales
+			cruce1.push(listaE[0].slice(cantidadCol + cantidadVig, listaE[0].length));
+
+			//aquí empieza el do cruce:
+			cruce2 = listaE[1].slice(0, mediaCol);
+			cruce2.push(listaE[0].slice(mediaCol, cantidadCol));
+			//aquí se agregan las vigas:
+			cruce2.push(listaE[1].slice(cantidadCol, cantidadCol + mediaVig));
+			cruce2.push(listaE[0].slice(cantidadCol + mediaVig, cantidadCol + cantidadVig));
+			//aquí agregamos las diagonales
+			cruce2.push(listaE[1].slice(cantidadCol + cantidadVig, listaE[1].length));
 		}
 	}
 
