@@ -2740,6 +2740,17 @@ function Calculus() {
 
 	//var getElementByIdf = "";
 
+	function mutacion(codigoGeneticoP1) {
+		var numeroAleatorio = aleatorio(0, 1);
+
+		if (numeroAleatorio == 1) {
+			if (codigoGeneticoP1.tipo == "Diagonal") {
+				codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
+			}
+		}
+		return codigoGeneticoP1;
+	}
+
 	function botonCalcular(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
 		var numeroCol = actions.getNoColumnas();
 		var numeroPisos = actions.getNoPisos();
@@ -2850,46 +2861,53 @@ function Calculus() {
 		//drawini = dibujoIni();
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
+	function EvaluacionCruce(codigoDelCruce) {
+		rigidezTotal2(codigoDelCruce);
+		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
+		rigidezReducida2(codigoDelCruce);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(codigoDelCruce);
+		calculosFinales(0, 0, 1.4, codigoDelCruce);
+		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
+		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
+		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
+
+		listaEstructuras(codigoDelCruce);
+		return vectorFuerzasInternas, matrizReducidaInversa, vectorFuerzasInternasRedux, vectorDesplazamientos;
+	}
 
 	function BotonCruce() {
 		var listaAEvaluar = [];
 		listaAEvaluar = [];
+		repetir++;
 		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[1]);
 		var cruceGen0 = listaAEvaluar[0];
 		var cruceGen1 = listaAEvaluar[1];
-		//console.log("linea 2664", listaAEvaluar); //sale una lista con los dos cruces nuevos
-		repetir++;
-		//listaAEvaluar = listaEstructuras(listaAEvaluar[0]);
-		//evaluación del primer cruce
-		//console.log("listaAEvaluar[0]", listaAEvaluar[0]);
-		rigidezTotal2(cruceGen0);
-		vectorFuerzasInternas = funcionFuerzasInt2(cruceGen0);
-		rigidezReducida2(cruceGen0);
-		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(cruceGen0);
-		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(cruceGen0);
-		calculosFinales(0, 0, 1.4, cruceGen0);
-		calculosFinales(0, 1.6, 1.2, cruceGen0);
-		calculosFinales(1.275, 1.275, 1.05, cruceGen0);
-		calculosFinales(-1.275, 1.275, 1.05, cruceGen0);
+		EvaluacionCruce(cruceGen0);
+		EvaluacionCruce(cruceGen1);
 
-		listaEstructuras(cruceGen0);
+		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[2]);
+		var cruceGen2 = listaAEvaluar[0];
+		var cruceGen3 = listaAEvaluar[1];
+		EvaluacionCruce(cruceGen2);
+		EvaluacionCruce(cruceGen3);
 
-		//evaluación del segundo cruce
-		rigidezTotal2(cruceGen1);
-		vectorFuerzasInternas = funcionFuerzasInt2(cruceGen1);
-		rigidezReducida2(cruceGen1);
-		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(cruceGen1);
-		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(cruceGen1);
-		calculosFinales(0, 0, 1.4, cruceGen1);
-		calculosFinales(0, 1.6, 1.2, cruceGen1);
-		calculosFinales(1.275, 1.275, 1.05, cruceGen1);
-		calculosFinales(-1.275, 1.275, 1.05, cruceGen1);
+		listaAEvaluar = cruceGenetico1(estructurasLista[1], estructurasLista[2]);
+		var cruceGen4 = listaAEvaluar[0];
+		var cruceGen5 = listaAEvaluar[1];
+		EvaluacionCruce(cruceGen4);
+		EvaluacionCruce(cruceGen5);
 
-		listaEstructuras(cruceGen1);
+		var mutacion0 = mutacion(cruceGen0);
+		EvaluacionCruce(mutacion0);
+
+		var mutacion1 = mutacion(cruceGen1);
+		EvaluacionCruce(mutacion1);
+
+		var mutacion2 = mutacion(cruceGen2);
+		EvaluacionCruce(mutacion2);
 	}
 
 	document.addEventListener("DOMContentLoaded", function(event) {
