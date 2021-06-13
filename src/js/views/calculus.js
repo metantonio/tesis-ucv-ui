@@ -2319,7 +2319,7 @@ function Calculus() {
 		if (estructurasLista.length > 5) {
 			estructurasLista = estructurasLista.slice(0, 6);
 		}
-		console.log("lista de Estructuras", estructurasLista);
+		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
 
@@ -2374,13 +2374,13 @@ function Calculus() {
 			for (var i = cantidadCol + cantidadVig; i < listaE[1].length; i++) {
 				cruce2[i] = cod2[i];
 			}
-			console.log("cruce1", cruce1);
+			//console.log("cruce1", cruce1);
 			listaCruce.push(cruce1);
 			listaCruce.push(cruce2);
 			//estructurasLista.push(cruce1);
 			//estructurasLista.push(cruce2);
 		}
-		console.log("listaCruce", listaCruce);
+		//console.log("listaCruce", listaCruce);
 		return listaCruce;
 	}
 
@@ -2704,7 +2704,7 @@ function Calculus() {
 		listaAEvaluar = cruceGenetico1(estructurasLista);
 		var cruceGen0 = listaAEvaluar[0];
 		var cruceGen1 = listaAEvaluar[1];
-		console.log("linea 2664", listaAEvaluar); //sale una lista con los dos cruces nuevos
+		//console.log("linea 2664", listaAEvaluar); //sale una lista con los dos cruces nuevos
 		repetir++;
 		//listaAEvaluar = listaEstructuras(listaAEvaluar[0]);
 		//evaluación del primer cruce
@@ -2794,7 +2794,7 @@ function Calculus() {
 						id="generacion-box"
 						name="no-columnas"
 						min="1"
-						step="0.01"
+						step="10"
 						max="1.10"
 						onChange={e => (generaciones = document.getElementById("generacion-box").value)}
 					/>
@@ -2815,7 +2815,7 @@ function Calculus() {
 								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
 								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
 								//ver código genético
-								console.log("codigo genético P", codigoGeneticoP);
+								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								listaEstructuras(codigoGeneticoP);
 							}
@@ -2831,7 +2831,13 @@ function Calculus() {
 									}
 								}
 								historiaPeso.push(historiapesoy);
+								console.log(
+									`Evolución del Peso ${historiapesoy}kg en la generación ${
+										historia[historia.length - 1]
+									}`
+								);
 							}
+							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
