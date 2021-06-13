@@ -1955,8 +1955,8 @@ function Calculus() {
 
 			for (let element of codigoGeneticoP1) {
 				if (
-					(codigoGeneticoP[i]["vectorY"][0] == element["vectorY"][0]) &
-					(codigoGeneticoP[i]["desplazamientoNodoIni"][3] != undefined)
+					(codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0]) &
+					(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
 				) {
 					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
 					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
