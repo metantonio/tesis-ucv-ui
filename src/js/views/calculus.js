@@ -30,7 +30,9 @@ function Calculus() {
 	var uv = [];
 	//var vectorConectividad = [];
 	var vectorConectividadf = [];
+	var vectorConectividadf1 = [];
 	var vectorConectividadf2 = [];
+	var vectorConectividadf22 = [];
 	var listaPerfiles = actions.getPerfilIPN();
 	var listaIPN = actions.getPerfilIPN();
 	var listUPL = actions.getPerfilUPL();
@@ -299,34 +301,34 @@ function Calculus() {
 		return vectorConectividadf;
 	};
 
-	function reescrituraConectividadf(cViento) {
+	function reescrituraConectividadf(cViento, vectorConectividadf1) {
 		//let vectorAux = vectorConectividadf;
-		for (var i = 0; i < vectorConectividadf.length; i++) {
+		for (var i = 0; i < vectorConectividadf1.length; i++) {
 			//console.log("elemento", elementos, vectorAux);
 			if (
-				(vectorConectividadf[i]["longitud"] == actions.getEntrePiso()) &
-				(vectorConectividadf[i]["puntoIni"][0] == vectorConectividadf[i]["puntoFin"][0])
+				(vectorConectividadf1[i]["longitud"] == actions.getEntrePiso()) &
+				(vectorConectividadf1[i]["puntoIni"][0] == vectorConectividadf1[i]["puntoFin"][0])
 			) {
-				if ((vectorConectividadf[i]["puntoIni"][0] == 0) & (vectorConectividadf[i]["puntoFin"][0] == 0)) {
+				if ((vectorConectividadf1[i]["puntoIni"][0] == 0) & (vectorConectividadf1[i]["puntoFin"][0] == 0)) {
 					//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
-					vectorConectividadf[i]["fuerzainterna"] = [
-						(cViento * actions.getCargaViento() * vectorConectividadf[i]["longitud"]) / 2,
+					vectorConectividadf1[i]["fuerzainterna"] = [
+						(cViento * actions.getCargaViento() * vectorConectividadf1[i]["longitud"]) / 2,
 						0,
-						(-actions.getCargaViento() * cViento * ((vectorConectividadf[i]["longitud"] * 100) ^ 2)) / 12,
-						(cViento * actions.getCargaViento() * vectorConectividadf[i]["longitud"]) / 2,
+						(-actions.getCargaViento() * cViento * ((vectorConectividadf1[i]["longitud"] * 100) ^ 2)) / 12,
+						(cViento * actions.getCargaViento() * vectorConectividadf1[i]["longitud"]) / 2,
 						0,
-						(cViento * actions.getCargaViento() * ((vectorConectividadf[i]["longitud"] * 100) ^ 2)) / 12
+						(cViento * actions.getCargaViento() * ((vectorConectividadf1[i]["longitud"] * 100) ^ 2)) / 12
 					];
 					//return vectorConectividadf[i]["fuerzainterna"];
 				} else {
-					vectorConectividadf[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+					vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
 					//return vectorConectividadf[i]["fuerzainterna"];
 				}
 			}
 		}
 		//vectorConectividadf = [];
 		//vectorConectividadf = vectorAux;
-		return vectorConectividadf;
+		return vectorConectividadf1;
 	}
 
 	let matchCoord = vector => {
@@ -693,81 +695,81 @@ function Calculus() {
 		return vectorConectividadf2;
 	};
 
-	function reescrituraConectividadf2(cVariable, cPermanente) {
+	function reescrituraConectividadf2(cVariable, cPermanente, vectorcConectividadf22) {
 		//console.log("vectorcConectividadf2", vectorConectividadf2);
-		for (var i = 0; i < vectorConectividadf2.length; i++) {
+		for (var i = 0; i < vectorConectividadf22.length; i++) {
 			//vigas
 			if (
-				(vectorConectividadf2[i]["longitud"] == actions.getLuzVano()) &
-				(vectorConectividadf2[i]["puntoIni"][1] != 0)
+				(vectorConectividadf22[i]["longitud"] == actions.getLuzVano()) &
+				(vectorConectividadf22[i]["puntoIni"][1] != 0)
 			) {
 				//console.log("entro en primer if reescrituraconectividadf2");
-				if (vectorConectividadf2[i]["puntoIni"][1] == vectorConectividadf2[i]["puntoFin"][1]) {
+				if (vectorConectividadf22[i]["puntoIni"][1] == vectorConectividadf22[i]["puntoFin"][1]) {
 					//console.log("entro en if reescrituraconectividadf2");
-					vectorConectividadf2[i]["fuerzainterna"] = [
+					vectorConectividadf22[i]["fuerzainterna"] = [
 						0,
 						-(
 							(cPermanente * actions.getCargaLosaPermanente() +
 								cVariable * actions.getCargaLosaVariable()) *
-							vectorConectividadf2[i]["longitud"]
+							vectorConectividadf22[i]["longitud"]
 						) / 2,
 						(-(
 							cPermanente * actions.getCargaLosaPermanente() +
 							cVariable * actions.getCargaLosaVariable()
 						) *
-							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+							((vectorConectividadf22[i]["longitud"] * 100) ^ 2)) /
 							12,
 						0,
 						-(
 							(cPermanente * actions.getCargaLosaPermanente() +
 								cVariable * actions.getCargaLosaVariable()) *
-							vectorConectividadf2[i]["longitud"]
+							vectorConectividadf22[i]["longitud"]
 						) / 2,
 						((cPermanente * actions.getCargaLosaPermanente() + cVariable * actions.getCargaLosaVariable()) *
-							((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+							((vectorConectividadf22[i]["longitud"] * 100) ^ 2)) /
 							12
 					];
 					//if del techo empieza aquí>
 					if (
-						(vectorConectividadf2[i]["puntoIni"][1] ==
+						(vectorConectividadf22[i]["puntoIni"][1] ==
 							actions.getNoPisos() * parseFloat(actions.getEntrePiso())) &
-						(vectorConectividadf2[i]["puntoFin"][1] ==
+						(vectorConectividadf22[i]["puntoFin"][1] ==
 							actions.getNoPisos() * parseFloat(actions.getEntrePiso()))
 					) {
-						vectorConectividadf2[i]["fuerzainterna"] = [
+						vectorConectividadf22[i]["fuerzainterna"] = [
 							0,
 							-(
 								(cPermanente * actions.getCargaTechoPermanente() +
 									cVariable * actions.getCargaTechoVariable()) *
-								vectorConectividadf2[i]["longitud"]
+								vectorConectividadf22[i]["longitud"]
 							) / 2,
 							(-(
 								cPermanente * actions.getCargaTechoPermanente() +
 								cVariable * actions.getCargaTechoVariable()
 							) *
-								((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+								((vectorConectividadf22[i]["longitud"] * 100) ^ 2)) /
 								12,
 							0,
 							-(
 								(cPermanente * actions.getCargaTechoPermanente() +
 									cVariable * actions.getCargaTechoVariable()) *
-								vectorConectividadf2[i]["longitud"]
+								vectorConectividadf22[i]["longitud"]
 							) / 2,
 							((cPermanente * actions.getCargaTechoPermanente() +
 								cVariable * actions.getCargaTechoVariable()) *
-								((vectorConectividadf2[i]["longitud"] * 100) ^ 2)) /
+								((vectorConectividadf22[i]["longitud"] * 100) ^ 2)) /
 								12
 						];
 						//return vectorConectividadf2[i]["fuerzainterna"];
 					}
 
-					return vectorConectividadf2[i]["fuerzainterna"];
+					return vectorConectividadf22[i]["fuerzainterna"];
 				}
 			}
 
 			//diagonales
 		}
-		return vectorConectividadf2;
+		return vectorConectividadf22;
 	}
 
 	function addTableConnect() {
@@ -1174,6 +1176,25 @@ function Calculus() {
 		//vectorGenetico=final;
 		return final;
 	}
+	function codigoGenetico2(codigoGeneticoP1) {
+		var vectorGenetico = [];
+		vectorGenetico = vectorConectividadf;
+		var vector = [];
+		vector = matrizRigidGlogal2(codigoGeneticoP1);
+		//console.log("vectorGenetico", vectorGenetico);
+		var n = 0;
+		//console.log("vector rigidez global", vector);
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			element["rigidez"] = vector[n];
+			n++;
+			return element;
+		});
+		//console.log("final", final);
+		vectorGenetico = [];
+		//vectorGenetico=final;
+		return final;
+	}
+
 	let matrizRigidezTotal = [];
 
 	let rigidezTotal = () => {
@@ -2469,7 +2490,7 @@ function Calculus() {
 		});
 		//console.log("lista de Estructuras", estructurasLista);
 		if (estructurasLista.length > 5) {
-			estructurasLista = estructurasLista.slice(0, 6);
+			estructurasLista = estructurasLista.slice(0, 10);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
@@ -2741,11 +2762,12 @@ function Calculus() {
 	//var getElementByIdf = "";
 
 	function mutacion(codigoGeneticoP1) {
-		var numeroAleatorio = aleatorio(0, 1);
+		var numeroAleatorio = aleatorio(0, 2);
 
 		if (numeroAleatorio == 1) {
 			if (codigoGeneticoP1.tipo == "Diagonal") {
 				codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
+				console.log("hubo mutación");
 			}
 		}
 		return codigoGeneticoP1;
@@ -2776,7 +2798,7 @@ function Calculus() {
 		tablaConectividad(coefViento);
 		tablaConectividad2(coefVariable, coefPermanente);
 		addTableConnect();
-		//matrizRigidLocal();
+		matrizRigidLocal();
 		//console.log(multiplicarMatrices(matrizEA, matrizEB));
 		addMatricesRigLocal();
 		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
@@ -2822,9 +2844,9 @@ function Calculus() {
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		//console.log(vectorConectividadf);
-		reescrituraConectividadf(coefViento);
+		reescrituraConectividadf(coefViento, vectorConectividadf);
 		//console.log(vectorConectividadf);
-		reescrituraConectividadf2(coefVariable, coefPermanente);
+		reescrituraConectividadf2(coefVariable, coefPermanente, vectorConectividadf2);
 		//addTableConnect();
 		//matrizRigidLocal();
 		//console.log(multiplicarMatrices(matrizEA, matrizEB));
@@ -2862,16 +2884,68 @@ function Calculus() {
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
 	function EvaluacionCruce(codigoDelCruce) {
+		reescrituraConectividadf(0, codigoDelCruce);
+		reescrituraConectividadf2(0, 1.4, codigoDelCruce);
+		matrizRigidLocal2(codigoDelCruce);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
+		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
 		rigidezTotal2(codigoDelCruce);
 		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
 		rigidezReducida2(codigoDelCruce);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
 		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(0, 0, 1.4, codigoDelCruce);
+
+		reescrituraConectividadf(0, codigoDelCruce);
+		reescrituraConectividadf2(1.6, 1.2, codigoDelCruce);
+		matrizRigidLocal2(codigoDelCruce);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
+		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		rigidezTotal2(codigoDelCruce);
+		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
+		rigidezReducida2(codigoDelCruce);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
+
+		reescrituraConectividadf(1.275, codigoDelCruce);
+		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
+		matrizRigidLocal2(codigoDelCruce);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
+		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		rigidezTotal2(codigoDelCruce);
+		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
+		rigidezReducida2(codigoDelCruce);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
+
+		reescrituraConectividadf(-1.275, codigoDelCruce);
+		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
+		matrizRigidLocal2(codigoDelCruce);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
+		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		rigidezTotal2(codigoDelCruce);
+		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
+		rigidezReducida2(codigoDelCruce);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
+		//codigoDelCruce = codigoGeneticoP;
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
 
 		listaEstructuras(codigoDelCruce);
@@ -2887,18 +2961,21 @@ function Calculus() {
 		var cruceGen1 = listaAEvaluar[1];
 		EvaluacionCruce(cruceGen0);
 		EvaluacionCruce(cruceGen1);
+		listaAEvaluar = [];
 
 		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[2]);
 		var cruceGen2 = listaAEvaluar[0];
 		var cruceGen3 = listaAEvaluar[1];
 		EvaluacionCruce(cruceGen2);
 		EvaluacionCruce(cruceGen3);
+		listaAEvaluar = [];
 
 		listaAEvaluar = cruceGenetico1(estructurasLista[1], estructurasLista[2]);
 		var cruceGen4 = listaAEvaluar[0];
 		var cruceGen5 = listaAEvaluar[1];
 		EvaluacionCruce(cruceGen4);
 		EvaluacionCruce(cruceGen5);
+		listaAEvaluar = [];
 
 		var mutacion0 = mutacion(cruceGen0);
 		EvaluacionCruce(mutacion0);
@@ -3007,6 +3084,7 @@ function Calculus() {
 								historiax++;
 								historia.push(historiax);
 								historiapesoy = 0;
+								//aquí se agrega una estructura aleatoria en cada generación de individuos
 								{
 									//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 									//caso 1.4 carga permanente
@@ -3044,6 +3122,7 @@ function Calculus() {
 								);
 								//ahora se agregan las tablas
 								addTableConnect2(pesoEstructura);
+								matrizRigidLocal2(pesoEstructura);
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
