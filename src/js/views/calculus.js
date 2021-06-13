@@ -854,6 +854,91 @@ function Calculus() {
 		});
 		return final;
 	}
+
+	function addTableConnect2(codigoGeneticoP1) {
+		var fila = "";
+		// var vectorTemp = [];
+		// console.log("Vector Conectividad f2 Vigas addTable:");
+		// console.log(vectorConectividadf2);
+		// vectorTemp.push(vectorConectividadf, vectorConectividadf2);
+		// console.log("vectorTemp", vectorTemp);
+		//console.log("Vector Conectividadf", vectorConectividadf);
+
+		var final = codigoGeneticoP1.map(function(vectorConectividadf, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial</th>";
+			a += "<th>Coordenada Final</th>";
+			a += "<th>EA/L</th>";
+			a += "<th>12EA/L³</th>";
+			a += "<th>6EI/L²</th>";
+			a += "<th>4EI/L</th>";
+			a += "<th>2EI/L</th>";
+			a += "<th>θ (rad)</th>";
+			a += "<th>cos(θ)</th>";
+			a += "<th>seno(θ)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.elemento +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.tipo +
+				"</td>" +
+				"<td>(" +
+				vectorConectividadf.puntoIni +
+				")</td>" +
+				"<td>(" +
+				vectorConectividadf.puntoFin +
+				")</td>" +
+				"<td>" +
+				vectorConectividadf.a +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.b +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.c +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.d +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.e +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.teta +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.cos +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.sin +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				vectorConectividadf.peso +
+				"</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById("tabla-connect").innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
 	var vectorMatrizRigLocal = [];
 	var vectorMatrizRigGlobal = [];
 
@@ -886,6 +971,73 @@ function Calculus() {
 		vectorMatrizRigGlobal = [];
 		var multi1 = [];
 		vectorConectividadf.forEach(element => {
+			matrizL = [
+				[+element.cos, +element.sin, 0, 0, 0, 0],
+				[-element.sin, +element.cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +element.cos, +element.sin, 0],
+				[0, 0, 0, -element.sin, +element.cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+			vectorMatrizL.push(matrizL);
+			matrizL = [[], [], [], [], [], []];
+			matrizLtras = [
+				[+element.cos, -element.sin, 0, 0, 0, 0],
+				[+element.sin, +element.cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +element.cos, -element.sin, 0],
+				[0, 0, 0, +element.sin, +element.cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+			vectorMatrizLtras.push(matrizLtras);
+			matrizLtras = [[], [], [], [], [], []];
+		});
+		//console.log("vectores de transformación", vectorMatrizLtras, vectorMatrizL);
+		//console.log("vectorMatrizRigLocal", vectorMatrizRigLocal);
+		for (var i = 0; i < vectorMatrizRigLocal.length; i++) {
+			//console.log(i);
+			multi1[i] = multiplicarMatrices(vectorMatrizLtras[i], vectorMatrizRigLocal[i]);
+			//console.log(multi1[i]);
+			multi1[i] = multiplicarMatrices(multi1[i], vectorMatrizL[i]);
+			//console.log(multi1[i]);
+			//vectorMatrizRigGlobal.push(multi1[i]);
+			//console.log("vectorMatrizRigGlobal dentro del for", vectorMatrizRigGlobal);
+		}
+		//console.log("vector multi1", multi1);
+		//vectorMatrizRigGlobal = multi1;
+		//vectorMatrizRigGlobal = vectorMatrizRigL;
+		return multi1;
+	};
+
+	let matrizRigidLocal2 = codigoGeneticoP1 => {
+		let matriz = [[], [], [], [], [], []];
+		let vectorMatrizRigL = [];
+		vectorMatrizRigLocal = [];
+		codigoGeneticoP1.forEach(element => {
+			matriz = [
+				[+element.a, 0, 0, -element.a, 0, 0],
+				[0, +element.b, +element.c, 0, -element.b, +element.c],
+				[0, +element.c, +element.d, 0, -element.c, +element.e],
+				[-element.a, 0, 0, +element.a, 0, 0],
+				[0, -element.b, -element.c, 0, +element.b, -element.c],
+				[0, +element.c, +element.e, 0, -element.c, +element.d]
+			];
+			vectorMatrizRigL.push(matriz);
+			matriz = [[], [], [], [], [], []];
+		});
+		//console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
+		vectorMatrizRigLocal = vectorMatrizRigL;
+		return vectorMatrizRigL;
+	};
+
+	let matrizRigidGlogal2 = codigoGeneticoP1 => {
+		let matrizL = [[], [], [], [], [], []];
+		let matrizLtras = [[], [], [], [], [], []];
+		let vectorMatrizLtras = [];
+		let vectorMatrizL = [];
+		vectorMatrizRigGlobal = [];
+		var multi1 = [];
+		codigoGeneticoP1.forEach(element => {
 			matrizL = [
 				[+element.cos, +element.sin, 0, 0, 0, 0],
 				[-element.sin, +element.cos, 0, 0, 0, 0],
@@ -2323,13 +2475,13 @@ function Calculus() {
 		return estructurasLista;
 	}
 
-	function cruceGenetico1(listaE) {
+	function cruceGenetico1(primeroLista, segundoLista) {
 		let cruce1 = [];
 		let cruce2 = [];
-		var cod1 = listaE[0];
-		var cod2 = listaE[1];
+		var cod1 = primeroLista;
+		var cod2 = segundoLista;
 		let listaCruce = [];
-		if (listaE.length > 1) {
+		if (segundoLista.length > 1) {
 			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos());
 			//console.log(cantidadCol);
 			var mediaCol = Math.floor(cantidadCol / 2);
@@ -2337,8 +2489,8 @@ function Calculus() {
 			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos());
 			var mediaVig = Math.floor(cantidadVig / 2);
 			//console.log("mediaCol mediaVig", mediaCol, mediaVig);
-			var cantidadDiag1 = listaE[0].length - cantidadVig - cantidadCol;
-			var cantidadDiag2 = listaE[1].length - cantidadVig - cantidadCol;
+			//var cantidadDiag1 = listaE[0].length - cantidadVig - cantidadCol;
+			//var cantidadDiag2 = listaE[1].length - cantidadVig - cantidadCol;
 			//primer cruce:
 			//console.log("cod1[0]", cod1); //hay que convertir listaE[0][0] en array (mapearlo)
 			for (var i = 0; i < mediaCol; i++) {
@@ -2355,7 +2507,7 @@ function Calculus() {
 			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
 				cruce1.push(cod2[i]);
 			}
-			for (var i = cantidadCol + cantidadVig; i < listaE[0].length; i++) {
+			for (var i = cantidadCol + cantidadVig; i < primeroLista.length; i++) {
 				cruce1.push(cod1[i]);
 			}
 			//segundo cruce:
@@ -2371,7 +2523,7 @@ function Calculus() {
 			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
 				cruce2[i] = cod1[i];
 			}
-			for (var i = cantidadCol + cantidadVig; i < listaE[1].length; i++) {
+			for (var i = cantidadCol + cantidadVig; i < segundoLista.length; i++) {
 				cruce2[i] = cod2[i];
 			}
 			//console.log("cruce1", cruce1);
@@ -2647,6 +2799,7 @@ function Calculus() {
 		document.getElementById("caja-dibujo2").innerHTML = drawLines;
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
+
 	function botonCalcular2(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
 		var numeroCol = actions.getNoColumnas();
 		var numeroPisos = actions.getNoPisos();
@@ -2666,7 +2819,7 @@ function Calculus() {
 		//console.log(multiplicarMatrices(matrizEA, matrizEB));
 		//addMatricesRigLocal();
 		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
-		//vectorMatrizRigGlobal = matrizRigidGlogal();
+		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
 		//addMatricesRigGlobal();
 		codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
@@ -2701,7 +2854,7 @@ function Calculus() {
 	function BotonCruce() {
 		var listaAEvaluar = [];
 		listaAEvaluar = [];
-		listaAEvaluar = cruceGenetico1(estructurasLista);
+		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[1]);
 		var cruceGen0 = listaAEvaluar[0];
 		var cruceGen1 = listaAEvaluar[1];
 		//console.log("linea 2664", listaAEvaluar); //sale una lista con los dos cruces nuevos
@@ -2739,6 +2892,13 @@ function Calculus() {
 		listaEstructuras(cruceGen1);
 	}
 
+	document.addEventListener("DOMContentLoaded", function(event) {
+		if (repetir > 1) {
+			document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
+			document.getElementById("caja-dibujo4").innerHTML = dibujoIni(estructurasLista[0]);
+		}
+	});
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -2751,10 +2911,12 @@ function Calculus() {
 		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//svg.selectAll("*").remove();
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
-		if (repetir > 1) {
-			document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
-			document.getElementById("caja-dibujo4").innerHTML = dibujoIni(estructurasLista[0]);
-		}
+		document.addEventListener("DOMContentLoaded", function(event) {
+			if (repetir > 1) {
+				document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
+				document.getElementById("caja-dibujo4").innerHTML = dibujoIni(estructurasLista[0]);
+			}
+		});
 	});
 
 	return (
@@ -2807,7 +2969,6 @@ function Calculus() {
 					<button
 						className="btnPaso text-center mt-12 title"
 						onClick={() => {
-							//correr algoritmo genético
 							generaciones = document.getElementById("generacion-box").value;
 							while (estructurasLista.length < 3) {
 								//caso 1.4 carga permanente
@@ -2823,6 +2984,7 @@ function Calculus() {
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								listaEstructuras(codigoGeneticoP);
 							}
+							//A partir de este punto corre el algoritmo genético
 							for (var i = 0; i < generaciones; i++) {
 								historiax++;
 								historia.push(historiax);
@@ -2860,8 +3022,10 @@ function Calculus() {
 								console.log(
 									`Evolución del Peso ${historiapesoy}kg en la generación ${
 										historia[historia.length - 1]
-									}`
+									}, con puntuación de: ${pesoEstructura[0].evaluacionCodigoGenetico}`
 								);
+								//ahora se agregan las tablas
+								addTableConnect2(pesoEstructura);
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
