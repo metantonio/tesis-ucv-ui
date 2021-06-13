@@ -2564,7 +2564,7 @@ function Calculus() {
 		var pie = "</svg>";
 		draw = "";
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
-			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
+			//console.log(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
 				codigoGeneticoP1[i]["puntoIni"][0].toFixed(3) +
@@ -2750,7 +2750,11 @@ function Calculus() {
 		//console.log(listaPerfiles);
 		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//svg.selectAll("*").remove();
-		document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
+		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
+		if (repetir > 1) {
+			document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
+			document.getElementById("caja-dibujo4").innerHTML = dibujoIni(estructurasLista[0]);
+		}
 	});
 
 	return (
@@ -2823,11 +2827,33 @@ function Calculus() {
 								historiax++;
 								historia.push(historiax);
 								historiapesoy = 0;
+								{
+									//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
+									//caso 1.4 carga permanente
+									botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+									//caso 1.2CP+1.6CV
+									botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
+									//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+									botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
+									//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+									botonCalcular2(
+										"tabla-final4",
+										-1.275,
+										1.275,
+										1.05,
+										"0.75 (1.4CP + 1.7 CV - 1.7 W)"
+									);
+									//ver código genético
+									console.log("codigo genético P", codigoGeneticoP);
+									repetir++; //sirve para borrar div en caso de que repetir>0
+									listaEstructuras(codigoGeneticoP);
+								}
 								BotonCruce();
+								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
 								var pesoEstructura = estructurasLista[0];
-								for (var j = 0; j < estructurasLista[0].length; j++) {
+								for (var j = 0; j < pesoEstructura.length; j++) {
 									if (pesoEstructura[j]["peso"] != undefined) {
-										historiapesoy += pesoEstructura[j]["peso"];
+										historiapesoy += parseFloat(pesoEstructura[j].peso);
 									}
 								}
 								historiaPeso.push(historiapesoy);
@@ -2837,6 +2863,7 @@ function Calculus() {
 									}`
 								);
 							}
+
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
