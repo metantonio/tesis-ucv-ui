@@ -3041,6 +3041,7 @@ function Calculus() {
 								console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								listaEstructuras(codigoGeneticoP);
+								console.log("Lista de las Estructuras Generadas", estructurasLista);
 							}}>
 							<span>Calcular una estructura al azar</span>
 						</button>
@@ -3121,8 +3122,21 @@ function Calculus() {
 									}, con puntuación de: ${pesoEstructura[0].evaluacionCodigoGenetico}`
 								);
 								//ahora se agregan las tablas
+								codigoGeneticoP = pesoEstructura;
 								addTableConnect2(pesoEstructura);
-								matrizRigidLocal2(pesoEstructura);
+								//se eliminan las siguientes tablas
+								d3.selectAll("#matrices-rigid-local > *").remove();
+								d3.selectAll("#matrices-rigid-global > *").remove();
+								d3.selectAll("#matrices-rigid-total > *").remove();
+								d3.selectAll("#vector-fuerzas > *").remove();
+								d3.selectAll("#matriz-reducida > *").remove();
+								d3.selectAll("#matriz-reducida-inversa > *").remove();
+								d3.selectAll("#vector-reducido > *").remove();
+								d3.selectAll("#desplazamiento-nodos > *").remove();
+								d3.selectAll("#tabla-final > *").remove();
+								d3.selectAll("#tabla-final2 > *").remove();
+								d3.selectAll("#tabla-final3 > *").remove();
+								d3.selectAll("#tabla-final4 > *").remove();
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
