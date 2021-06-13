@@ -1838,6 +1838,47 @@ function Calculus() {
 		return filasN;
 	}
 
+	function vectorFReducido2(codigoGeneticoP1) {
+		var vectorFuerzaReducida = vectorFuerzasInternas;
+		var filasN = [];
+		//console.log("vector antes de reducir", vectorFuerzaReducida);
+		var n = 0;
+		for (var i = 0; i < vectorFuerzaReducida.length; i += 3) {
+			//console.log(i);
+			//console.log(vectorFuerzaReducida[i]);
+			for (let element of codigoGeneticoP1) {
+				//console.log(element);
+				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+					element["fuerzasGlobales"][0] = vectorFuerzaReducida[i];
+					element["fuerzasGlobales"][1] = vectorFuerzaReducida[i + 1];
+					element["fuerzasGlobales"][2] = vectorFuerzaReducida[i + 2];
+					filasN[n] = vectorFuerzaReducida[i];
+					filasN[n + 1] = vectorFuerzaReducida[i + 1];
+					filasN[n + 2] = vectorFuerzaReducida[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					//console.log(filasM[n]);
+					break;
+				}
+				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+					element["fuerzasGlobales"][3] = vectorFuerzaReducida[i];
+					element["fuerzasGlobales"][4] = vectorFuerzaReducida[i + 1];
+					element["fuerzasGlobales"][5] = vectorFuerzaReducida[i + 2];
+					filasN[n] = vectorFuerzaReducida[i];
+					filasN[n + 1] = vectorFuerzaReducida[i + 1];
+					filasN[n + 2] = vectorFuerzaReducida[i + 2];
+					//filasM.push(matrizApoyo2[i]);
+					n += 3;
+					//console.log(filasM[n]);
+					break;
+				}
+				//return filasM;
+			}
+		}
+		//console.log("filasN", filasN);
+		return filasN;
+	}
+
 	function addVector(vector, idInterno, getElementID, caso) {
 		var vectorFuer = vector;
 		var numNodosu = 0;
@@ -1901,7 +1942,7 @@ function Calculus() {
 			}
 		}
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
-			for (let element of codigoGeneticoP) {
+			for (let element of codigoGeneticoP1) {
 				if (
 					(codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0]) &
 					(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
@@ -2672,7 +2713,7 @@ function Calculus() {
 		vectorFuerzasInternas = funcionFuerzasInt2(cruceGen0);
 		rigidezReducida2(cruceGen0);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido();
+		vectorFuerzasInternasRedux = vectorFReducido2(cruceGen0);
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(cruceGen0);
 		calculosFinales(0, 0, 1.4, cruceGen0);
@@ -2687,7 +2728,7 @@ function Calculus() {
 		vectorFuerzasInternas = funcionFuerzasInt2(cruceGen1);
 		rigidezReducida2(cruceGen1);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido();
+		vectorFuerzasInternasRedux = vectorFReducido2(cruceGen1);
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(cruceGen1);
 		calculosFinales(0, 0, 1.4, cruceGen1);
@@ -2783,9 +2824,10 @@ function Calculus() {
 								historia.push(historiax);
 								historiapesoy = 0;
 								BotonCruce();
-								for (var j = 0; (j = estructurasLista[0].length); j++) {
-									if (estructurasLista[0][j]["peso"] != undefined) {
-										historiapesoy += estructurasLista[0][j]["peso"];
+								var pesoEstructura = estructurasLista[0];
+								for (var j = 0; j < estructurasLista[0].length; j++) {
+									if (pesoEstructura[j]["peso"] != undefined) {
+										historiapesoy += pesoEstructura[j]["peso"];
 									}
 								}
 								historiaPeso.push(historiapesoy);
