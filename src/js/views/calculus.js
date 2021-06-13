@@ -2285,47 +2285,53 @@ function Calculus() {
 	function cruceGenetico1(listaE) {
 		let cruce1 = [];
 		let cruce2 = [];
+		var cod1 = listaE[0];
+		var cod2 = listaE[1];
 		let listaCruce = [];
 		if (listaE.length > 1) {
-			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos);
+			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos());
+			//console.log(cantidadCol);
 			var mediaCol = Math.floor(cantidadCol / 2);
-			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos);
+
+			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos());
 			var mediaVig = Math.floor(cantidadVig / 2);
+			//console.log("mediaCol mediaVig", mediaCol, mediaVig);
 			var cantidadDiag1 = listaE[0].length - cantidadVig - cantidadCol;
 			var cantidadDiag2 = listaE[1].length - cantidadVig - cantidadCol;
 			//primer cruce:
-			//console.log("Lista[0]", listaE[0]);//hay que convertir listaE[0][0] en array (mapearlo)
+			//console.log("cod1[0]", cod1); //hay que convertir listaE[0][0] en array (mapearlo)
 			for (var i = 0; i < mediaCol; i++) {
-				cruce1.push(listaE[0][i]);
-				//cruce1.push(Object.entries(listaE[0]));
+				//console.log("cod1[0][i]", i, cod1[i]);
+				cruce1.push(cod1[i]);
+				//cruce1.push(Object.entries(cod1[i]));
 			}
 			for (var i = mediaCol; i < cantidadCol; i++) {
-				cruce1.push(listaE[1][i]);
+				cruce1.push(cod2[i]);
 			}
 			for (var i = cantidadCol; i < cantidadCol + mediaVig; i++) {
-				cruce1.push(listaE[0][i]);
+				cruce1.push(cod1[i]);
 			}
 			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
-				cruce1.push(listaE[1][i]);
+				cruce1.push(cod2[i]);
 			}
 			for (var i = cantidadCol + cantidadVig; i < listaE[0].length; i++) {
-				cruce1.push(listaE[0][i]);
+				cruce1.push(cod1[i]);
 			}
 			//segundo cruce:
 			for (var i = 0; i < mediaCol; i++) {
-				cruce2[i] = listaE[1][i];
+				cruce2[i] = cod2[i];
 			}
 			for (var i = mediaCol; i < cantidadCol; i++) {
-				cruce2[i] = listaE[0][i];
+				cruce2[i] = cod1[i];
 			}
 			for (var i = cantidadCol; i < cantidadCol + mediaVig; i++) {
-				cruce2[i] = listaE[1][i];
+				cruce2[i] = cod2[i];
 			}
 			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
-				cruce2[i] = listaE[0][i];
+				cruce2[i] = cod1[i];
 			}
-			for (var i = cantidadCol + cantidadVig; i < listaE[0].length; i++) {
-				cruce2[i] = listaE[1][i];
+			for (var i = cantidadCol + cantidadVig; i < listaE[1].length; i++) {
+				cruce2[i] = cod2[i];
 			}
 			console.log("cruce1", cruce1);
 			listaCruce.push(cruce1);
@@ -2655,39 +2661,41 @@ function Calculus() {
 		var listaAEvaluar = [];
 		listaAEvaluar = [];
 		listaAEvaluar = cruceGenetico1(estructurasLista);
-		console.log("linea 2641", listaAEvaluar);
+		var cruceGen0 = listaAEvaluar[0];
+		var cruceGen1 = listaAEvaluar[1];
+		console.log("linea 2664", listaAEvaluar); //sale una lista con los dos cruces nuevos
 		repetir++;
-		listaAEvaluar = listaEstructuras(listaAEvaluar);
+		//listaAEvaluar = listaEstructuras(listaAEvaluar[0]);
 		//evaluación del primer cruce
-		console.log("listaAEvaluar[0]", listaAEvaluar[0]);
-		rigidezTotal2(listaAEvaluar[0]);
-		vectorFuerzasInternas = funcionFuerzasInt2(listaAEvaluar[0]);
-		rigidezReducida2(listaAEvaluar[0]);
+		//console.log("listaAEvaluar[0]", listaAEvaluar[0]);
+		rigidezTotal2(cruceGen0);
+		vectorFuerzasInternas = funcionFuerzasInt2(cruceGen0);
+		rigidezReducida2(cruceGen0);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
 		vectorFuerzasInternasRedux = vectorFReducido();
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(listaAEvaluar[0]);
-		calculosFinales(0, 0, 1.4, listaAEvaluar[0]);
-		calculosFinales(0, 1.6, 1.2, listaAEvaluar[0]);
-		calculosFinales(1.275, 1.275, 1.05, listaAEvaluar[0]);
-		calculosFinales(-1.275, 1.275, 1.05, listaAEvaluar[0]);
-		//sirve para borrar div en caso de que repetir>0
-		listaEstructuras(listaAEvaluar[0]);
+		desplazamientoEnCodigo(cruceGen0);
+		calculosFinales(0, 0, 1.4, cruceGen0);
+		calculosFinales(0, 1.6, 1.2, cruceGen0);
+		calculosFinales(1.275, 1.275, 1.05, cruceGen0);
+		calculosFinales(-1.275, 1.275, 1.05, cruceGen0);
+
+		listaEstructuras(cruceGen0);
 
 		//evaluación del segundo cruce
-		rigidezTotal2(listaAEvaluar[1][0]);
-		vectorFuerzasInternas = funcionFuerzasInt2(listaAEvaluar[1]);
-		rigidezReducida2(listaAEvaluar[1]);
+		rigidezTotal2(cruceGen1);
+		vectorFuerzasInternas = funcionFuerzasInt2(cruceGen1);
+		rigidezReducida2(cruceGen1);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
 		vectorFuerzasInternasRedux = vectorFReducido();
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(listaAEvaluar[1]);
-		calculosFinales(0, 0, 1.4, listaAEvaluar[1]);
-		calculosFinales(0, 1.6, 1.2, listaAEvaluar[1]);
-		calculosFinales(1.275, 1.275, 1.05, listaAEvaluar[1]);
-		calculosFinales(-1.275, 1.275, 1.05, listaAEvaluar[1]);
-		//sirve para borrar div en caso de que repetir>0
-		listaEstructuras(listaAEvaluar[1]);
+		desplazamientoEnCodigo(cruceGen1);
+		calculosFinales(0, 0, 1.4, cruceGen1);
+		calculosFinales(0, 1.6, 1.2, cruceGen1);
+		calculosFinales(1.275, 1.275, 1.05, cruceGen1);
+		calculosFinales(-1.275, 1.275, 1.05, cruceGen1);
+
+		listaEstructuras(cruceGen1);
 	}
 
 	useEffect(() => {
