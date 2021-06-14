@@ -1110,6 +1110,34 @@ function Calculus() {
 			return a;
 		});
 	}
+	function addMatricesRigLocal2(codigoGeneticoP1) {
+		var vectorMatrizRigL = matrizRigidLocal2(codigoGeneticoP1);
+		var final = vectorMatrizRigL.map(function(item, index, array) {
+			var a = "<div className='row justify-content-center'/>";
+			a += "<div className='col-6'>";
+			a += "<h2>K'";
+			a += index + 1;
+			a += " =</h2>";
+			a += "<table className='table table-bordered col-10' padding='5px'>";
+			a += "<thead><tr><th/><th/><th/><th/><th/><th/><tr/></thead>";
+			a += "<tbody>";
+			for (var i = 0; i < 6; i++) {
+				//console.log("item", item[i]);
+				a += "<tr>";
+				for (var j = 0; j < 6; j++) {
+					//console.log("ij", i, j);
+					a += "<td>";
+					a += item[i][j];
+					a += "  </td>";
+				}
+				a += "<tr/>";
+			}
+			a += "</tbody></table><br/></div></div>";
+			//a += "<div className='row justify-content-center'/>";
+			document.getElementById("matrices-rigid-local").innerHTML += a;
+			return a;
+		});
+	}
 
 	let multiplicarMatrices = (matrizA, matrizB) => {
 		let matrizRes = [matrizA.length];
@@ -2987,6 +3015,13 @@ function Calculus() {
 		EvaluacionCruce(mutacion2);
 	}
 
+	function addTablasAgain(codigoGeneticoP1) {
+		codigoGeneticoP = codigoGeneticoP1;
+		matrizRigidLocal2(codigoGeneticoP1);
+		addMatricesRigLocal2(codigoGeneticoP1);
+		vectorMatrizRigGlobal = matrizRigidGlogal();
+	}
+
 	document.addEventListener("DOMContentLoaded", function(event) {
 		if (repetir > 1) {
 			document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
@@ -3045,6 +3080,7 @@ function Calculus() {
 							}}>
 							<span>Calcular una estructura al azar</span>
 						</button>
+						<p>Muestra los pasos de cálculo</p>
 					</p>
 				</div>
 				<div className="col-sm-4">
@@ -3128,7 +3164,7 @@ function Calculus() {
 								d3.selectAll("#matrices-rigid-local > *").remove();
 								d3.selectAll("#matrices-rigid-global > *").remove();
 								d3.selectAll("#matrices-rigid-total > *").remove();
-								d3.selectAll("#vector-fuerzas > *").remove();
+								//d3.selectAll("#vector-fuerzas > *").remove();
 								d3.selectAll("#matriz-reducida > *").remove();
 								d3.selectAll("#matriz-reducida-inversa > *").remove();
 								d3.selectAll("#vector-reducido > *").remove();
@@ -3137,12 +3173,14 @@ function Calculus() {
 								d3.selectAll("#tabla-final2 > *").remove();
 								d3.selectAll("#tabla-final3 > *").remove();
 								d3.selectAll("#tabla-final4 > *").remove();
+								addTablasAgain(pesoEstructura);
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
+					<p>No muestra pasos de cálcula por rendimiento</p>
 				</div>
 			</div>
 			<div className="row justify-content">
