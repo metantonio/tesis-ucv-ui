@@ -3572,7 +3572,7 @@ function Calculus() {
 							}}>
 							<span>Calcular una estructura al azar</span>
 						</button>
-						<p>Muestra los pasos de cálculo</p>
+						<p>Muestra los pasos de cálculo (no aplica Algoritmos Genéticos)</p>
 					</p>
 				</div>
 				<div className="col-sm-4">
@@ -3681,7 +3681,7 @@ function Calculus() {
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
-					<p>No muestra pasos de cálculo para mayor rendimiento</p>
+					<p>No muestra pasos de cálculo para mayor rendimiento (Aplica el Algoritmo Genético)</p>
 				</div>
 			</div>
 			<div className="row justify-content">
@@ -3780,7 +3780,7 @@ function Calculus() {
 			</div>
 			<div className="text-sm-left">
 				<h2> 11-. Resultados Algoritmos Genéticos</h2>
-				<h3> 11-.1 Tabla resultado de la mejor combinación</h3>
+				<h3> 11-.1 Evolución del Algoritmo Genético</h3>
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final5" onLoad="" />
