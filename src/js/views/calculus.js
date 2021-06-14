@@ -2462,6 +2462,15 @@ function Calculus() {
 				element["reaccionExternaCombo1"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo1"] = element["desplazamientoNodoIni"];
 				element["puntuacionCombo1"] = element["puntuacion"];
+				element["derivaChequeoCombo1"] = element["derivaChequeo"];
+				element["alaλOkCombo1"] = element["alaλOk"];
+				element["almaλOkCombo1"] = element["almaλOk"];
+				element["almaλMnOkCombo1"] = element["almaλMnOk"];
+				element["pandeoAlmaCorteCombo1"] = element["pandeoAlmaCorte"];
+				element["alaCompresionCombo1"] = element["alaCompresion"];
+				element["almaCompresionCombo1"] = element["almaCompresion"];
+				element["pandeoCompresionCombo1"] = element["pandeoCompresion"];
+				element["chequeoCompresionCombo1"] = element["chequeoCompresion"];
 			}
 
 			if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
@@ -2470,6 +2479,15 @@ function Calculus() {
 				element["reaccionExternaCombo2"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo2"] = element["desplazamientoNodoIni"];
 				element["puntuacionCombo2"] = element["puntuacion"];
+				element["derivaChequeoCombo2"] = element["derivaChequeo"];
+				element["alaλOkCombo2"] = element["alaλOk"];
+				element["almaλOkCombo2"] = element["almaλOk"];
+				element["almaλMnOkCombo2"] = element["almaλMnOk"];
+				element["pandeoAlmaCorteCombo2"] = element["pandeoAlmaCorte"];
+				element["alaCompresionCombo2"] = element["alaCompresion"];
+				element["almaCompresionCombo2"] = element["almaCompresion"];
+				element["pandeoCompresionCombo2"] = element["pandeoCompresion"];
+				element["chequeoCompresionCombo2"] = element["chequeoCompresion"];
 			}
 
 			if (cW == 1.275) {
@@ -2478,6 +2496,15 @@ function Calculus() {
 				element["reaccionExternaCombo3"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo3"] = element["desplazamientoNodoIni"];
 				element["puntuacionCombo3"] = element["puntuacion"];
+				element["derivaChequeoCombo3"] = element["derivaChequeo"];
+				element["alaλOkCombo3"] = element["alaλOk"];
+				element["almaλOkCombo3"] = element["almaλOk"];
+				element["almaλMnOkCombo3"] = element["almaλMnOk"];
+				element["pandeoAlmaCorteCombo3"] = element["pandeoAlmaCorte"];
+				element["alaCompresionCombo3"] = element["alaCompresion"];
+				element["almaCompresionCombo3"] = element["almaCompresion"];
+				element["pandeoCompresionCombo3"] = element["pandeoCompresion"];
+				element["chequeoCompresionCombo3"] = element["chequeoCompresion"];
 			}
 
 			if (cW == -1.275) {
@@ -2486,6 +2513,15 @@ function Calculus() {
 				element["reaccionExternaCombo4"] = element["reaccionExterna"];
 				element["desplazamientoNodoIniCombo4"] = element["desplazamientoNodoIni"];
 				element["puntuacionCombo4"] = element["puntuacion"];
+				element["derivaChequeoCombo4"] = element["derivaChequeo"];
+				element["alaλOkCombo4"] = element["alaλOk"];
+				element["almaλOkCombo4"] = element["almaλOk"];
+				element["almaλMnOkCombo4"] = element["almaλMnOk"];
+				element["pandeoAlmaCorteCombo4"] = element["pandeoAlmaCorte"];
+				element["alaCompresionCombo4"] = element["alaCompresion"];
+				element["almaCompresionCombo4"] = element["almaCompresion"];
+				element["pandeoCompresionCombo4"] = element["pandeoCompresion"];
+				element["chequeoCompresionCombo4"] = element["chequeoCompresion"];
 			}
 		}
 		codigoGeneticoP1[0]["resultadoFinal"] = (resultado / codigoGeneticoP1.length).toFixed(3);
@@ -3035,6 +3071,454 @@ function Calculus() {
 		}
 	}
 
+	function addTablaCodigoGen1(getElementByIdf, codigoGeneticoP1) {
+		var fila = "";
+
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
+			a += "<th>Ala Flexión</th>";
+			a += "<th>Alma Flexión</th>";
+			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
+			a += "<th>Pandeo del Alma por Corte</th>";
+			a += "<th>Compresión del Ala</th>";
+			a += "<th>Compresión del Alma</th>";
+			a += "<th>Tipo de Pandeo</th>";
+			a += "<th>Chequeo compresión</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>(" +
+				element.desplazamientoNodoIniCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.esfuerzosInternosCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExternaCombo1[0] +
+				"," +
+				" " +
+				element.reaccionExternaCombo1[1] +
+				", " +
+				element.reaccionExternaCombo1[2] +
+				")</td>" +
+				"<td>" +
+				element.derivaCombo1 +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeoCombo1 +
+				"</td>" +
+				"<td>(" +
+				element.alaλOkCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.almaλOkCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.almaλMnOkCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoAlmaCorteCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.alaCompresionCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.almaCompresionCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoCompresionCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.chequeoCompresionCombo1 +
+				")</td>" +
+				"<td>(" +
+				element.puntuacionCombo1 +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["resultadoFinal"] +
+				")</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
+	function addTablaCodigoGen22(getElementByIdf, codigoGeneticoP1) {
+		var fila = "";
+
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
+			a += "<th>Ala Flexión</th>";
+			a += "<th>Alma Flexión</th>";
+			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
+			a += "<th>Pandeo del Alma por Corte</th>";
+			a += "<th>Compresión del Ala</th>";
+			a += "<th>Compresión del Alma</th>";
+			a += "<th>Tipo de Pandeo</th>";
+			a += "<th>Chequeo compresión</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>(" +
+				element.desplazamientoNodoIniCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.esfuerzosInternosCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExternaCombo2[0] +
+				"," +
+				" " +
+				element.reaccionExternaCombo2[1] +
+				", " +
+				element.reaccionExternaCombo2[2] +
+				")</td>" +
+				"<td>" +
+				element.derivaCombo2 +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeoCombo2 +
+				"</td>" +
+				"<td>(" +
+				element.alaλOkCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.almaλOkCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.almaλMnOkCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoAlmaCorteCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.alaCompresionCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.almaCompresionCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoCompresionCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.chequeoCompresionCombo2 +
+				")</td>" +
+				"<td>(" +
+				element.puntuacionCombo2 +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["resultadoFinal"] +
+				")</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
+	function addTablaCodigoGen3(getElementByIdf, codigoGeneticoP1) {
+		var fila = "";
+
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
+			a += "<th>Ala Flexión</th>";
+			a += "<th>Alma Flexión</th>";
+			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
+			a += "<th>Pandeo del Alma por Corte</th>";
+			a += "<th>Compresión del Ala</th>";
+			a += "<th>Compresión del Alma</th>";
+			a += "<th>Tipo de Pandeo</th>";
+			a += "<th>Chequeo compresión</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>(" +
+				element.desplazamientoNodoIniCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.esfuerzosInternosCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExternaCombo3[0] +
+				"," +
+				" " +
+				element.reaccionExternaCombo3[1] +
+				", " +
+				element.reaccionExternaCombo3[2] +
+				")</td>" +
+				"<td>" +
+				element.derivaCombo3 +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeoCombo3 +
+				"</td>" +
+				"<td>(" +
+				element.alaλOkCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.almaλOkCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.almaλMnOkCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoAlmaCorteCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.alaCompresionCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.almaCompresionCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoCompresionCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.chequeoCompresionCombo3 +
+				")</td>" +
+				"<td>(" +
+				element.puntuacionCombo3 +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["resultadoFinal"] +
+				")</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
+	function addTablaCodigoGen4(getElementByIdf, codigoGeneticoP1) {
+		var fila = "";
+
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
+			a += "<th>Ala Flexión</th>";
+			a += "<th>Alma Flexión</th>";
+			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
+			a += "<th>Pandeo del Alma por Corte</th>";
+			a += "<th>Compresión del Ala</th>";
+			a += "<th>Compresión del Alma</th>";
+			a += "<th>Tipo de Pandeo</th>";
+			a += "<th>Chequeo compresión</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>(" +
+				element.desplazamientoNodoIniCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.esfuerzosInternosCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExternaCombo4[0] +
+				"," +
+				" " +
+				element.reaccionExternaCombo4[1] +
+				", " +
+				element.reaccionExternaCombo4[2] +
+				")</td>" +
+				"<td>" +
+				element.derivaCombo4 +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeoCombo4 +
+				"</td>" +
+				"<td>(" +
+				element.alaλOkCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.almaλOkCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.almaλMnOkCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoAlmaCorteCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.alaCompresionCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.almaCompresionCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.pandeoCompresionCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.chequeoCompresionCombo4 +
+				")</td>" +
+				"<td>(" +
+				element.puntuacionCombo4 +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["resultadoFinal"] +
+				")</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -3118,6 +3602,9 @@ function Calculus() {
 								listaEstructuras(codigoGeneticoP);
 							}
 							//A partir de este punto corre el algoritmo genético
+							if (historiax > 1) {
+								d3.selectAll("#tabla-final5 > *").remove();
+							}
 							for (var i = 0; i < generaciones; i++) {
 								historiax++;
 								historia.push(historiax);
@@ -3161,8 +3648,25 @@ function Calculus() {
 								//ahora se agregan las tablas
 								codigoGeneticoP = pesoEstructura;
 								addTableConnect2(pesoEstructura);
+								//borrar tablas innecesarias
+								d3.selectAll("#matrices-rigid-local > *").remove();
+								d3.selectAll("#matrices-rigid-global > *").remove();
+								d3.selectAll("#matrices-rigid-total > *").remove();
+								d3.selectAll("#vector-fuerzas > *").remove();
+								d3.selectAll("#matriz-reducida > *").remove();
+								d3.selectAll("#matriz-reducida-inversa > *").remove();
+								d3.selectAll("#vector-reducido > *").remove();
+								d3.selectAll("#desplazamiento-nodos > *").remove();
+								d3.selectAll("#tabla-final > *").remove();
+								d3.selectAll("#tabla-final2 > *").remove();
+								d3.selectAll("#tabla-final3 > *").remove();
+								d3.selectAll("#tabla-final4 > *").remove();
 
 								//addTablasAgain(pesoEstructura);
+								addTablaCodigoGen1("tabla-final", pesoEstructura);
+								addTablaCodigoGen22("tabla-final2", pesoEstructura);
+								addTablaCodigoGen3("tabla-final3", pesoEstructura);
+								addTablaCodigoGen4("tabla-final4", pesoEstructura);
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
@@ -3265,6 +3769,13 @@ function Calculus() {
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final4" onLoad="" />
+			</div>
+			<div className="text-sm-left">
+				<h2> 11-. Resultados Algoritmos Genéticos</h2>
+				<h3> 11-.1 Tabla resultado de la mejor combinación</h3>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final5" onLoad="" />
 			</div>
 			<p />
 			<div className="row justify-content">
