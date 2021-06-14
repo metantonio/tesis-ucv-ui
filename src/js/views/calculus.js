@@ -2948,6 +2948,8 @@ function Calculus() {
 		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
 	}
 	function EvaluacionCruce(codigoDelCruce) {
+		vectorConectividadf1 = codigoDelCruce;
+		vectorConectividadf22 = codigoDelCruce;
 		reescrituraConectividadf(0, codigoDelCruce);
 		reescrituraConectividadf2(0, 1.4, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
@@ -2965,6 +2967,8 @@ function Calculus() {
 		calculosFinales(0, 0, 1.4, codigoDelCruce);
 		//addTablaFinal("tabla-final", codigoDelCruce);
 
+		vectorConectividadf1 = codigoDelCruce;
+		vectorConectividadf22 = codigoDelCruce;
 		reescrituraConectividadf(0, codigoDelCruce);
 		reescrituraConectividadf2(1.6, 1.2, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
@@ -2982,6 +2986,8 @@ function Calculus() {
 		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
 		//addTablaFinal("tabla-final2", codigoDelCruce);
 
+		vectorConectividadf1 = codigoDelCruce;
+		vectorConectividadf22 = codigoDelCruce;
 		reescrituraConectividadf(1.275, codigoDelCruce);
 		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
@@ -2999,6 +3005,8 @@ function Calculus() {
 		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
 		//addTablaFinal("tabla-final3", codigoDelCruce);
 
+		vectorConectividadf1 = codigoDelCruce;
+		vectorConectividadf22 = codigoDelCruce;
 		reescrituraConectividadf(-1.275, codigoDelCruce);
 		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
