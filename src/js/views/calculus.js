@@ -2927,6 +2927,7 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(0, 0, 1.4, codigoDelCruce);
+		//addTablaFinal("tabla-final", codigoDelCruce);
 
 		reescrituraConectividadf(0, codigoDelCruce);
 		reescrituraConectividadf2(1.6, 1.2, codigoDelCruce);
@@ -2943,6 +2944,7 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
+		//addTablaFinal("tabla-final2", codigoDelCruce);
 
 		reescrituraConectividadf(1.275, codigoDelCruce);
 		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
@@ -2959,6 +2961,7 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
+		//addTablaFinal("tabla-final3", codigoDelCruce);
 
 		reescrituraConectividadf(-1.275, codigoDelCruce);
 		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
@@ -2975,6 +2978,7 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
 		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
+		//addTablaFinal("tabla-final4", codigoDelCruce);
 
 		listaEstructuras(codigoDelCruce);
 		return vectorFuerzasInternas, matrizReducidaInversa, vectorFuerzasInternasRedux, vectorDesplazamientos;
@@ -3013,21 +3017,23 @@ function Calculus() {
 
 		var mutacion2 = mutacion(cruceGen2);
 		EvaluacionCruce(mutacion2);
+
+		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
 		codigoGeneticoP = codigoGeneticoP1;
 		matrizRigidLocal2(codigoGeneticoP1);
-		addMatricesRigLocal2(codigoGeneticoP1);
-		vectorMatrizRigGlobal = matrizRigidGlogal();
+		//addMatricesRigLocal2(codigoGeneticoP1);
+		//vectorMatrizRigGlobal = matrizRigidGlogal();
 	}
 
-	document.addEventListener("DOMContentLoaded", function(event) {
+	function updateDraw() {
 		if (repetir > 1) {
 			document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
 			document.getElementById("caja-dibujo4").innerHTML = dibujoIni(estructurasLista[0]);
 		}
-	});
+	}
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -3041,12 +3047,6 @@ function Calculus() {
 		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//svg.selectAll("*").remove();
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
-		document.addEventListener("DOMContentLoaded", function(event) {
-			if (repetir > 1) {
-				document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
-				document.getElementById("caja-dibujo4").innerHTML = dibujoIni(estructurasLista[0]);
-			}
-		});
 	});
 
 	return (
@@ -3100,6 +3100,7 @@ function Calculus() {
 				<div className="col-sm-4">
 					<button
 						className="btnPaso text-center mt-12 title"
+						id="myBtn"
 						onClick={() => {
 							generaciones = document.getElementById("generacion-box").value;
 							while (estructurasLista.length < 3) {
@@ -3160,27 +3161,15 @@ function Calculus() {
 								//ahora se agregan las tablas
 								codigoGeneticoP = pesoEstructura;
 								addTableConnect2(pesoEstructura);
-								//se eliminan las siguientes tablas
-								d3.selectAll("#matrices-rigid-local > *").remove();
-								d3.selectAll("#matrices-rigid-global > *").remove();
-								d3.selectAll("#matrices-rigid-total > *").remove();
-								//d3.selectAll("#vector-fuerzas > *").remove();
-								d3.selectAll("#matriz-reducida > *").remove();
-								d3.selectAll("#matriz-reducida-inversa > *").remove();
-								d3.selectAll("#vector-reducido > *").remove();
-								d3.selectAll("#desplazamiento-nodos > *").remove();
-								d3.selectAll("#tabla-final > *").remove();
-								d3.selectAll("#tabla-final2 > *").remove();
-								d3.selectAll("#tabla-final3 > *").remove();
-								d3.selectAll("#tabla-final4 > *").remove();
-								addTablasAgain(pesoEstructura);
+
+								//addTablasAgain(pesoEstructura);
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
-					<p>No muestra pasos de cálcula por rendimiento</p>
+					<p>No muestra pasos de cálculo para mayor rendimiento</p>
 				</div>
 			</div>
 			<div className="row justify-content">
