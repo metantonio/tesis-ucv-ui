@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
@@ -15,6 +15,8 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import App from "./views/App";
 
 //create your first component
 const Layout = () => {
@@ -42,6 +44,7 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/calculus">
 							<Calculus />
+							<App />
 						</Route>
 						<Route exact path="/autor">
 							<Autor />

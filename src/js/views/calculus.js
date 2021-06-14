@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useContext, Component } from "react";
+import React, { useState, useEffect, useContext, Component, PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { render } from "react-dom";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
 import { array } from "prop-types";
 import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
 import { create, all } from "mathjs";
-const math = create(all, {});
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import App from "./App";
 
+const math = create(all, {});
+const rootElement = document.getElementById("grafica-evolucion1");
 function Calculus() {
 	const { store, actions } = useContext(Context);
 	//const [noColumnas, setNoColumnas] = useState("");
@@ -3527,6 +3531,33 @@ function Calculus() {
 		return final;
 	}
 
+	var dataGraph = [];
+	function graficaXY() {
+		dataGraph = [];
+		var dataInfo = {};
+		for (var i = 0; i < historiaPeso.length; i++) {
+			dataInfo["name"] = i + 1;
+			//dataInfo["uv"] = i + 1;
+			dataInfo["pv"] = historiaPeso[i];
+			dataGraph.push(dataInfo);
+		}
+		return dataGraph;
+	}
+
+	function dibujaGrafica(getElementByIdf, etiquetaX, etiquetaY) {
+		var a =
+			"<LineChart width=500 height=300 data=" + dataGraph + " margin={{top: 5, right: 30, left: 20, bottom: 5}}>";
+		a += "<CartesianGrid strokeDasharray=" + "3 3" + " />";
+		a += "<XAxis dataKey='" + etiquetaX + "' />";
+		a += "<YAxis dataKey='" + etiquetaY + "' />";
+		a += "<Tooltip />";
+		a += "<Legend />";
+		a += "<Line type=" + "monotone" + " dataKey=" + "pv" + " stroke=" + "#8884d8" + "	activeDot={{ r: 8 }}/>";
+		a += "</LineChart>";
+
+		document.getElementById(getElementByIdf).innerHTML = a;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -3675,6 +3706,10 @@ function Calculus() {
 								addTablaCodigoGen22("tabla-final2", pesoEstructura);
 								addTablaCodigoGen3("tabla-final3", pesoEstructura);
 								addTablaCodigoGen4("tabla-final4", pesoEstructura);
+
+								//se dibuja la gráfica
+								graficaXY();
+								dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
@@ -3783,7 +3818,7 @@ function Calculus() {
 				<h3> 11-.1 Evolución del Algoritmo Genético</h3>
 			</div>
 			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final5" onLoad="" />
+				<table className="table table-striped" id="grafica-evolucion1" onLoad="" />
 			</div>
 			<p />
 			<div className="row justify-content">
