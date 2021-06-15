@@ -2837,8 +2837,65 @@ function Calculus() {
 				var filter = codigoGeneticoP1.filter((element, index) => index < codigoGeneticoP1.length - 1);
 
 				//codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
-				console.log("hubo mutación 1: Eliminación de Diagonal");
+				console.log("hubo mutación tipo 1: Eliminación de Diagonal");
 				return filter;
+			}
+		}
+		if (numeroAleatorio == 2) {
+			numeroAleatorio == aleatorio(0, codigoGeneticoP1.length - 1);
+			if (codigoGeneticoP1[numeroAleatorio].tipo != "Diagonal") {
+				var item = listaIPN[Math.floor(Math.random() * listaIPN.length)]; //de donde copiará los perfiles aleatorios
+
+				codigoGeneticoP1[numeroAleatorio]["elemento"] = item["designacion"];
+				codigoGeneticoP1[numeroAleatorio]["inercia"] = item["ix"];
+				codigoGeneticoP1[numeroAleatorio]["inerciaY"] = item["iy"];
+				codigoGeneticoP1[numeroAleatorio]["dmm"] = item["altura"];
+				codigoGeneticoP1[numeroAleatorio]["bf"] = item["bf"];
+				codigoGeneticoP1[numeroAleatorio]["tf"] = item["tf"];
+				codigoGeneticoP1[numeroAleatorio]["tw"] = item["tw"];
+				codigoGeneticoP1[numeroAleatorio]["sx"] = item["sx"];
+				codigoGeneticoP1[numeroAleatorio]["zx"] = item["zx"];
+				codigoGeneticoP1[numeroAleatorio]["rx"] = item["rx"];
+				codigoGeneticoP1[numeroAleatorio]["sy"] = item["sy"];
+				codigoGeneticoP1[numeroAleatorio]["zy"] = item["zy"];
+				codigoGeneticoP1[numeroAleatorio]["ry"] = item["ry"];
+				codigoGeneticoP1[numeroAleatorio]["jj"] = item["j"];
+				codigoGeneticoP1[numeroAleatorio]["cw"] = item["cw"];
+				codigoGeneticoP1[numeroAleatorio]["area"] = item["area"];
+				codigoGeneticoP1[numeroAleatorio]["a"] = (
+					(codigoGeneticoP1[numeroAleatorio]["elasticidad"] * codigoGeneticoP1[numeroAleatorio]["area"]) /
+					(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio]["b"] = (
+					(12 *
+						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
+					Math.pow(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100, 3)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio]["c"] = (
+					(6 *
+						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
+					Math.pow(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100, 2)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio]["d"] = (
+					(4 *
+						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
+					(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio]["e"] = (
+					(2 *
+						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
+					(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio]["peso"] = (
+					item["peso"] * codigoGeneticoP1[numeroAleatorio]["longitud"]
+				).toFixed(2);
+
+				console.log("hubo mutación tipo 2: Cambio de Perfil");
+				return codigoGeneticoP1;
 			}
 		}
 		//cuando no hay mutación regresa el mismo código genético de entrada
