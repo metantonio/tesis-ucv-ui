@@ -3090,33 +3090,38 @@ function Calculus() {
 		//addTablaFinal("tabla-final4", codigoDelCruce);
 
 		listaEstructuras(codigoDelCruce);
-		return vectorFuerzasInternas, matrizReducidaInversa, vectorFuerzasInternasRedux, vectorDesplazamientos;
+		return (
+			vectorFuerzasInternas,
+			matrizReducidaInversa,
+			vectorFuerzasInternasRedux,
+			vectorDesplazamientos,
+			estructurasLista
+		);
 	}
-
+	var listaAEvaluar = [];
 	function BotonCruce() {
-		var listaAEvaluar = [];
-		listaAEvaluar = [];
+		//listaAEvaluar = [];
 		repetir++;
 		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[1]);
 		var cruceGen0 = listaAEvaluar[0];
 		var cruceGen1 = listaAEvaluar[1];
 		EvaluacionCruce(cruceGen0);
 		EvaluacionCruce(cruceGen1);
-		listaAEvaluar = [];
+		//listaAEvaluar = [];
 
 		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[2]);
 		var cruceGen2 = listaAEvaluar[0];
 		var cruceGen3 = listaAEvaluar[1];
 		EvaluacionCruce(cruceGen2);
 		EvaluacionCruce(cruceGen3);
-		listaAEvaluar = [];
+		//listaAEvaluar = [];
 
 		listaAEvaluar = cruceGenetico1(estructurasLista[1], estructurasLista[2]);
 		var cruceGen4 = listaAEvaluar[0];
 		var cruceGen5 = listaAEvaluar[1];
 		EvaluacionCruce(cruceGen4);
 		EvaluacionCruce(cruceGen5);
-		listaAEvaluar = [];
+		//listaAEvaluar = [];
 
 		var mutacion0 = mutacion(cruceGen0);
 		//console.log("ver mutacion0", mutacion0);
