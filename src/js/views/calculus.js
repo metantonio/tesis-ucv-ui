@@ -2833,11 +2833,15 @@ function Calculus() {
 		var numeroAleatorio = aleatorio(0, 2);
 
 		if (numeroAleatorio == 1) {
-			if (codigoGeneticoP1.tipo == "Diagonal") {
-				codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
-				console.log("hubo mutación");
+			if (codigoGeneticoP1[codigoGeneticoP1.length - 1].tipo == "Diagonal") {
+				var filter = codigoGeneticoP1.filter((element, index) => index < codigoGeneticoP1.length - 1);
+
+				//codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
+				console.log("hubo mutación 1: Eliminación de Diagonal");
+				return filter;
 			}
 		}
+		//cuando no hay mutación regresa el mismo código genético de entrada
 		return codigoGeneticoP1;
 	}
 
@@ -3058,6 +3062,7 @@ function Calculus() {
 		listaAEvaluar = [];
 
 		var mutacion0 = mutacion(cruceGen0);
+		//console.log("ver mutacion0", mutacion0);
 		EvaluacionCruce(mutacion0);
 
 		var mutacion1 = mutacion(cruceGen1);
