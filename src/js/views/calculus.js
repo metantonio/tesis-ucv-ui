@@ -2844,7 +2844,7 @@ function Calculus() {
 		if (numeroAleatorio == 2) {
 			numeroAleatorio == aleatorio(0, codigoGeneticoP1.length - 1);
 			if (codigoGeneticoP1[numeroAleatorio].tipo != "Diagonal") {
-				var item = listaIPN[Math.floor(Math.random() * listaIPN.length)]; //de donde copiará los perfiles aleatorios
+				var item = listaIPN[aleatorio(0, 1)]; //de donde copiará los perfiles aleatorios
 
 				codigoGeneticoP1[numeroAleatorio]["elemento"] = item["designacion"];
 				codigoGeneticoP1[numeroAleatorio]["inercia"] = item["ix"];
