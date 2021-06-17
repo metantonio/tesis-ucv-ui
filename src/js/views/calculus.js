@@ -5,7 +5,7 @@ import { render } from "react-dom";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
-import { array } from "prop-types";
+import { array, element } from "prop-types";
 import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
 import { create, all } from "mathjs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -2278,7 +2278,7 @@ function Calculus() {
 			// 	//desplazamientoEnCodigo(codigoGeneticoP1);
 			// }
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
-
+			//desplazamientosFinales(codigoGeneticoP1);
 			//cálculo de reacciones externas
 			if (element.nodoIni[1] != 0) {
 				element["reaccionExterna"] = [0, 0, 0, 0, 0, 0];
@@ -2507,35 +2507,6 @@ function Calculus() {
 
 			//guarda el valor de la puntuación del elemento es una variable acumulativa temporal
 			resultado += element["puntuacion"];
-
-			if (entropia == 0) {
-				element["desplazamientoNodoIniCombo1"] = element.desplazamientoNodoIni;
-				//return element;
-			}
-
-			if (entropia == 1) {
-				//console.log("entra en datosCombo2");
-				element["desplazamientoNodoIniCombo2"] = element.desplazamientoNodoIni;
-				//return element;
-			}
-
-			if (entropia == 2) {
-				//console.log("entra en datosCombo3");
-				element["desplazamientoNodoIniCombo3"] = element.desplazamientoNodoIni;
-				//return element;
-			}
-
-			if (entropia == 3) {
-				//console.log("entra en datosCombo4");
-				element["desplazamientoNodoIniCombo4"] = element.desplazamientoNodoIni;
-				//return element;
-			}
-
-			if (entropia == 4) {
-				//console.log("entra en datosCombo5");
-				element["desplazamientoNodoIniComboLateral"] = element.desplazamientoNodoIni;
-				//return element;
-			}
 		}
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//guardar los desplazamientos de cada caso
@@ -2658,7 +2629,7 @@ function Calculus() {
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
-		return codigoGeneticoP1;
+		//return codigoGeneticoP1;
 	}
 
 	var estructurasLista = [];
@@ -2673,6 +2644,19 @@ function Calculus() {
 		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
+	}
+	var desplazamientosFinalesLista = [];
+
+	function desplazamientosFinales(codigoGeneticoP1) {
+		desplazamientosFinalesLista = [];
+
+		for (let element of codigoGeneticoP1) {
+			if (element["desplazamientoLista"] == undefined) {
+				element["desplazamientoLista"] = [];
+			}
+			element["desplazamientoLista"].push(element.desplazamientoNodoIni);
+		}
+		return codigoGeneticoP1;
 	}
 
 	function cruceGenetico1(primeroLista, segundoLista) {
@@ -3115,6 +3099,7 @@ function Calculus() {
 		//desplazamientoEnCodigo(codigoGeneticoP);
 		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
 		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
+		//desplazamientosFinales(codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
 		// drawini = dibujoIni();
 		// drawLines = drawLines3 + drawText;
@@ -3141,15 +3126,16 @@ function Calculus() {
 		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
 		rigidezTotal2(codigoDelCruce);
 		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
-		codigoDelCruce = codigoGeneticoP;
+		//codigoDelCruce = codigoGeneticoP;
 		rigidezReducida2(codigoDelCruce);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
 		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(codigoDelCruce);
+		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 0;
 		calculosFinales(0, 0, 1.4, codigoDelCruce);
+		//desplazamientosFinales(codigoDelCruce);
 		//addTablaFinal("tabla-final", codigoDelCruce);
 
 		vectorConectividadf1 = codigoDelCruce;
@@ -3167,9 +3153,10 @@ function Calculus() {
 		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(codigoDelCruce);
+		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 1;
 		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
+		//desplazamientosFinales(codigoDelCruce);
 		//addTablaFinal("tabla-final2", codigoDelCruce);
 
 		vectorConectividadf1 = codigoDelCruce;
@@ -3190,6 +3177,7 @@ function Calculus() {
 		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 2;
 		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
+		//desplazamientosFinales(codigoDelCruce);
 		//addTablaFinal("tabla-final3", codigoDelCruce);
 
 		vectorConectividadf1 = codigoDelCruce;
@@ -3210,6 +3198,7 @@ function Calculus() {
 		desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 3;
 		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
+		//desplazamientosFinales(codigoDelCruce);
 		//addTablaFinal("tabla-final4", codigoDelCruce);
 
 		evaluacionCargasLaterales(codigoDelCruce);
@@ -3973,6 +3962,7 @@ function Calculus() {
 								//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 								//caso 1.4 carga permanente
 								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+								//desplazamientosFinales(codigoGeneticoP);
 								entropia = 1;
 								//caso 1.2CP+1.6CV
 								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
@@ -4005,7 +3995,7 @@ function Calculus() {
 						name="no-columnas"
 						min="1"
 						step="10"
-						max="1.10"
+						max="100"
 						onChange={e => (generaciones = document.getElementById("generacion-box").value)}
 					/>
 				</div>
@@ -4019,6 +4009,7 @@ function Calculus() {
 								//caso 1.4 carga permanente
 								entropia = 0;
 								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+								//desplazamientosFinales(codigoGeneticoP);
 								//caso 1.2CP+1.6CV
 								entropia = 1;
 								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
