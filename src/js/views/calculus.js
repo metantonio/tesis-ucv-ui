@@ -56,6 +56,8 @@ function Calculus() {
 	var historiax = 0;
 	var historia = [];
 	var historiaPeso = [];
+	var texto = "";
+	var entropia = 0;
 
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
@@ -1691,7 +1693,7 @@ function Calculus() {
 		var n = 0;
 		for (var i = 0; i < matrizApoyo2.length; i += 3) {
 			for (let element of codigoGeneticoP) {
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorX[0]) {
 					filasM[n] = matrizApoyo2[i];
 					filasM[n + 1] = matrizApoyo2[i + 1];
 					filasM[n + 2] = matrizApoyo2[i + 2];
@@ -1699,7 +1701,7 @@ function Calculus() {
 					n += 3;
 					break;
 				}
-				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorY[0]) {
 					filasM[n] = matrizApoyo2[i];
 					filasM[n + 1] = matrizApoyo2[i + 1];
 					filasM[n + 2] = matrizApoyo2[i + 2];
@@ -1846,7 +1848,7 @@ function Calculus() {
 		var n = 0;
 		for (var i = 0; i < matrizApoyo2.length; i += 3) {
 			for (let element of codigoGeneticoP1) {
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorX[0]) {
 					filasM[n] = matrizApoyo2[i];
 					filasM[n + 1] = matrizApoyo2[i + 1];
 					filasM[n + 2] = matrizApoyo2[i + 2];
@@ -1854,7 +1856,7 @@ function Calculus() {
 					n += 3;
 					break;
 				}
-				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorY[0]) {
 					filasM[n] = matrizApoyo2[i];
 					filasM[n + 1] = matrizApoyo2[i + 1];
 					filasM[n + 2] = matrizApoyo2[i + 2];
@@ -2012,7 +2014,7 @@ function Calculus() {
 			//console.log(vectorFuerzaReducida[i]);
 			for (let element of codigoGeneticoP) {
 				//console.log(element);
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorX[0]) {
 					element["fuerzasGlobales"][0] = vectorFuerzaReducida[i];
 					element["fuerzasGlobales"][1] = vectorFuerzaReducida[i + 1];
 					element["fuerzasGlobales"][2] = vectorFuerzaReducida[i + 2];
@@ -2026,7 +2028,7 @@ function Calculus() {
 					//console.log(filasM[n]);
 					break;
 				}
-				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorY[0]) {
 					element["fuerzasGlobales"][3] = vectorFuerzaReducida[i];
 					element["fuerzasGlobales"][4] = vectorFuerzaReducida[i + 1];
 					element["fuerzasGlobales"][5] = vectorFuerzaReducida[i + 2];
@@ -2056,7 +2058,7 @@ function Calculus() {
 			//console.log(vectorFuerzaReducida[i]);
 			for (let element of codigoGeneticoP1) {
 				//console.log(element);
-				if ((element.nodoIni[1] != 0) & (i == element.vectorX[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorX[0]) {
 					element["fuerzasGlobales"][0] = vectorFuerzaReducida[i];
 					element["fuerzasGlobales"][1] = vectorFuerzaReducida[i + 1];
 					element["fuerzasGlobales"][2] = vectorFuerzaReducida[i + 2];
@@ -2069,7 +2071,7 @@ function Calculus() {
 					//console.log(filasM[n]);
 					break;
 				}
-				if ((element.nodoIni[1] != 0) & (i == element.vectorY[0])) {
+				if (element.nodoIni[1] != 0 && i == element.vectorY[0]) {
 					element["fuerzasGlobales"][3] = vectorFuerzaReducida[i];
 					element["fuerzasGlobales"][4] = vectorFuerzaReducida[i + 1];
 					element["fuerzasGlobales"][5] = vectorFuerzaReducida[i + 2];
@@ -2231,12 +2233,16 @@ function Calculus() {
 				}
 			}
 		}
+		return codigoGeneticoP1;
 	}
 
 	function calculosFinales(cW, CV, CP, codigoGeneticoP1) {
 		var multiplicacionM = [];
 		var multiplicacionM2 = [];
 		var matrizL = [];
+		var cargaPerm = parseFloat(CP);
+		var cargaVar = parseFloat(CV);
+		var cargaAcc = parseFloat(cW);
 		var n = 0;
 		var p = 0;
 		var puntuacion = 0;
@@ -2249,7 +2255,7 @@ function Calculus() {
 		var esfuerzoCritico = 0;
 		var resistenciaNominal = 0;
 		var resultado = 0;
-
+		desplazamientoEnCodigo(codigoGeneticoP1);
 		for (let element of codigoGeneticoP1) {
 			multiplicacionM = [];
 			puntuacion = 0;
@@ -2266,11 +2272,11 @@ function Calculus() {
 			//console.log("multiplicacionM", multiplicacionM);
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
 			//console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
-			desplazamientoEnCodigo(codigoGeneticoP1);
-			if (element["desplazamientoNodoIni"].length == 3) {
-				//console.log("es true", element.desplazamientoNodoIni);
-				desplazamientoEnCodigo(codigoGeneticoP1);
-			}
+
+			// if (element["desplazamientoNodoIni"].length == 3) {
+			// 	//console.log("es true", element.desplazamientoNodoIni);
+			// 	//desplazamientoEnCodigo(codigoGeneticoP1);
+			// }
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
 
 			//cálculo de reacciones externas
@@ -2502,106 +2508,146 @@ function Calculus() {
 			//guarda el valor de la puntuación del elemento es una variable acumulativa temporal
 			resultado += element["puntuacion"];
 
+			if (entropia == 0) {
+				element["desplazamientoNodoIniCombo1"] = element.desplazamientoNodoIni;
+				//return element;
+			}
+
+			if (entropia == 1) {
+				//console.log("entra en datosCombo2");
+				element["desplazamientoNodoIniCombo2"] = element.desplazamientoNodoIni;
+				//return element;
+			}
+
+			if (entropia == 2) {
+				//console.log("entra en datosCombo3");
+				element["desplazamientoNodoIniCombo3"] = element.desplazamientoNodoIni;
+				//return element;
+			}
+
+			if (entropia == 3) {
+				//console.log("entra en datosCombo4");
+				element["desplazamientoNodoIniCombo4"] = element.desplazamientoNodoIni;
+				//return element;
+			}
+
+			if (entropia == 4) {
+				//console.log("entra en datosCombo5");
+				element["desplazamientoNodoIniComboLateral"] = element.desplazamientoNodoIni;
+				//return element;
+			}
+		}
+		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//guardar los desplazamientos de cada caso
-			if (CP == 1.4 && CV == 0 && cW == 0) {
-				element["derivaCombo1"] = element["deriva"];
-				element["esfuerzosInternosCombo1"] = element["esfuerzosInternos"];
-				element["reaccionExternaCombo1"] = element["reaccionExterna"];
-				element["desplazamientoNodoIniCombo1"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo1"] = element["puntuacion"];
-				element["derivaChequeoCombo1"] = element["derivaChequeo"];
-				element["alaλOkCombo1"] = element["alaλOk"];
-				element["almaλOkCombo1"] = element["almaλOk"];
-				element["almaλMnOkCombo1"] = element["almaλMnOk"];
-				element["pandeoAlmaCorteCombo1"] = element["pandeoAlmaCorte"];
-				element["alaCompresionCombo1"] = element["alaCompresion"];
-				element["almaCompresionCombo1"] = element["almaCompresion"];
-				element["pandeoCompresionCombo1"] = element["pandeoCompresion"];
-				element["chequeoCompresionCombo1"] = element["chequeoCompresion"];
+			if (cargaPerm === 1.4) {
+				//console.log("entra en datosCombo1");
+				codigoGeneticoP1[i]["derivaCombo1"] = codigoGeneticoP1[i]["deriva"];
+				codigoGeneticoP1[i]["esfuerzosInternosCombo1"] = codigoGeneticoP1[i]["esfuerzosInternos"];
+				codigoGeneticoP1[i]["reaccionExternaCombo1"] = codigoGeneticoP1[i]["reaccionExterna"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo1"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["puntuacionCombo1"] = codigoGeneticoP1[i]["puntuacion"];
+				codigoGeneticoP1[i]["derivaChequeoCombo1"] = codigoGeneticoP1[i]["derivaChequeo"];
+				codigoGeneticoP1[i]["alaλOkCombo1"] = codigoGeneticoP1[i]["alaλOk"];
+				codigoGeneticoP1[i]["almaλOkCombo1"] = codigoGeneticoP1[i]["almaλOk"];
+				codigoGeneticoP1[i]["almaλMnOkCombo1"] = codigoGeneticoP1[i]["almaλMnOk"];
+				codigoGeneticoP1[i]["pandeoAlmaCorteCombo1"] = codigoGeneticoP1[i]["pandeoAlmaCorte"];
+				codigoGeneticoP1[i]["alaCompresionCombo1"] = codigoGeneticoP1[i]["alaCompresion"];
+				codigoGeneticoP1[i]["almaCompresionCombo1"] = codigoGeneticoP1[i]["almaCompresion"];
+				codigoGeneticoP1[i]["pandeoCompresionCombo1"] = codigoGeneticoP1[i]["pandeoCompresion"];
+				codigoGeneticoP1[i]["chequeoCompresionCombo1"] = codigoGeneticoP1[i]["chequeoCompresion"];
+				//return element;
 			}
 
-			if (CP == 1.2 && CV == 1.6 && cW == 0) {
-				element["derivaCombo2"] = element["deriva"];
-				element["esfuerzosInternosCombo2"] = element["esfuerzosInternos"];
-				element["reaccionExternaCombo2"] = element["reaccionExterna"];
-				element["desplazamientoNodoIniCombo2"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo2"] = element["puntuacion"];
-				element["derivaChequeoCombo2"] = element["derivaChequeo"];
-				element["alaλOkCombo2"] = element["alaλOk"];
-				element["almaλOkCombo2"] = element["almaλOk"];
-				element["almaλMnOkCombo2"] = element["almaλMnOk"];
-				element["pandeoAlmaCorteCombo2"] = element["pandeoAlmaCorte"];
-				element["alaCompresionCombo2"] = element["alaCompresion"];
-				element["almaCompresionCombo2"] = element["almaCompresion"];
-				element["pandeoCompresionCombo2"] = element["pandeoCompresion"];
-				element["chequeoCompresionCombo2"] = element["chequeoCompresion"];
+			if (cargaPerm === 1.2 && cargaVar === 1.6 && cargaAcc === 0.0) {
+				//console.log("entra en datosCombo2");
+				codigoGeneticoP1[i]["derivaCombo2"] = codigoGeneticoP1[i]["deriva"];
+				codigoGeneticoP1[i]["esfuerzosInternosCombo2"] = codigoGeneticoP1[i]["esfuerzosInternos"];
+				codigoGeneticoP1[i]["reaccionExternaCombo2"] = codigoGeneticoP1[i]["reaccionExterna"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo2"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["puntuacionCombo2"] = codigoGeneticoP1[i]["puntuacion"];
+				codigoGeneticoP1[i]["derivaChequeoCombo2"] = codigoGeneticoP1[i]["derivaChequeo"];
+				codigoGeneticoP1[i]["alaλOkCombo2"] = codigoGeneticoP1[i]["alaλOk"];
+				codigoGeneticoP1[i]["almaλOkCombo2"] = codigoGeneticoP1[i]["almaλOk"];
+				codigoGeneticoP1[i]["almaλMnOkCombo2"] = codigoGeneticoP1[i]["almaλMnOk"];
+				codigoGeneticoP1[i]["pandeoAlmaCorteCombo2"] = codigoGeneticoP1[i]["pandeoAlmaCorte"];
+				codigoGeneticoP1[i]["alaCompresionCombo2"] = codigoGeneticoP1[i]["alaCompresion"];
+				codigoGeneticoP1[i]["almaCompresionCombo2"] = codigoGeneticoP1[i]["almaCompresion"];
+				codigoGeneticoP1[i]["pandeoCompresionCombo2"] = codigoGeneticoP1[i]["pandeoCompresion"];
+				codigoGeneticoP1[i]["chequeoCompresionCombo2"] = codigoGeneticoP1[i]["chequeoCompresion"];
+				//return element;
 			}
 
-			if (cW == 1.275) {
-				element["derivaCombo3"] = element["deriva"];
-				element["esfuerzosInternosCombo3"] = element["esfuerzosInternos"];
-				element["reaccionExternaCombo3"] = element["reaccionExterna"];
-				element["desplazamientoNodoIniCombo3"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo3"] = element["puntuacion"];
-				element["derivaChequeoCombo3"] = element["derivaChequeo"];
-				element["alaλOkCombo3"] = element["alaλOk"];
-				element["almaλOkCombo3"] = element["almaλOk"];
-				element["almaλMnOkCombo3"] = element["almaλMnOk"];
-				element["pandeoAlmaCorteCombo3"] = element["pandeoAlmaCorte"];
-				element["alaCompresionCombo3"] = element["alaCompresion"];
-				element["almaCompresionCombo3"] = element["almaCompresion"];
-				element["pandeoCompresionCombo3"] = element["pandeoCompresion"];
-				element["chequeoCompresionCombo3"] = element["chequeoCompresion"];
+			if (cargaAcc === 1.275) {
+				//console.log("entra en datosCombo3");
+				codigoGeneticoP1[i]["derivaCombo3"] = codigoGeneticoP1[i]["deriva"];
+				codigoGeneticoP1[i]["esfuerzosInternosCombo3"] = codigoGeneticoP1[i]["esfuerzosInternos"];
+				codigoGeneticoP1[i]["reaccionExternaCombo3"] = codigoGeneticoP1[i]["reaccionExterna"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo3"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["puntuacionCombo3"] = codigoGeneticoP1[i]["puntuacion"];
+				codigoGeneticoP1[i]["derivaChequeoCombo3"] = codigoGeneticoP1[i]["derivaChequeo"];
+				codigoGeneticoP1[i]["alaλOkCombo3"] = codigoGeneticoP1[i]["alaλOk"];
+				codigoGeneticoP1[i]["almaλOkCombo3"] = codigoGeneticoP1[i]["almaλOk"];
+				codigoGeneticoP1[i]["almaλMnOkCombo3"] = codigoGeneticoP1[i]["almaλMnOk"];
+				codigoGeneticoP1[i]["pandeoAlmaCorteCombo3"] = codigoGeneticoP1[i]["pandeoAlmaCorte"];
+				codigoGeneticoP1[i]["alaCompresionCombo3"] = codigoGeneticoP1[i]["alaCompresion"];
+				codigoGeneticoP1[i]["almaCompresionCombo3"] = codigoGeneticoP1[i]["almaCompresion"];
+				codigoGeneticoP1[i]["pandeoCompresionCombo3"] = codigoGeneticoP1[i]["pandeoCompresion"];
+				codigoGeneticoP1[i]["chequeoCompresionCombo3"] = codigoGeneticoP1[i]["chequeoCompresion"];
+				//return element;
 			}
 
-			if (cW == -1.275) {
-				element["derivaCombo4"] = element["deriva"];
-				element["esfuerzosInternosCombo4"] = element["esfuerzosInternos"];
-				element["reaccionExternaCombo4"] = element["reaccionExterna"];
-				element["desplazamientoNodoIniCombo4"] = element["desplazamientoNodoIni"];
-				element["puntuacionCombo4"] = element["puntuacion"];
-				element["derivaChequeoCombo4"] = element["derivaChequeo"];
-				element["alaλOkCombo4"] = element["alaλOk"];
-				element["almaλOkCombo4"] = element["almaλOk"];
-				element["almaλMnOkCombo4"] = element["almaλMnOk"];
-				element["pandeoAlmaCorteCombo4"] = element["pandeoAlmaCorte"];
-				element["alaCompresionCombo4"] = element["alaCompresion"];
-				element["almaCompresionCombo4"] = element["almaCompresion"];
-				element["pandeoCompresionCombo4"] = element["pandeoCompresion"];
-				element["chequeoCompresionCombo4"] = element["chequeoCompresion"];
+			if (cargaAcc === -1.275) {
+				//console.log("entra en datosCombo4");
+				codigoGeneticoP1[i]["derivaCombo4"] = codigoGeneticoP1[i]["deriva"];
+				codigoGeneticoP1[i]["esfuerzosInternosCombo4"] = codigoGeneticoP1[i]["esfuerzosInternos"];
+				codigoGeneticoP1[i]["reaccionExternaCombo4"] = codigoGeneticoP1[i]["reaccionExterna"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo4"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["puntuacionCombo4"] = codigoGeneticoP1[i]["puntuacion"];
+				codigoGeneticoP1[i]["derivaChequeoCombo4"] = codigoGeneticoP1[i]["derivaChequeo"];
+				codigoGeneticoP1[i]["alaλOkCombo4"] = codigoGeneticoP1[i]["alaλOk"];
+				codigoGeneticoP1[i]["almaλOkCombo4"] = codigoGeneticoP1[i]["almaλOk"];
+				codigoGeneticoP1[i]["almaλMnOkCombo4"] = codigoGeneticoP1[i]["almaλMnOk"];
+				codigoGeneticoP1[i]["pandeoAlmaCorteCombo4"] = codigoGeneticoP1[i]["pandeoAlmaCorte"];
+				codigoGeneticoP1[i]["alaCompresionCombo4"] = codigoGeneticoP1[i]["alaCompresion"];
+				codigoGeneticoP1[i]["almaCompresionCombo4"] = codigoGeneticoP1[i]["almaCompresion"];
+				codigoGeneticoP1[i]["pandeoCompresionCombo4"] = codigoGeneticoP1[i]["pandeoCompresion"];
+				codigoGeneticoP1[i]["chequeoCompresionCombo4"] = codigoGeneticoP1[i]["chequeoCompresion"];
+				//return element;
 			}
 
-			if (cW == 1) {
-				element["derivaComboLateral"] = element["deriva"];
-				element["esfuerzosInternosComboLateral"] = element["esfuerzosInternos"];
-				element["reaccionExternaComboLateral"] = element["reaccionExterna"];
-				element["desplazamientoNodoIniComboLateral"] = element["desplazamientoNodoIni"];
-				element["puntuacionComboLateral"] = element["puntuacion"];
-				element["derivaChequeoComboLateral"] = element["derivaChequeo"];
-				element["alaλOkComboLateral"] = element["alaλOk"];
-				element["almaλOkComboLateral"] = element["almaλOk"];
-				element["almaλMnOkComboLateral"] = element["almaλMnOk"];
-				element["pandeoAlmaCorteComboLateral"] = element["pandeoAlmaCorte"];
-				element["alaCompresionComboLateral"] = element["alaCompresion"];
-				element["almaCompresionComboLateral"] = element["almaCompresion"];
-				element["pandeoCompresionComboLateral"] = element["pandeoCompresion"];
-				element["chequeoCompresionComboLateral"] = element["chequeoCompresion"];
+			if (cargaAcc === 1.0) {
+				//console.log("entra en datosCombo5");
+				codigoGeneticoP1[i]["derivaComboLateral"] = codigoGeneticoP1[i]["deriva"];
+				codigoGeneticoP1[i]["esfuerzosInternosComboLateral"] = codigoGeneticoP1[i]["esfuerzosInternos"];
+				codigoGeneticoP1[i]["reaccionExternaComboLateral"] = codigoGeneticoP1[i]["reaccionExterna"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniComboLateral"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["puntuacionComboLateral"] = codigoGeneticoP1[i]["puntuacion"];
+				codigoGeneticoP1[i]["derivaChequeoComboLateral"] = codigoGeneticoP1[i]["derivaChequeo"];
+				codigoGeneticoP1[i]["alaλOkComboLateral"] = codigoGeneticoP1[i]["alaλOk"];
+				codigoGeneticoP1[i]["almaλOkComboLateral"] = codigoGeneticoP1[i]["almaλOk"];
+				codigoGeneticoP1[i]["almaλMnOkComboLateral"] = codigoGeneticoP1[i]["almaλMnOk"];
+				codigoGeneticoP1[i]["pandeoAlmaCorteComboLateral"] = codigoGeneticoP1[i]["pandeoAlmaCorte"];
+				codigoGeneticoP1[i]["alaCompresionComboLateral"] = codigoGeneticoP1[i]["alaCompresion"];
+				codigoGeneticoP1[i]["almaCompresionComboLateral"] = codigoGeneticoP1[i]["almaCompresion"];
+				codigoGeneticoP1[i]["pandeoCompresionComboLateral"] = codigoGeneticoP1[i]["pandeoCompresion"];
+				codigoGeneticoP1[i]["chequeoCompresionComboLateral"] = codigoGeneticoP1[i]["chequeoCompresion"];
+				//return element;
 			}
 		}
 		codigoGeneticoP1[0]["resultadoFinal"] = (resultado / codigoGeneticoP1.length).toFixed(3);
-		if (CP == 1.4 && CV == 0 && cW == 0) {
+		if (cargaPerm === 1.4) {
 			codigoGeneticoP1[0]["resultadoCombo1"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if (CP == 1.2 && CV == 1.6 && cW == 0) {
+		if (cargaPerm === 1.2 && cargaVar === 1.6 && cargaAcc === 0.0) {
 			codigoGeneticoP1[0]["resultadoCombo2"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if (cW == 1.275) {
+		if (cargaAcc === 1.275) {
 			codigoGeneticoP1[0]["resultadoCombo3"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if (cW == -1.275) {
+		if (cargaAcc === -1.275) {
 			codigoGeneticoP1[0]["resultadoCombo4"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if (cW == 1) {
+		if (cargaAcc === 1.0) {
 			codigoGeneticoP1[0]["resultadoComboLateral"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		//evaluación del codigo genético de genera correctamente después de correr los casos de carga
@@ -2611,6 +2657,7 @@ function Calculus() {
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo3"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
+		//console.log(codigoGeneticoP1);
 		return codigoGeneticoP1;
 	}
 
@@ -2803,40 +2850,24 @@ function Calculus() {
 	var draw = "";
 	var drawLines3 = "";
 	var drawini = "";
-	let dibujoDesplazamiento = codigoGeneticoP1 => {
+	let dibujoDesplazamiento = (codigoGeneticoP1, textoP1) => {
 		draw = "";
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//console.log(codigoGeneticoP[i]["desplazamientoNodoIni"][0] / 100);
 			draw +=
 				'<line x1="' +
-				exagerar *
-					(
-						codigoGeneticoP1[i]["desplazamientoNodoIni"][0] / 100 +
-						codigoGeneticoP1[i]["puntoIni"][0]
-					).toFixed(3) +
+				exagerar * (codigoGeneticoP1[i][textoP1][0] / 100 + codigoGeneticoP1[i]["puntoIni"][0]).toFixed(3) +
 				'" ' +
 				'y1="' +
 				exagerar *
-					(
-						40 -
-						codigoGeneticoP1[i]["desplazamientoNodoIni"][1] / 100 -
-						codigoGeneticoP1[i]["puntoIni"][1]
-					).toFixed(3) +
+					(40 - codigoGeneticoP1[i][textoP1][1] / 100 - codigoGeneticoP1[i]["puntoIni"][1]).toFixed(3) +
 				'" ' +
 				'x2="' +
-				exagerar *
-					(
-						codigoGeneticoP1[i]["desplazamientoNodoIni"][3] / 100 +
-						codigoGeneticoP1[i]["puntoFin"][0]
-					).toFixed(3) +
+				exagerar * (codigoGeneticoP1[i][textoP1][3] / 100 + codigoGeneticoP1[i]["puntoFin"][0]).toFixed(3) +
 				'" ' +
 				'y2="' +
 				exagerar *
-					(
-						40 -
-						codigoGeneticoP1[i]["desplazamientoNodoIni"][4] / 100 -
-						codigoGeneticoP1[i]["puntoFin"][1]
-					).toFixed(3) +
+					(40 - codigoGeneticoP1[i][textoP1][4] / 100 - codigoGeneticoP1[i]["puntoFin"][1]).toFixed(3) +
 				'" ' +
 				'stroke="red" strokeWidth="1px"></line>';
 			//console.log(draw);
@@ -2966,6 +2997,14 @@ function Calculus() {
 		return codigoGeneticoP1;
 	}
 
+	function show() {
+		var e = document.getElementById("ddlViewBy");
+		var as = document.forms[0].ddlViewBy.value;
+		var strUser = e.options[e.selectedIndex].text;
+		//console.log(as, strUser);
+		return strUser;
+	}
+
 	function botonCalcular(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
 		var numeroCol = actions.getNoColumnas();
 		var numeroPisos = actions.getNoPisos();
@@ -3015,7 +3054,7 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
-		desplazamientoEnCodigo(codigoGeneticoP);
+		//desplazamientoEnCodigo(codigoGeneticoP);
 		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
 		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
@@ -3023,7 +3062,15 @@ function Calculus() {
 		drawLines = drawLines3 + drawText;
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 		document.getElementById("caja-dibujo2").innerHTML = drawLines;
-		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+		return (
+			numeroPisos,
+			numeroCol,
+			alturaEntrePiso,
+			luzVano,
+			codigoGeneticoP,
+			vectorDesplazamientos,
+			vectorFuerzasInternasRedux
+		);
 	}
 
 	function botonCalcular2(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
@@ -3037,9 +3084,9 @@ function Calculus() {
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		//console.log(vectorConectividadf);
-		reescrituraConectividadf(coefViento, vectorConectividadf);
+		reescrituraConectividadf(coefViento, codigoGeneticoP);
 		//console.log(vectorConectividadf);
-		reescrituraConectividadf2(coefVariable, coefPermanente, vectorConectividadf2);
+		reescrituraConectividadf2(coefVariable, coefPermanente, codigoGeneticoP);
 		//addTableConnect();
 		//matrizRigidLocal();
 		//console.log(multiplicarMatrices(matrizEA, matrizEB));
@@ -3048,7 +3095,7 @@ function Calculus() {
 		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
 		//addMatricesRigGlobal();
-		codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
+		//codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal); //se produce un codGenetico
 
 		rigidezTotal();
 		//addMatricesRigTotal();
@@ -3065,7 +3112,7 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
-		desplazamientoEnCodigo(codigoGeneticoP);
+		//desplazamientoEnCodigo(codigoGeneticoP);
 		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
 		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
@@ -3074,7 +3121,15 @@ function Calculus() {
 		// document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
 		// document.getElementById("caja-dibujo2").innerHTML = drawLines;
 		//drawini = dibujoIni();
-		return numeroPisos, numeroCol, alturaEntrePiso, luzVano;
+		return (
+			numeroPisos,
+			numeroCol,
+			alturaEntrePiso,
+			luzVano,
+			codigoGeneticoP,
+			vectorDesplazamientos,
+			vectorFuerzasInternasRedux
+		);
 	}
 	function EvaluacionCruce(codigoDelCruce) {
 		vectorConectividadf1 = codigoDelCruce;
@@ -3086,13 +3141,14 @@ function Calculus() {
 		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
 		rigidezTotal2(codigoDelCruce);
 		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
+		codigoDelCruce = codigoGeneticoP;
 		rigidezReducida2(codigoDelCruce);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
 		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
+		entropia = 0;
 		calculosFinales(0, 0, 1.4, codigoDelCruce);
 		//addTablaFinal("tabla-final", codigoDelCruce);
 
@@ -3102,7 +3158,7 @@ function Calculus() {
 		reescrituraConectividadf2(1.6, 1.2, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
 		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
-		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		//codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
 		rigidezTotal2(codigoDelCruce);
 		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
@@ -3112,6 +3168,7 @@ function Calculus() {
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
+		entropia = 1;
 		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
 		//addTablaFinal("tabla-final2", codigoDelCruce);
 
@@ -3121,7 +3178,7 @@ function Calculus() {
 		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
 		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
-		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		//codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
 		rigidezTotal2(codigoDelCruce);
 		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
@@ -3130,7 +3187,8 @@ function Calculus() {
 		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(codigoDelCruce);
+		//desplazamientoEnCodigo(codigoDelCruce);
+		entropia = 2;
 		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
 		//addTablaFinal("tabla-final3", codigoDelCruce);
 
@@ -3140,7 +3198,7 @@ function Calculus() {
 		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
 		matrizRigidLocal2(codigoDelCruce);
 		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
-		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		//codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
 		rigidezTotal2(codigoDelCruce);
 		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
 		//codigoDelCruce = codigoGeneticoP;
@@ -3150,6 +3208,7 @@ function Calculus() {
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		desplazamientoEnCodigo(codigoDelCruce);
+		entropia = 3;
 		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
 		//addTablaFinal("tabla-final4", codigoDelCruce);
 
@@ -3273,8 +3332,9 @@ function Calculus() {
 		vectorFuerzasInternasRedux = vectorFReducido2(codigoGeneticoP1);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(codigoGeneticoP1);
-		calculosFinales(1, 0.5, 1.2, codigoGeneticoP1);
+		//desplazamientoEnCodigo(codigoGeneticoP1);
+		entropia = 4;
+		calculosFinales(1, 0.5, 1, codigoGeneticoP1);
 
 		return codigoGeneticoP1;
 	}
@@ -3892,6 +3952,7 @@ function Calculus() {
 		vectorMatrizRigGlobal = matrizRigidGlogal();
 		//svg.selectAll("*").remove();
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
+		show();
 	});
 
 	return (
@@ -3908,15 +3969,20 @@ function Calculus() {
 						<button
 							className="btnPaso text-center mt-12 title"
 							onClick={() => {
+								entropia = 0;
 								//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 								//caso 1.4 carga permanente
 								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+								entropia = 1;
 								//caso 1.2CP+1.6CV
 								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
+								entropia = 2;
 								//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
 								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
 								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+								entropia = 3;
 								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
+								entropia = 4;
 								botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 								//ver código genético
 								console.log("codigo genético P", codigoGeneticoP);
@@ -3951,14 +4017,19 @@ function Calculus() {
 							generaciones = document.getElementById("generacion-box").value;
 							while (estructurasLista.length < 3) {
 								//caso 1.4 carga permanente
+								entropia = 0;
 								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
 								//caso 1.2CP+1.6CV
+								entropia = 1;
 								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
 								//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+								entropia = 2;
 								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
 								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+								entropia = 3;
 								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
 								//caso cargaLateral
+								entropia = 4;
 								botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 								//ver código genético
 								//console.log("codigo genético P", codigoGeneticoP);
@@ -3977,12 +4048,16 @@ function Calculus() {
 								{
 									//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 									//caso 1.4 carga permanente
+									entropia = 0;
 									botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
 									//caso 1.2CP+1.6CV
+									entropia = 1;
 									botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
 									//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+									entropia = 2;
 									botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
 									//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+									entropia = 3;
 									botonCalcular2(
 										"tabla-final4",
 										-1.275,
@@ -3990,6 +4065,7 @@ function Calculus() {
 										1.05,
 										"0.75 (1.4CP + 1.7 CV - 1.7 W)"
 									);
+									entropia = 4;
 									botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 									//ver código genético
 									console.log("codigo genético P", codigoGeneticoP);
@@ -4142,7 +4218,7 @@ function Calculus() {
 				<table className="table table-striped" id="tabla-final4" onLoad="" />
 			</div>
 			<div className="text-sm-left">
-				<h2> 10.5-. Tabla Combinación de cargas caso: 1CP + 1CV + cargas Laterales)</h2>
+				<h2> 10.5-. Tabla Combinación de cargas caso: 1CP + 1CV + cargas Laterales</h2>
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final5" onLoad="" />
@@ -4169,6 +4245,17 @@ function Calculus() {
 				</div>
 			</div>
 			<p className="save-btn">
+				<form>
+					<select id="ddlViewBy">
+						<option value="1">desplazamientoNodoIniCombo1</option>
+						<option value="2" selected="selected">
+							desplazamientoNodoIniCombo2
+						</option>
+						<option value="3">desplazamientoNodoIniCombo3</option>
+						<option value="4">desplazamientoNodoIniCombo4</option>
+						<option value="5">desplazamientoNodoIniComboLateral</option>
+					</select>
+				</form>
 				<p>
 					<h4>Exagerar deformación</h4>
 					<input
@@ -4187,7 +4274,9 @@ function Calculus() {
 					className="btnPaso text-center mt-12 title"
 					onClick={() => {
 						exagerar = document.getElementById("exageracion-box").value;
-						drawLines3 = dibujoDesplazamiento(estructurasLista[0]);
+						texto = show();
+						console.log(texto);
+						drawLines3 = dibujoDesplazamiento(estructurasLista[0], texto);
 
 						drawLines = drawLines3;
 
