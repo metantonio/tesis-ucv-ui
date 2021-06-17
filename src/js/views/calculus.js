@@ -2020,7 +2020,9 @@ function Calculus() {
 					filasN[n + 1] = vectorFuerzaReducida[i + 1];
 					filasN[n + 2] = vectorFuerzaReducida[i + 2];
 					//filasM.push(matrizApoyo2[i]);
+					element["dezplazamientoIndexIni"] = n;
 					n += 3;
+
 					//console.log(filasM[n]);
 					break;
 				}
@@ -2032,6 +2034,7 @@ function Calculus() {
 					filasN[n + 1] = vectorFuerzaReducida[i + 1];
 					filasN[n + 2] = vectorFuerzaReducida[i + 2];
 					//filasM.push(matrizApoyo2[i]);
+					element["dezplazamientoIndexFin"] = n;
 					n += 3;
 					//console.log(filasM[n]);
 					break;
@@ -2061,6 +2064,7 @@ function Calculus() {
 					filasN[n + 1] = vectorFuerzaReducida[i + 1];
 					filasN[n + 2] = vectorFuerzaReducida[i + 2];
 					//filasM.push(matrizApoyo2[i]);
+					element["dezplazamientoIndexIni"] = n;
 					n += 3;
 					//console.log(filasM[n]);
 					break;
@@ -2073,6 +2077,7 @@ function Calculus() {
 					filasN[n + 1] = vectorFuerzaReducida[i + 1];
 					filasN[n + 2] = vectorFuerzaReducida[i + 2];
 					//filasM.push(matrizApoyo2[i]);
+					element["dezplazamientoIndexFin"] = n;
 					n += 3;
 					//console.log(filasM[n]);
 					break;
@@ -2127,14 +2132,15 @@ function Calculus() {
 		var flotante = 0;
 		var comparation = round(parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso()), 2);
 		for (let element of codigoGeneticoP1) {
-			// element["desplazamientoNodoIni"][0] = 0;
-			// element["desplazamientoNodoIni"][1] = 0;
-			// element["desplazamientoNodoIni"][2] = 0;
-			// element["desplazamientoNodoIni"][3] = 0;
-			// element["desplazamientoNodoIni"][4] = 0;
-			// element["desplazamientoNodoIni"][5] = 0;
-			if (element.tipo == "Columna") {
-				if (element.nodoIni[1] != 0) {
+			element["desplazamientoNodoIni"][0] = 0;
+			element["desplazamientoNodoIni"][1] = 0;
+			element["desplazamientoNodoIni"][2] = 0;
+			element["desplazamientoNodoIni"][3] = 0;
+			element["desplazamientoNodoIni"][4] = 0;
+			element["desplazamientoNodoIni"][5] = 0;
+			if (element["tipo"] == "Columna") {
+				if (element["nodoIni"][1] != 0) {
+					//console.log("entra if Columna con desplaz:", vectorDesplazamientos[n]);
 					element["desplazamientoNodoIni"][0] = vectorDesplazamientos[n];
 					element["desplazamientoNodoIni"][1] = vectorDesplazamientos[n + 1];
 					element["desplazamientoNodoIni"][2] = vectorDesplazamientos[n + 2];
@@ -2144,6 +2150,13 @@ function Calculus() {
 					element["desplazamientoNodoIni"][1] = 0;
 					element["desplazamientoNodoIni"][2] = 0;
 				}
+				// if ((element["desplazamientoIndexIni"] != undefined) & (element["desplazamientoIndexIni"] == n)) {
+				// 	//esta comparación es para el techo
+				// 	element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
+				// 	element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
+				// 	element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
+				// 	//n += 3;
+				// }
 				flotante = element.puntoFin[1];
 				flotante = round(parseFloat(flotante), 2);
 				if (flotante == comparation) {
@@ -2151,54 +2164,78 @@ function Calculus() {
 					element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
 					element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
 					element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
-					n += 3;
 				}
+				// if ((element["desplazamientoIndexFin"] != undefined) & (element["desplazamientoIndexFin"] == n)) {
+				// 	//esta comparación es para el techo
+				// 	element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
+				// 	element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
+				// 	element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
+				// 	n += 3;
+				// }
 			}
 		}
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
-			//if (codigoGeneticoP1[i]["element"] != "Columna") {
-			for (let element of codigoGeneticoP1) {
-				if (
-					codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0] &&
-					codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined
-				) {
-					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
-				}
-			}
+			//Comprobación Vigas
+			// if (codigoGeneticoP1[i]["tipo"] != "Columna") {
+			// 	for (let element of codigoGeneticoP1) {
+			// 		if (
+			// 			codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0] &&
+			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined &&
+			// 			codigoGeneticoP1[i]["tipo"] == "Columna" &&
+			// 			element["tipo"] != "Columna"
+			// 		) {
+			// 			element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+			// 			element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+			// 			element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+			// 		}
+			// 	}
 
-			for (let element of codigoGeneticoP1) {
-				if (
-					codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0] &&
-					codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined
-				) {
-					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+			// 	for (let element of codigoGeneticoP1) {
+			// 		if (
+			// 			codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0] &&
+			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined &&
+			// 			codigoGeneticoP1[i]["tipo"] == "Columna" &&
+			// 			element["tipo"] != "Columna"
+			// 		) {
+			// 			element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+			// 			element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+			// 			element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+			// 		}
+			// 	}
+			// 	for (let element of codigoGeneticoP1) {
+			// 		if (
+			// 			codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0] &&
+			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined &&
+			// 			codigoGeneticoP1[i]["tipo"] == "Columna"
+			// 		) {
+			// 			element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+			// 			element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+			// 			element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+			// 		}
+			// 	}
+			// 	for (let element of codigoGeneticoP1) {
+			// 		if (
+			// 			codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0] &&
+			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined &&
+			// 			codigoGeneticoP1[i]["tipo"] == "Columna"
+			// 		) {
+			// 			element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+			// 			element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+			// 			element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+			// 		}
+			// 	}
+			// }
+
+			if (codigoGeneticoP1[i]["tipo"] == "Columna") {
+				if (codigoGeneticoP1[i + 1]["tipo"] == "Columna" && codigoGeneticoP1[i + 1]["nodoIni"][1] != 0) {
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][3] =
+						codigoGeneticoP1[i + 1]["desplazamientoNodoIni"][0];
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][4] =
+						codigoGeneticoP1[i + 1]["desplazamientoNodoIni"][1];
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][5] =
+						codigoGeneticoP1[i + 1]["desplazamientoNodoIni"][2];
 				}
 			}
-			for (let element of codigoGeneticoP1) {
-				if (
-					codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0] &&
-					codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined
-				) {
-					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
-				}
-			}
-			for (let element of codigoGeneticoP1) {
-				if (
-					codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0] &&
-					codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined
-				) {
-					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
-				}
-			}
-			//}
 		}
 	}
 
@@ -2235,9 +2272,10 @@ function Calculus() {
 			//console.log("multiplicacionM", multiplicacionM);
 			//multiplicacionM2 = matrizPorVector(multiplicacionM,element.desplazamientoNodoIni);
 			//console.log("antes de verificación de matriz por vector", multiplicacionM, element.desplazamientoNodoIni);
+			desplazamientoEnCodigo(codigoGeneticoP1);
 			if (element["desplazamientoNodoIni"].length == 3) {
 				//console.log("es true", element.desplazamientoNodoIni);
-				desplazamientoEnCodigo();
+				desplazamientoEnCodigo(codigoGeneticoP1);
 			}
 			element["esfuerzosInternos"] = matrizPorVector(multiplicacionM, element.desplazamientoNodoIni);
 
@@ -2302,7 +2340,7 @@ function Calculus() {
 			//falta agregar derivas, condiciones
 
 			//Derivas
-			if (element.tipo == "Columna") {
+			if (element["tipo"] == "Columna") {
 				//el elemento
 				element["deriva"] = (element["desplazamientoNodoIni"][3] - element["desplazamientoNodoIni"][0]).toFixed(
 					3
@@ -2317,7 +2355,7 @@ function Calculus() {
 				element["deriva"] = 0;
 			}
 
-			if (element.tipo == "Columna") {
+			if (element["tipo"] == "Columna") {
 				//el elemento
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) <= 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
@@ -2327,7 +2365,7 @@ function Calculus() {
 				}
 			}
 
-			if (element.tipo != "Diagonal") {
+			if (element["tipo"] != "Diagonal") {
 				//evaluación del ala flexión
 				element["alaλ"] = element.bf / element.tf;
 				if (element["alaλ"] <= limiteCompactoIAla) {
