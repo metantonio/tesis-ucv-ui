@@ -2174,58 +2174,8 @@ function Calculus() {
 				// }
 			}
 		}
+		//En este punto hace un copiado de los desplaz. iniciales de la columna siguiente en los desplaz. iniciales de la columna actual
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
-			//Comprobación Vigas
-			// if (codigoGeneticoP1[i]["tipo"] != "Columna") {
-			// 	for (let element of codigoGeneticoP1) {
-			// 		if (
-			// 			codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0] &&
-			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined &&
-			// 			codigoGeneticoP1[i]["tipo"] == "Columna" &&
-			// 			element["tipo"] != "Columna"
-			// 		) {
-			// 			element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-			// 			element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-			// 			element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
-			// 		}
-			// 	}
-
-			// 	for (let element of codigoGeneticoP1) {
-			// 		if (
-			// 			codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0] &&
-			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined &&
-			// 			codigoGeneticoP1[i]["tipo"] == "Columna" &&
-			// 			element["tipo"] != "Columna"
-			// 		) {
-			// 			element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-			// 			element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-			// 			element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
-			// 		}
-			// 	}
-			// 	for (let element of codigoGeneticoP1) {
-			// 		if (
-			// 			codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0] &&
-			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined &&
-			// 			codigoGeneticoP1[i]["tipo"] == "Columna"
-			// 		) {
-			// 			element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-			// 			element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-			// 			element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
-			// 		}
-			// 	}
-			// 	for (let element of codigoGeneticoP1) {
-			// 		if (
-			// 			codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0] &&
-			// 			codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined &&
-			// 			codigoGeneticoP1[i]["tipo"] == "Columna"
-			// 		) {
-			// 			element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-			// 			element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-			// 			element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
-			// 		}
-			// 	}
-			// }
-
 			if (codigoGeneticoP1[i]["tipo"] == "Columna") {
 				if (codigoGeneticoP1[i + 1]["tipo"] == "Columna" && codigoGeneticoP1[i + 1]["nodoIni"][1] != 0) {
 					codigoGeneticoP1[i]["desplazamientoNodoIni"][3] =
@@ -2234,6 +2184,50 @@ function Calculus() {
 						codigoGeneticoP1[i + 1]["desplazamientoNodoIni"][1];
 					codigoGeneticoP1[i]["desplazamientoNodoIni"][5] =
 						codigoGeneticoP1[i + 1]["desplazamientoNodoIni"][2];
+				}
+			}
+		}
+		//Hasta esta línea se considera finalizado los desplazamientos en columnas
+
+		for (var i = 0; i < codigoGeneticoP1.length; i++) {
+			//Desplazamientos en Vigas:
+			if (codigoGeneticoP1[i]["tipo"] == "Columna") {
+				for (let element of codigoGeneticoP1) {
+					//Si los grados de libertad asociados al nodo inicial de la columna coinciden con los
+					//grados de libertad asociados al nodo inicial del elemento a evaluar
+					if (codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0] && element["tipo"] != "Columna") {
+						element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+						element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+						element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+					}
+				}
+
+				for (let element of codigoGeneticoP1) {
+					//Si los grados de libertad asociados al nodo final de la columna coinciden con los
+					//grados de libertad asociados al nodo final del elemento a evaluar
+					if (codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0] && element["tipo"] != "Columna") {
+						element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+						element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+						element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+					}
+				}
+				for (let element of codigoGeneticoP1) {
+					//Si los grados de libertad asociados al nodo inicial de la columna coinciden con los
+					//grados de libertad asociados al nodo final del elemento a evaluar
+					if (codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0] && element["tipo"] != "Columna") {
+						element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+						element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+						element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+					}
+				}
+				for (let element of codigoGeneticoP1) {
+					//Si los grados de libertad asociados al nodo final de la columna coinciden con los
+					//grados de libertad asociados al nodo inicial del elemento a evaluar
+					if (codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0] && element["tipo"] != "Columna") {
+						element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+						element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+						element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+					}
 				}
 			}
 		}
