@@ -2156,49 +2156,49 @@ function Calculus() {
 			}
 		}
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
-			if (codigoGeneticoP1[i]["element"] != "Columna") {
-				for (let element of codigoGeneticoP1) {
-					if (
-						(codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0]) &
-						(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
-					) {
-						element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-						element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-						element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
-					}
-				}
-
-				for (let element of codigoGeneticoP1) {
-					if (
-						(codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0]) &
-						(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
-					) {
-						element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-						element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-						element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
-					}
-				}
-				for (let element of codigoGeneticoP1) {
-					if (
-						(codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0]) &
-						(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
-					) {
-						element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-						element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-						element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
-					}
-				}
-				for (let element of codigoGeneticoP1) {
-					if (
-						(codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0]) &
-						(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
-					) {
-						element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-						element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-						element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
-					}
+			//if (codigoGeneticoP1[i]["element"] != "Columna") {
+			for (let element of codigoGeneticoP1) {
+				if (
+					codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0] &&
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined
+				) {
+					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
 				}
 			}
+
+			for (let element of codigoGeneticoP1) {
+				if (
+					codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0] &&
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined
+				) {
+					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+				}
+			}
+			for (let element of codigoGeneticoP1) {
+				if (
+					codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0] &&
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined
+				) {
+					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+				}
+			}
+			for (let element of codigoGeneticoP1) {
+				if (
+					codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0] &&
+					codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined
+				) {
+					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+				}
+			}
+			//}
 		}
 	}
 
@@ -2557,10 +2557,10 @@ function Calculus() {
 			}
 		}
 		codigoGeneticoP1[0]["resultadoFinal"] = (resultado / codigoGeneticoP1.length).toFixed(3);
-		if (CP == 1.4 && (CV == 0) & (cW == 0)) {
+		if (CP == 1.4 && CV == 0 && cW == 0) {
 			codigoGeneticoP1[0]["resultadoCombo1"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if (CP == 1.2 && (CV == 1.6) & (cW == 0)) {
+		if (CP == 1.2 && CV == 1.6 && cW == 0) {
 			codigoGeneticoP1[0]["resultadoCombo2"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		if (cW == 1.275) {
