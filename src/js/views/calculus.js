@@ -2649,7 +2649,7 @@ function Calculus() {
 
 	function desplazamientosFinales(codigoGeneticoP1) {
 		desplazamientosFinalesLista = [];
-
+		desplazamientoEnCodigo(codigoGeneticoP);
 		for (let element of codigoGeneticoP1) {
 			if (element["desplazamientoLista"] == undefined) {
 				element["desplazamientoLista"] = [];
