@@ -699,7 +699,7 @@ function Calculus() {
 		return vectorConectividadf2;
 	};
 
-	function reescrituraConectividadf2(cVariable, cPermanente, vectorcConectividadf22) {
+	function reescrituraConectividadf2(cVariable, cPermanente, vectorConectividadf22) {
 		//console.log("vectorcConectividadf2", vectorConectividadf2);
 		for (var i = 0; i < vectorConectividadf22.length; i++) {
 			//vigas
@@ -2125,67 +2125,78 @@ function Calculus() {
 	function desplazamientoEnCodigo(codigoGeneticoP1) {
 		var n = 0;
 		var flotante = 0;
+		var comparation = round(parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso()), 2);
 		for (let element of codigoGeneticoP1) {
-			if (element.nodoIni[1] != 0) {
-				element["desplazamientoNodoIni"][0] = vectorDesplazamientos[n];
-				element["desplazamientoNodoIni"][1] = vectorDesplazamientos[n + 1];
-				element["desplazamientoNodoIni"][2] = vectorDesplazamientos[n + 2];
-				n += 3;
-			} else {
-				element["desplazamientoNodoIni"][0] = 0;
-				element["desplazamientoNodoIni"][1] = 0;
-				element["desplazamientoNodoIni"][2] = 0;
-			}
-			flotante = element.puntoFin[1];
-			flotante = round(parseFloat(flotante), 2);
-			if (flotante == round(parseFloat(actions.getNoPisos()) * parseFloat(actions.getEntrePiso()), 2)) {
-				//console.log("entró en la comparación");
-				element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
-				element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
-				element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
-				n += 3;
+			// element["desplazamientoNodoIni"][0] = 0;
+			// element["desplazamientoNodoIni"][1] = 0;
+			// element["desplazamientoNodoIni"][2] = 0;
+			// element["desplazamientoNodoIni"][3] = 0;
+			// element["desplazamientoNodoIni"][4] = 0;
+			// element["desplazamientoNodoIni"][5] = 0;
+			if (element.tipo == "Columna") {
+				if (element.nodoIni[1] != 0) {
+					element["desplazamientoNodoIni"][0] = vectorDesplazamientos[n];
+					element["desplazamientoNodoIni"][1] = vectorDesplazamientos[n + 1];
+					element["desplazamientoNodoIni"][2] = vectorDesplazamientos[n + 2];
+					n += 3;
+				} else {
+					element["desplazamientoNodoIni"][0] = 0;
+					element["desplazamientoNodoIni"][1] = 0;
+					element["desplazamientoNodoIni"][2] = 0;
+				}
+				flotante = element.puntoFin[1];
+				flotante = round(parseFloat(flotante), 2);
+				if (flotante == comparation) {
+					//esta comparación es para el techo
+					element["desplazamientoNodoIni"][3] = vectorDesplazamientos[n];
+					element["desplazamientoNodoIni"][4] = vectorDesplazamientos[n + 1];
+					element["desplazamientoNodoIni"][5] = vectorDesplazamientos[n + 2];
+					n += 3;
+				}
 			}
 		}
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
-			for (let element of codigoGeneticoP1) {
-				if (
-					(codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0]) &
-					(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
-				) {
-					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+			if (codigoGeneticoP1[i]["element"] != "Columna") {
+				for (let element of codigoGeneticoP1) {
+					if (
+						(codigoGeneticoP1[i]["vectorX"][0] == element["vectorX"][0]) &
+						(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
+					) {
+						element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+						element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+						element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+					}
 				}
-			}
 
-			for (let element of codigoGeneticoP1) {
-				if (
-					(codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0]) &
-					(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
-				) {
-					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+				for (let element of codigoGeneticoP1) {
+					if (
+						(codigoGeneticoP1[i]["vectorY"][0] == element["vectorY"][0]) &
+						(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
+					) {
+						element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+						element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+						element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+					}
 				}
-			}
-			for (let element of codigoGeneticoP1) {
-				if (
-					(codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0]) &
-					(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
-				) {
-					element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
-					element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
-					element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+				for (let element of codigoGeneticoP1) {
+					if (
+						(codigoGeneticoP1[i]["vectorX"][0] == element["vectorY"][0]) &
+						(codigoGeneticoP1[i]["desplazamientoNodoIni"][0] != undefined)
+					) {
+						element["desplazamientoNodoIni"][3] = codigoGeneticoP1[i]["desplazamientoNodoIni"][0];
+						element["desplazamientoNodoIni"][4] = codigoGeneticoP1[i]["desplazamientoNodoIni"][1];
+						element["desplazamientoNodoIni"][5] = codigoGeneticoP1[i]["desplazamientoNodoIni"][2];
+					}
 				}
-			}
-			for (let element of codigoGeneticoP1) {
-				if (
-					(codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0]) &
-					(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
-				) {
-					element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
-					element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
-					element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+				for (let element of codigoGeneticoP1) {
+					if (
+						(codigoGeneticoP1[i]["vectorY"][0] == element["vectorX"][0]) &
+						(codigoGeneticoP1[i]["desplazamientoNodoIni"][3] != undefined)
+					) {
+						element["desplazamientoNodoIni"][0] = codigoGeneticoP1[i]["desplazamientoNodoIni"][3];
+						element["desplazamientoNodoIni"][1] = codigoGeneticoP1[i]["desplazamientoNodoIni"][4];
+						element["desplazamientoNodoIni"][2] = codigoGeneticoP1[i]["desplazamientoNodoIni"][5];
+					}
 				}
 			}
 		}
@@ -2460,7 +2471,7 @@ function Calculus() {
 			resultado += element["puntuacion"];
 
 			//guardar los desplazamientos de cada caso
-			if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
+			if (CP == 1.4 && CV == 0 && cW == 0) {
 				element["derivaCombo1"] = element["deriva"];
 				element["esfuerzosInternosCombo1"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo1"] = element["reaccionExterna"];
@@ -2477,7 +2488,7 @@ function Calculus() {
 				element["chequeoCompresionCombo1"] = element["chequeoCompresion"];
 			}
 
-			if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
+			if (CP == 1.2 && CV == 1.6 && cW == 0) {
 				element["derivaCombo2"] = element["deriva"];
 				element["esfuerzosInternosCombo2"] = element["esfuerzosInternos"];
 				element["reaccionExternaCombo2"] = element["reaccionExterna"];
@@ -2527,12 +2538,29 @@ function Calculus() {
 				element["pandeoCompresionCombo4"] = element["pandeoCompresion"];
 				element["chequeoCompresionCombo4"] = element["chequeoCompresion"];
 			}
+
+			if (cW == 1) {
+				element["derivaComboLateral"] = element["deriva"];
+				element["esfuerzosInternosComboLateral"] = element["esfuerzosInternos"];
+				element["reaccionExternaComboLateral"] = element["reaccionExterna"];
+				element["desplazamientoNodoIniComboLateral"] = element["desplazamientoNodoIni"];
+				element["puntuacionComboLateral"] = element["puntuacion"];
+				element["derivaChequeoComboLateral"] = element["derivaChequeo"];
+				element["alaλOkComboLateral"] = element["alaλOk"];
+				element["almaλOkComboLateral"] = element["almaλOk"];
+				element["almaλMnOkComboLateral"] = element["almaλMnOk"];
+				element["pandeoAlmaCorteComboLateral"] = element["pandeoAlmaCorte"];
+				element["alaCompresionComboLateral"] = element["alaCompresion"];
+				element["almaCompresionComboLateral"] = element["almaCompresion"];
+				element["pandeoCompresionComboLateral"] = element["pandeoCompresion"];
+				element["chequeoCompresionComboLateral"] = element["chequeoCompresion"];
+			}
 		}
 		codigoGeneticoP1[0]["resultadoFinal"] = (resultado / codigoGeneticoP1.length).toFixed(3);
-		if ((CP == 1.4) & (CV == 0) & (cW == 0)) {
+		if (CP == 1.4 && (CV == 0) & (cW == 0)) {
 			codigoGeneticoP1[0]["resultadoCombo1"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if ((CP == 1.2) & (CV == 1.6) & (cW == 0)) {
+		if (CP == 1.2 && (CV == 1.6) & (cW == 0)) {
 			codigoGeneticoP1[0]["resultadoCombo2"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		if (cW == 1.275) {
@@ -2541,12 +2569,16 @@ function Calculus() {
 		if (cW == -1.275) {
 			codigoGeneticoP1[0]["resultadoCombo4"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
+		if (cW == 1) {
+			codigoGeneticoP1[0]["resultadoComboLateral"] = codigoGeneticoP1[0]["resultadoFinal"];
+		}
 		//evaluación del codigo genético de genera correctamente después de correr los casos de carga
 		codigoGeneticoP1[0]["evaluacionCodigoGenetico"] =
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo1"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo2"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo3"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]);
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]) +
+			parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		return codigoGeneticoP1;
 	}
 
@@ -2988,7 +3020,7 @@ function Calculus() {
 
 		rigidezTotal();
 		//addMatricesRigTotal();
-		vectorFuerzasInternas = funcionFuerzasInt();
+		vectorFuerzasInternas = funcionFuerzasInt2(codigoGeneticoP);
 		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
 		addVectorFuerza(casos);
 		rigidezReducida();
@@ -3089,6 +3121,8 @@ function Calculus() {
 		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
 		//addTablaFinal("tabla-final4", codigoDelCruce);
 
+		evaluacionCargasLaterales(codigoDelCruce);
+
 		listaEstructuras(codigoDelCruce);
 		return (
 			vectorFuerzasInternas,
@@ -3134,6 +3168,83 @@ function Calculus() {
 		EvaluacionCruce(mutacion2);
 
 		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
+	}
+	function sismoColumna(cargaLateral, vectorConectividadf1) {
+		//let vectorAux = vectorConectividadf;
+		for (var i = 0; i < vectorConectividadf1.length; i++) {
+			//console.log("elemento", elementos, vectorAux);
+			if (
+				(vectorConectividadf1[i]["longitud"] == actions.getEntrePiso()) &
+				(vectorConectividadf1[i]["puntoIni"][0] == vectorConectividadf1[i]["puntoFin"][0])
+			) {
+				if ((vectorConectividadf1[i]["puntoIni"][0] == 0) & (vectorConectividadf1[i]["puntoFin"][0] == 0)) {
+					//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
+					vectorConectividadf1[i]["fuerzainterna"] = [
+						0,
+						cargaLateral,
+						-cargaLateral * vectorConectividadf1[i]["longitud"],
+						0,
+						cargaLateral,
+						0
+					];
+					//return vectorConectividadf[i]["fuerzainterna"];
+				} else {
+					vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+					//return vectorConectividadf[i]["fuerzainterna"];
+				}
+			}
+		}
+		//vectorConectividadf = [];
+		//vectorConectividadf = vectorAux;
+		return vectorConectividadf1;
+	}
+	function sismoVigas(cargaLateral, vectorcConectividadf22) {
+		//reescritura de las fuerzas internas
+
+		for (var i = 0; i < vectorConectividadf22.length; i++) {
+			//vigas
+			if (
+				(vectorConectividadf22[i]["longitud"] == actions.getLuzVano()) &
+				(vectorConectividadf22[i]["puntoIni"][1] != 0)
+			) {
+				//console.log("entro en primer if reescrituraconectividadf2");
+				if (
+					vectorConectividadf22[i]["puntoIni"][1] == vectorConectividadf22[i]["puntoFin"][1] &&
+					vectorConectividadf22[i]["puntoIni"][0] == 0
+				) {
+					//console.log("entro en if reescrituraconectividadf2");
+					vectorConectividadf22[i]["fuerzainterna"] = [-cargaLateral, 0, 0, -cargaLateral, 0, 0];
+					//if del techo empieza aquí>
+
+					return vectorConectividadf22[i]["fuerzainterna"];
+				}
+			}
+
+			//diagonales
+		}
+		return vectorConectividadf22;
+	}
+
+	function evaluacionCargasLaterales(codigoGeneticoP1) {
+		vectorConectividadf1 = codigoGeneticoP1;
+		vectorConectividadf22 = codigoGeneticoP1;
+		sismoColumna(1000, codigoGeneticoP1);
+		sismoVigas(1000, codigoGeneticoP1);
+		matrizRigidLocal2(codigoGeneticoP1);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoGeneticoP1);
+		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		rigidezTotal2(codigoGeneticoP1);
+		vectorFuerzasInternas = funcionFuerzasInt2(codigoGeneticoP1);
+		//codigoDelCruce = codigoGeneticoP;
+		rigidezReducida2(codigoGeneticoP1);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido2(codigoGeneticoP1);
+		//codigoDelCruce = codigoGeneticoP;
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		desplazamientoEnCodigo(codigoGeneticoP1);
+		calculosFinales(1, 0.5, 1.2, codigoGeneticoP1);
+
+		return codigoGeneticoP1;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
@@ -3598,6 +3709,118 @@ function Calculus() {
 		return final;
 	}
 
+	function addTablaCodigoGenLateral(getElementByIdf, codigoGeneticoP1) {
+		var fila = "";
+
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
+			a += "<th>Ala Flexión</th>";
+			a += "<th>Alma Flexión</th>";
+			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
+			a += "<th>Pandeo del Alma por Corte</th>";
+			a += "<th>Compresión del Ala</th>";
+			a += "<th>Compresión del Alma</th>";
+			a += "<th>Tipo de Pandeo</th>";
+			a += "<th>Chequeo compresión</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>(" +
+				element.desplazamientoNodoIniComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.esfuerzosInternosComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExternaComboLateral[0] +
+				"," +
+				" " +
+				element.reaccionExternaComboLateral[1] +
+				", " +
+				element.reaccionExternaComboLateral[2] +
+				")</td>" +
+				"<td>" +
+				element.derivaComboLateral +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeoComboLateral +
+				"</td>" +
+				"<td>(" +
+				element.alaλOkComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.almaλOkComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.almaλMnOkComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.pandeoAlmaCorteComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.alaCompresionComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.almaCompresionComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.pandeoCompresionComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.chequeoCompresionComboLateral +
+				")</td>" +
+				"<td>(" +
+				element.puntuacionComboLateral +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["resultadoFinal"] +
+				")</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
 	var dataGraph = [];
 	function graficaXY() {
 		dataGraph = [];
@@ -3662,6 +3885,7 @@ function Calculus() {
 								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
 								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
 								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
+								botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 								//ver código genético
 								console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
@@ -3702,6 +3926,8 @@ function Calculus() {
 								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
 								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
 								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
+								//caso cargaLateral
+								botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 								//ver código genético
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
@@ -3732,6 +3958,7 @@ function Calculus() {
 										1.05,
 										"0.75 (1.4CP + 1.7 CV - 1.7 W)"
 									);
+									botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 									//ver código genético
 									console.log("codigo genético P", codigoGeneticoP);
 									repetir++; //sirve para borrar div en caso de que repetir>0
@@ -3767,12 +3994,14 @@ function Calculus() {
 								d3.selectAll("#tabla-final2 > *").remove();
 								d3.selectAll("#tabla-final3 > *").remove();
 								d3.selectAll("#tabla-final4 > *").remove();
+								d3.selectAll("#tabla-final5 > *").remove();
 
 								//addTablasAgain(pesoEstructura);
 								addTablaCodigoGen1("tabla-final", pesoEstructura);
 								addTablaCodigoGen22("tabla-final2", pesoEstructura);
 								addTablaCodigoGen3("tabla-final3", pesoEstructura);
 								addTablaCodigoGen4("tabla-final4", pesoEstructura);
+								addTablaCodigoGenLateral("tabla-final5", pesoEstructura);
 
 								//se dibuja la gráfica
 								graficaXY();
@@ -3879,6 +4108,12 @@ function Calculus() {
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final4" onLoad="" />
+			</div>
+			<div className="text-sm-left">
+				<h2> 10.5-. Tabla Combinación de cargas caso: 1CP + 1CV + cargas Laterales)</h2>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final5" onLoad="" />
 			</div>
 			<div className="text-sm-left">
 				<h2> 11-. Resultados Algoritmos Genéticos</h2>
