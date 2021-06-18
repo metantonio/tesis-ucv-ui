@@ -3929,6 +3929,18 @@ function Calculus() {
 		document.getElementById(getElementByIdf).innerHTML = a;
 	}
 
+	function obtenerDesplazamiento(codigoGeneticoP2, tablaID, nombreCombo) {
+		let cantidadaNueva = [];
+		var columna = 7;
+		var tabla = document.getElementById(tablaID);
+		for (var i = 1; i < codigoGeneticoP2.length + 1; i++) {
+			cantidadaNueva = JSON.parse(tabla.rows[i].cells[columna].innerText);
+			console.log(`Txt: ${cantidadaNueva} \tFila: ${i} \t Celda: ${columna}`);
+			codigoGeneticoP2[i - 1][nombreCombo] = cantidadaNueva;
+		}
+		return codigoGeneticoP2;
+	}
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -3939,6 +3951,7 @@ function Calculus() {
 		//tablaConectividad();
 		//console.log(listaPerfiles);
 		vectorMatrizRigGlobal = matrizRigidGlogal();
+		//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 		//svg.selectAll("*").remove();
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
 		show();
@@ -3978,6 +3991,8 @@ function Calculus() {
 								console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								listaEstructuras(codigoGeneticoP);
+
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								console.log("Lista de las Estructuras Generadas", estructurasLista);
 							}}>
 							<span>Calcular una estructura al azar</span>
