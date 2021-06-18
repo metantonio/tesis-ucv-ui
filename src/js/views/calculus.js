@@ -2773,9 +2773,9 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>(" +
+				"<td>[" +
 				element.desplazamientoNodoIni +
-				")</td>" +
+				"]</td>" +
 				"<td>(" +
 				element.esfuerzosInternos +
 				")</td>" +
@@ -3395,9 +3395,9 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>(" +
+				"<td>[" +
 				element.desplazamientoNodoIniCombo1 +
-				")</td>" +
+				"]</td>" +
 				"<td>(" +
 				element.esfuerzosInternosCombo1 +
 				")</td>" +
@@ -3507,9 +3507,9 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>(" +
+				"<td>[" +
 				element.desplazamientoNodoIniCombo2 +
-				")</td>" +
+				"]</td>" +
 				"<td>(" +
 				element.esfuerzosInternosCombo2 +
 				")</td>" +
@@ -3619,9 +3619,9 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>(" +
+				"<td>[" +
 				element.desplazamientoNodoIniCombo3 +
-				")</td>" +
+				"]</td>" +
 				"<td>(" +
 				element.esfuerzosInternosCombo3 +
 				")</td>" +
@@ -3731,9 +3731,9 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>(" +
+				"<td>[" +
 				element.desplazamientoNodoIniCombo4 +
-				")</td>" +
+				"]</td>" +
 				"<td>(" +
 				element.esfuerzosInternosCombo4 +
 				")</td>" +
@@ -3843,9 +3843,9 @@ function Calculus() {
 				"<td>" +
 				element.peso +
 				"</td>" +
-				"<td>(" +
+				"<td>[" +
 				element.desplazamientoNodoIniComboLateral +
-				")</td>" +
+				"]</td>" +
 				"<td>(" +
 				element.esfuerzosInternosComboLateral +
 				")</td>" +
