@@ -3993,6 +3993,10 @@ function Calculus() {
 								listaEstructuras(codigoGeneticoP);
 
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 								console.log("Lista de las Estructuras Generadas", estructurasLista);
 							}}>
 							<span>Calcular una estructura al azar</span>
@@ -4120,6 +4124,11 @@ function Calculus() {
 								//se dibuja la gráfica
 								graficaXY();
 								dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
@@ -4253,13 +4262,13 @@ function Calculus() {
 			<p className="save-btn">
 				<form>
 					<select id="ddlViewBy">
-						<option value="1">desplazamientoNodoIniCombo1</option>
+						<option value="1">desCombo1</option>
 						<option value="2" selected="selected">
-							desplazamientoNodoIniCombo2
+							desCombo2
 						</option>
-						<option value="3">desplazamientoNodoIniCombo3</option>
-						<option value="4">desplazamientoNodoIniCombo4</option>
-						<option value="5">desplazamientoNodoIniComboLateral</option>
+						<option value="3">desCombo3</option>
+						<option value="4">desCombo4</option>
+						<option value="5">desComboLateral</option>
 					</select>
 				</form>
 				<p>
@@ -4281,7 +4290,7 @@ function Calculus() {
 					onClick={() => {
 						exagerar = document.getElementById("exageracion-box").value;
 						texto = show();
-						console.log(texto);
+						//console.log(texto);
 						drawLines3 = dibujoDesplazamiento(estructurasLista[0], texto);
 
 						drawLines = drawLines3;
