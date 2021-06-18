@@ -3935,7 +3935,7 @@ function Calculus() {
 		var tabla = document.getElementById(tablaID);
 		for (var i = 1; i < codigoGeneticoP2.length + 1; i++) {
 			cantidadaNueva = JSON.parse(tabla.rows[i].cells[columna].innerText);
-			console.log(`Txt: ${cantidadaNueva} \tFila: ${i} \t Celda: ${columna}`);
+			//console.log(`Txt: ${cantidadaNueva} \tFila: ${i} \t Celda: ${columna}`);
 			codigoGeneticoP2[i - 1][nombreCombo] = cantidadaNueva;
 		}
 		return codigoGeneticoP2;
