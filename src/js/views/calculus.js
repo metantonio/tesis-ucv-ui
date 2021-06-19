@@ -1232,6 +1232,7 @@ function Calculus() {
 	let matrizRigidezTotal = [];
 
 	let rigidezTotal = () => {
+		matrizRigidezTotal = [];
 		let numNodosu = 0;
 		var tempy = 0;
 		var tempx = 0;
@@ -1337,6 +1338,7 @@ function Calculus() {
 
 	let rigidezTotal2 = codigoGeneticoP1 => {
 		matrizRigidezTotal = [];
+		var codigoGeneticoP2 = codigoGeneticoP1;
 		let numNodosu = 0;
 		var tempy = 0;
 		var tempx = 0;
@@ -1354,7 +1356,7 @@ function Calculus() {
 		for (var i = 0; i <= numNodosu - 2; i += 3) {
 			for (var j = 0; j <= numNodosu - 2; j += 3) {
 				//console.log("Posición Matriz Rig Total:", i, j);
-				codigoGeneticoP1.forEach(element => {
+				codigoGeneticoP2.forEach(element => {
 					//esquina superior izquierda de la matriz rigidez k
 					//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
 					if ((element.vectorX[0] == i) & (element.vectorX[0] == j)) {
@@ -2629,7 +2631,7 @@ function Calculus() {
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]);
 		//parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
-		//return codigoGeneticoP1;
+		return codigoGeneticoP1;
 	}
 
 	var estructurasLista = [];
@@ -3116,100 +3118,70 @@ function Calculus() {
 			vectorFuerzasInternasRedux
 		);
 	}
-	function EvaluacionCruce(codigoDelCruce) {
-		vectorConectividadf1 = codigoDelCruce;
-		vectorConectividadf22 = codigoDelCruce;
-		reescrituraConectividadf(0, codigoDelCruce);
-		reescrituraConectividadf2(0, 1.4, codigoDelCruce);
-		matrizRigidLocal2(codigoDelCruce);
-		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
+	function Calc1(codigoDelCruce) {
+		vectorConectividadf1 = codigoDelCruce.slice();
+		codigoGeneticoP = vectorConectividadf1.slice();
+		reescrituraConectividadf(0, vectorConectividadf1);
+		reescrituraConectividadf2(0, 1.4, vectorConectividadf1);
+		matrizRigidLocal2(vectorConectividadf1);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(vectorConectividadf1);
 		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
-		rigidezTotal2(codigoDelCruce);
-		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
-		rigidezReducida2(codigoDelCruce);
+		//console.log("codGenP", vectorConectividadf1);
+		rigidezTotal2(vectorConectividadf1);
+		vectorFuerzasInternas = funcionFuerzasInt2(vectorConectividadf1);
+		//codigoDelCruce = codigoGeneticoP.slice();
+		rigidezReducida2(vectorConectividadf1);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
+		vectorFuerzasInternasRedux = vectorFReducido2(vectorConectividadf1);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 0;
-		calculosFinales(0, 0, 1.4, codigoDelCruce);
-		//desplazamientosFinales(codigoDelCruce);
-		//addTablaFinal("tabla-final", codigoDelCruce);
+		vectorConectividadf1 = calculosFinales(0, 0, 1.4, vectorConectividadf1);
+		codigoGeneticoP = vectorConectividadf1.slice();
+		codigoDelCruce = vectorConectividadf1.slice();
+		addTablaCodigoGen1("tabla-final", vectorConectividadf1);
+		return codigoDelCruce;
+	}
 
-		vectorConectividadf1 = codigoDelCruce;
-		vectorConectividadf22 = codigoDelCruce;
-		reescrituraConectividadf(0, codigoDelCruce);
-		reescrituraConectividadf2(1.6, 1.2, codigoDelCruce);
-		matrizRigidLocal2(codigoDelCruce);
-		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
-		//codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
-		rigidezTotal2(codigoDelCruce);
-		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
-		rigidezReducida2(codigoDelCruce);
+	function Calc2(codigoDelCruce, refTabla, cW, CV, CP) {
+		vectorConectividadf1 = codigoDelCruce.slice();
+		reescrituraConectividadf(cW, vectorConectividadf1);
+		reescrituraConectividadf2(CV, CP, vectorConectividadf1);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(vectorConectividadf1);
+		rigidezTotal2(vectorConectividadf1);
+		vectorFuerzasInternas = funcionFuerzasInt2(vectorConectividadf1);
+		rigidezReducida2(vectorConectividadf1);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
+		vectorFuerzasInternasRedux = vectorFReducido();
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 1;
-		calculosFinales(0, 1.6, 1.2, codigoDelCruce);
-		//desplazamientosFinales(codigoDelCruce);
-		//addTablaFinal("tabla-final2", codigoDelCruce);
+		vectorConectividadf1 = calculosFinales(cW, CV, CP, vectorConectividadf1);
+		codigoDelCruce = vectorConectividadf1.slice();
+		addTablaCodigoGen22(refTabla, vectorConectividadf1);
+	}
+	function EvaluacionCruce(codigoDelCruce) {
+		Calc1(codigoDelCruce);
+		Calc2(codigoDelCruce, "tabla-final2", 0, 1.6, 1.2);
+		Calc2(codigoDelCruce, "tabla-final3", 1.275, 1.275, 1.05);
+		Calc2(codigoDelCruce, "tabla-final4", -1.275, 1.275, 1.05);
 
-		vectorConectividadf1 = codigoDelCruce;
-		vectorConectividadf22 = codigoDelCruce;
-		reescrituraConectividadf(1.275, codigoDelCruce);
-		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
-		matrizRigidLocal2(codigoDelCruce);
-		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
-		//codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
-		rigidezTotal2(codigoDelCruce);
-		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
-		rigidezReducida2(codigoDelCruce);
-		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
-		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		//desplazamientoEnCodigo(codigoDelCruce);
-		entropia = 2;
-		calculosFinales(1.275, 1.275, 1.05, codigoDelCruce);
-		//desplazamientosFinales(codigoDelCruce);
-		//addTablaFinal("tabla-final3", codigoDelCruce);
+		evaluacionCargasLaterales(vectorConectividadf1);
 
-		vectorConectividadf1 = codigoDelCruce;
-		vectorConectividadf22 = codigoDelCruce;
-		reescrituraConectividadf(-1.275, codigoDelCruce);
-		reescrituraConectividadf2(1.275, 1.05, codigoDelCruce);
-		matrizRigidLocal2(codigoDelCruce);
-		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoDelCruce);
-		//codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
-		rigidezTotal2(codigoDelCruce);
-		vectorFuerzasInternas = funcionFuerzasInt2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
-		rigidezReducida2(codigoDelCruce);
-		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(codigoDelCruce);
-		//codigoDelCruce = codigoGeneticoP;
-		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		desplazamientoEnCodigo(codigoDelCruce);
-		entropia = 3;
-		calculosFinales(-1.275, 1.275, 1.05, codigoDelCruce);
-		//desplazamientosFinales(codigoDelCruce);
-		//addTablaFinal("tabla-final4", codigoDelCruce);
+		listaEstructuras(vectorConectividadf1);
 
-		evaluacionCargasLaterales(codigoDelCruce);
-
-		listaEstructuras(codigoDelCruce);
+		obtenerDesplazamiento(vectorConectividadf1, "tabla-final", "desCombo1");
+		obtenerDesplazamiento(vectorConectividadf1, "tabla-final2", "desCombo2");
+		obtenerDesplazamiento(vectorConectividadf1, "tabla-final3", "desCombo3");
+		obtenerDesplazamiento(vectorConectividadf1, "tabla-final4", "desCombo4");
+		obtenerDesplazamiento(vectorConectividadf1, "tabla-final5", "desComboLateral");
+		codigoDelCruce = vectorConectividadf1.slice();
 		return (
 			vectorFuerzasInternas,
 			matrizReducidaInversa,
 			vectorFuerzasInternasRedux,
 			vectorDesplazamientos,
-			estructurasLista
+			codigoDelCruce
 		);
 	}
 	var listaAEvaluar = [];
@@ -3306,26 +3278,26 @@ function Calculus() {
 	}
 
 	function evaluacionCargasLaterales(codigoGeneticoP1) {
-		vectorConectividadf1 = codigoGeneticoP1;
-		vectorConectividadf22 = codigoGeneticoP1;
-		sismoColumna(1000, codigoGeneticoP1);
-		sismoVigas(1000, codigoGeneticoP1);
-		matrizRigidLocal2(codigoGeneticoP1);
-		vectorMatrizRigGlobal = matrizRigidGlogal2(codigoGeneticoP1);
+		vectorConectividadf1 = codigoGeneticoP1.slice();
+		vectorConectividadf22 = codigoGeneticoP1.slice();
+		sismoColumna(1000, vectorConectividadf1);
+		sismoVigas(1000, vectorConectividadf1);
+		matrizRigidLocal2(vectorConectividadf1);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(vectorConectividadf1);
 		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
-		rigidezTotal2(codigoGeneticoP1);
-		vectorFuerzasInternas = funcionFuerzasInt2(codigoGeneticoP1);
+		rigidezTotal2(vectorConectividadf1);
+		vectorFuerzasInternas = funcionFuerzasInt2(vectorConectividadf1);
 		//codigoDelCruce = codigoGeneticoP;
-		rigidezReducida2(codigoGeneticoP1);
+		rigidezReducida2(vectorConectividadf1);
 		matrizReducidaInversa = matrizRigidezReduxInversa();
-		vectorFuerzasInternasRedux = vectorFReducido2(codigoGeneticoP1);
+		vectorFuerzasInternasRedux = vectorFReducido2(vectorConectividadf1);
 		//codigoDelCruce = codigoGeneticoP;
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
-		calculosFinales(1, 0.5, 1, codigoGeneticoP1);
-
-		return codigoGeneticoP1;
+		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
+		addTablaCodigoGenLateral("tabla-final5", vectorConectividadf1);
+		return vectorConectividadf1;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
@@ -4045,11 +4017,11 @@ function Calculus() {
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								listaEstructuras(codigoGeneticoP);
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
+								//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
+								//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
+								//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
+								//obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
+								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
 							//A partir de este punto corre el algoritmo genético
 							if (historiax > 1) {
@@ -4086,6 +4058,11 @@ function Calculus() {
 									console.log("codigo genético P", codigoGeneticoP);
 									repetir++; //sirve para borrar div en caso de que repetir>0
 									listaEstructuras(codigoGeneticoP);
+									//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
+									//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
+									//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
+									//obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
+									//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 								}
 								BotonCruce();
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
@@ -4097,9 +4074,9 @@ function Calculus() {
 								}
 								historiaPeso.push(historiapesoy);
 								console.log(
-									`Evolución del Peso ${historiapesoy}kg en la generación ${
+									`Peso ${historiapesoy}kg \nGeneración ${
 										historia[historia.length - 1]
-									}, con puntuación de: ${pesoEstructura[0].evaluacionCodigoGenetico}`
+									}, \nPuntuación: ${pesoEstructura[0].evaluacionCodigoGenetico}`
 								);
 								//ahora se agregan las tablas
 								codigoGeneticoP = pesoEstructura;
