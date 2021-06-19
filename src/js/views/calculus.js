@@ -2239,6 +2239,7 @@ function Calculus() {
 	}
 
 	function calculosFinales(cW, CV, CP, codigoGeneticoP1) {
+		//var codigoGeneticoP2 = JSON.parse( JSON.stringify( codigoGeneticoP1 ) );
 		var multiplicacionM = [];
 		var multiplicacionM2 = [];
 		var matrizL = [];
@@ -2258,6 +2259,7 @@ function Calculus() {
 		var resistenciaNominal = 0;
 		var resultado = 0;
 		desplazamientoEnCodigo(codigoGeneticoP1);
+		var codigoGeneticoP2 = JSON.parse(JSON.stringify(codigoGeneticoP1));
 		for (let element of codigoGeneticoP1) {
 			multiplicacionM = [];
 			puntuacion = 0;
@@ -2517,7 +2519,7 @@ function Calculus() {
 				codigoGeneticoP1[i]["derivaCombo1"] = codigoGeneticoP1[i]["deriva"];
 				codigoGeneticoP1[i]["esfuerzosInternosCombo1"] = codigoGeneticoP1[i]["esfuerzosInternos"];
 				codigoGeneticoP1[i]["reaccionExternaCombo1"] = codigoGeneticoP1[i]["reaccionExterna"];
-				codigoGeneticoP1[i]["desplazamientoNodoIniCombo1"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo1"] = codigoGeneticoP2[i]["desplazamientoNodoIni"];
 				codigoGeneticoP1[i]["puntuacionCombo1"] = codigoGeneticoP1[i]["puntuacion"];
 				codigoGeneticoP1[i]["derivaChequeoCombo1"] = codigoGeneticoP1[i]["derivaChequeo"];
 				codigoGeneticoP1[i]["alaλOkCombo1"] = codigoGeneticoP1[i]["alaλOk"];
@@ -2536,7 +2538,7 @@ function Calculus() {
 				codigoGeneticoP1[i]["derivaCombo2"] = codigoGeneticoP1[i]["deriva"];
 				codigoGeneticoP1[i]["esfuerzosInternosCombo2"] = codigoGeneticoP1[i]["esfuerzosInternos"];
 				codigoGeneticoP1[i]["reaccionExternaCombo2"] = codigoGeneticoP1[i]["reaccionExterna"];
-				codigoGeneticoP1[i]["desplazamientoNodoIniCombo2"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo2"] = codigoGeneticoP2[i]["desplazamientoNodoIni"];
 				codigoGeneticoP1[i]["puntuacionCombo2"] = codigoGeneticoP1[i]["puntuacion"];
 				codigoGeneticoP1[i]["derivaChequeoCombo2"] = codigoGeneticoP1[i]["derivaChequeo"];
 				codigoGeneticoP1[i]["alaλOkCombo2"] = codigoGeneticoP1[i]["alaλOk"];
@@ -2555,7 +2557,7 @@ function Calculus() {
 				codigoGeneticoP1[i]["derivaCombo3"] = codigoGeneticoP1[i]["deriva"];
 				codigoGeneticoP1[i]["esfuerzosInternosCombo3"] = codigoGeneticoP1[i]["esfuerzosInternos"];
 				codigoGeneticoP1[i]["reaccionExternaCombo3"] = codigoGeneticoP1[i]["reaccionExterna"];
-				codigoGeneticoP1[i]["desplazamientoNodoIniCombo3"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo3"] = codigoGeneticoP2[i]["desplazamientoNodoIni"];
 				codigoGeneticoP1[i]["puntuacionCombo3"] = codigoGeneticoP1[i]["puntuacion"];
 				codigoGeneticoP1[i]["derivaChequeoCombo3"] = codigoGeneticoP1[i]["derivaChequeo"];
 				codigoGeneticoP1[i]["alaλOkCombo3"] = codigoGeneticoP1[i]["alaλOk"];
@@ -2574,7 +2576,7 @@ function Calculus() {
 				codigoGeneticoP1[i]["derivaCombo4"] = codigoGeneticoP1[i]["deriva"];
 				codigoGeneticoP1[i]["esfuerzosInternosCombo4"] = codigoGeneticoP1[i]["esfuerzosInternos"];
 				codigoGeneticoP1[i]["reaccionExternaCombo4"] = codigoGeneticoP1[i]["reaccionExterna"];
-				codigoGeneticoP1[i]["desplazamientoNodoIniCombo4"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniCombo4"] = codigoGeneticoP2[i]["desplazamientoNodoIni"];
 				codigoGeneticoP1[i]["puntuacionCombo4"] = codigoGeneticoP1[i]["puntuacion"];
 				codigoGeneticoP1[i]["derivaChequeoCombo4"] = codigoGeneticoP1[i]["derivaChequeo"];
 				codigoGeneticoP1[i]["alaλOkCombo4"] = codigoGeneticoP1[i]["alaλOk"];
@@ -2593,7 +2595,7 @@ function Calculus() {
 				codigoGeneticoP1[i]["derivaComboLateral"] = codigoGeneticoP1[i]["deriva"];
 				codigoGeneticoP1[i]["esfuerzosInternosComboLateral"] = codigoGeneticoP1[i]["esfuerzosInternos"];
 				codigoGeneticoP1[i]["reaccionExternaComboLateral"] = codigoGeneticoP1[i]["reaccionExterna"];
-				codigoGeneticoP1[i]["desplazamientoNodoIniComboLateral"] = codigoGeneticoP1[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniComboLateral"] = codigoGeneticoP2[i]["desplazamientoNodoIni"];
 				codigoGeneticoP1[i]["puntuacionComboLateral"] = codigoGeneticoP1[i]["puntuacion"];
 				codigoGeneticoP1[i]["derivaChequeoComboLateral"] = codigoGeneticoP1[i]["derivaChequeo"];
 				codigoGeneticoP1[i]["alaλOkComboLateral"] = codigoGeneticoP1[i]["alaλOk"];
