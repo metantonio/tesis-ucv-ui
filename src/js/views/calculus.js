@@ -2643,7 +2643,7 @@ function Calculus() {
 			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
 		});
 		//console.log("lista de Estructuras", estructurasLista);
-		if (estructurasLista.length > 5) {
+		if (estructurasLista.length > 14) {
 			estructurasLista = estructurasLista.slice(0, 10);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
