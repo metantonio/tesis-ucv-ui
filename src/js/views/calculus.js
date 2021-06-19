@@ -2626,8 +2626,8 @@ function Calculus() {
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo1"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo2"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo3"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]);
+		//parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
 		//return codigoGeneticoP1;
 	}
@@ -2635,7 +2635,7 @@ function Calculus() {
 	var estructurasLista = [];
 	function listaEstructuras(codigoGen) {
 		estructurasLista.push(codigoGen);
-		estructurasLista.sort(function(a, b) {
+		estructurasLista = estructurasLista.sort(function(a, b) {
 			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
 		});
 		//console.log("lista de Estructuras", estructurasLista);
@@ -4045,6 +4045,11 @@ function Calculus() {
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								listaEstructuras(codigoGeneticoP);
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
+								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
 							//A partir de este punto corre el algoritmo genético
 							if (historiax > 1) {
