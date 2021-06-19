@@ -2639,11 +2639,33 @@ function Calculus() {
 			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
 		});
 		//console.log("lista de Estructuras", estructurasLista);
-		if (estructurasLista.length > 5) {
+		if (estructurasLista.length > 11) {
 			estructurasLista = estructurasLista.slice(0, 10);
 		}
+		estructurasLista.sort(function(a, b) {
+			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
+		});
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
+	}
+	function listaEstructurasPush(codigoGen) {
+		estructurasLista.push(codigoGen);
+	}
+
+	function listaOrden(listaAqui) {
+		var listaTemp = listaAqui.sort(function(a, b) {
+			//console.log("b es:", b);
+			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
+		});
+		return listaTemp;
+	}
+
+	function listaSlice(listaAqui) {
+		var listaTemporal;
+		if (listaAqui.length > 11) {
+			var listaTemporal = listaAqui.slice(0, 10);
+		}
+		return listaTemporal;
 	}
 	var desplazamientosFinalesLista = [];
 
@@ -3203,13 +3225,14 @@ function Calculus() {
 
 		evaluacionCargasLaterales(codigoDelCruce);
 
-		listaEstructuras(codigoDelCruce);
+		listaEstructurasPush(codigoDelCruce);
 		return (
 			vectorFuerzasInternas,
 			matrizReducidaInversa,
 			vectorFuerzasInternasRedux,
 			vectorDesplazamientos,
-			estructurasLista
+			estructurasLista,
+			codigoDelCruce
 		);
 	}
 	var listaAEvaluar = [];
@@ -3246,8 +3269,9 @@ function Calculus() {
 
 		var mutacion2 = mutacion(cruceGen2);
 		EvaluacionCruce(mutacion2);
-
+		//listaEstructuras(cruceGen0);
 		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
+		return estructurasLista;
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
 		//let vectorAux = vectorConectividadf;
@@ -3990,7 +4014,7 @@ function Calculus() {
 								//ver código genético
 								console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
-								listaEstructuras(codigoGeneticoP);
+								listaEstructurasPush(codigoGeneticoP);
 
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
@@ -4044,7 +4068,8 @@ function Calculus() {
 								//ver código genético
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
-								listaEstructuras(codigoGeneticoP);
+								listaEstructurasPush(codigoGeneticoP);
+								estructurasLista = listaOrden(estructurasLista);
 							}
 							//A partir de este punto corre el algoritmo genético
 							if (historiax > 1) {
@@ -4078,12 +4103,15 @@ function Calculus() {
 									entropia = 4;
 									botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
 									//ver código genético
-									console.log("codigo genético P", codigoGeneticoP);
+									//console.log("codigo genético P", codigoGeneticoP);
 									repetir++; //sirve para borrar div en caso de que repetir>0
-									listaEstructuras(codigoGeneticoP);
+									listaEstructurasPush(codigoGeneticoP);
+									estructurasLista = listaOrden(estructurasLista);
 								}
 								BotonCruce();
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
+								estructurasLista = listaOrden(estructurasLista);
+
 								var pesoEstructura = estructurasLista[0];
 								for (var j = 0; j < pesoEstructura.length; j++) {
 									if (pesoEstructura[j]["peso"] != undefined) {
@@ -4091,10 +4119,11 @@ function Calculus() {
 									}
 								}
 								historiaPeso.push(historiapesoy);
+
 								console.log(
-									`Evolución del Peso ${historiapesoy}kg en la generación ${
+									`Peso ${historiapesoy}kg \n Generación ${
 										historia[historia.length - 1]
-									}, con puntuación de: ${pesoEstructura[0].evaluacionCodigoGenetico}`
+									},\n Puntuación de: ${estructurasLista[0][0].evaluacionCodigoGenetico}`
 								);
 								//ahora se agregan las tablas
 								codigoGeneticoP = pesoEstructura;
@@ -4130,7 +4159,13 @@ function Calculus() {
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
-
+							estructurasLista = listaOrden(estructurasLista);
+							estructurasLista = listaSlice(estructurasLista);
+							console.log(
+								`Evolución del Peso ${historiapesoy}kg en la generación ${
+									historia[historia.length - 1]
+								}, con puntuación de: ${estructurasLista[0][0].evaluacionCodigoGenetico}`
+							);
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
