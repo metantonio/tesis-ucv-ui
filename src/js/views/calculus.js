@@ -4229,6 +4229,10 @@ function Calculus() {
 			<div className="col-sm-12">
 				<table className="table table-striped" id="grafica-evolucion1" onLoad="" />
 			</div>
+			<p>
+				<h3>Visualización de la mejor estructura hallada</h3>
+				<h4>(Independiente del gráfico inicial de página)</h4>
+			</p>
 			<p />
 			<div className="row justify-content">
 				<div className="col-md-12" id="caja-dibujo3">
