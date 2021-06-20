@@ -3932,6 +3932,9 @@ function Calculus() {
 						tension: 0.1
 					}
 				]
+			},
+			options: {
+				responsive: false
 			}
 		});
 	}
@@ -4269,7 +4272,7 @@ function Calculus() {
 				<h3> 11-.1 Evolución del Algoritmo Genético</h3>
 			</div>
 			<div className="col-sm-12" id="grafica-container">
-				<canvas id="grafica-peso" width="400" height="400" />
+				<canvas id="grafica-peso" width="800px" height="350px" />
 			</div>
 			<p>
 				<h3>Visualización de la mejor estructura hallada</h3>
