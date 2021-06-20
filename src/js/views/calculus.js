@@ -3877,19 +3877,6 @@ function Calculus() {
 		return final;
 	}
 
-	var dataGraph = [];
-	function graficaXY() {
-		dataGraph = [];
-		var dataInfo = {};
-		for (var i = 0; i < historiaPeso.length; i++) {
-			dataInfo["name"] = i + 1;
-			//dataInfo["uv"] = i + 1;
-			dataInfo["pv"] = historiaPeso[i];
-			dataGraph.push(dataInfo);
-		}
-		return dataInfo;
-	}
-
 	function dibujaGrafica(getElementByIdf, etiquetaX, etiquetaY) {
 		var a =
 			"<LineChart width=500 height=300 data=" + dataGraph + " margin={{top: 5, right: 30, left: 20, bottom: 5}}>";
@@ -3925,21 +3912,21 @@ function Calculus() {
 	}
 	let myChart;
 	var ctx = document.getElementById("grafica-peso");
-	function graficaPeso() {
+	function graficaXY(canvasID, arrayX, arrayY, titulo) {
 		//console.log("histori e historiaPeso", historia, historiaPeso);
 		if (myChart) {
 			myChart.destroy();
 		}
 		//resetCanvas();
-		ctx = document.getElementById("grafica-peso");
+		ctx = document.getElementById(canvasID);
 		myChart = new Chart(ctx, {
 			type: "line",
 			data: {
-				labels: historia,
+				labels: arrayX,
 				datasets: [
 					{
-						label: "Peso (kg) vs. Generaciones",
-						data: historiaPeso,
+						label: titulo,
+						data: arrayY,
 						fill: false,
 						borderColor: "rgb(75, 192, 192)",
 						tension: 0.1
@@ -3949,7 +3936,7 @@ function Calculus() {
 		});
 	}
 	window.onload = function() {
-		graficaPeso();
+		graficaXY("grafica-peso", historia, historiaPeso, "Peso (kg) vs. Generaciones");
 	};
 
 	let resetCanvas = function() {
@@ -4159,9 +4146,9 @@ function Calculus() {
 								addTablaCodigoGenLateral("tabla-final5", pesoEstructura);
 
 								//se dibuja la gráfica
-								graficaXY();
+								graficaXY("grafica-peso", historia, historiaPeso, "Peso (kg) vs. Generaciones");
 								//removeData(myChart);
-								graficaPeso();
+								//graficaPeso();
 								//dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
