@@ -10,6 +10,7 @@ import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, 
 import { create, all } from "mathjs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import App from "./App";
+import Chart from "chart.js/auto";
 
 const math = create(all, {});
 const rootElement = document.getElementById("grafica-evolucion1");
@@ -3886,7 +3887,7 @@ function Calculus() {
 			dataInfo["pv"] = historiaPeso[i];
 			dataGraph.push(dataInfo);
 		}
-		return dataGraph;
+		return dataInfo;
 	}
 
 	function dibujaGrafica(getElementByIdf, etiquetaX, etiquetaY) {
@@ -3915,6 +3916,57 @@ function Calculus() {
 		return codigoGeneticoP2;
 	}
 
+	function removeData(chart) {
+		chart.data.labels.pop();
+		chart.data.datasets.forEach(dataset => {
+			dataset.data.pop();
+		});
+		chart.update();
+	}
+	let myChart;
+	var ctx = document.getElementById("grafica-peso");
+	function graficaPeso() {
+		//console.log("histori e historiaPeso", historia, historiaPeso);
+		if (myChart) {
+			myChart.destroy();
+		}
+		//resetCanvas();
+		ctx = document.getElementById("grafica-peso");
+		myChart = new Chart(ctx, {
+			type: "line",
+			data: {
+				labels: historia,
+				datasets: [
+					{
+						label: "Peso (kg) vs. Generaciones",
+						data: historiaPeso,
+						fill: false,
+						borderColor: "rgb(75, 192, 192)",
+						tension: 0.1
+					}
+				]
+			}
+		});
+	}
+	window.onload = function() {
+		graficaPeso();
+	};
+
+	let resetCanvas = function() {
+		document.getElementById("grafica-peso").remove(); // <canvas> element
+		document.getElementById("grafica-container").append('<canvas id="grafica-peso"><canvas>');
+		var canvas = document.querySelector("#grafica-peso"); //
+		ctx = canvas.getContext("2d");
+		ctx.canvas.width = document.getElementById("grafica-container").width();
+		ctx.canvas.height = document.getElementById("grafica-container").height();
+
+		var x = canvas.width / 2;
+		var y = canvas.height / 2;
+		ctx.font = "10pt Verdana";
+		ctx.textAlign = "center";
+		ctx.fillText("Título gráfica", x, y);
+	};
+
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -3929,6 +3981,7 @@ function Calculus() {
 		//svg.selectAll("*").remove();
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
 		show();
+		//graficaPeso();
 	});
 
 	return (
@@ -4107,7 +4160,9 @@ function Calculus() {
 
 								//se dibuja la gráfica
 								graficaXY();
-								dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
+								//removeData(myChart);
+								graficaPeso();
+								//dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4226,8 +4281,8 @@ function Calculus() {
 				<h2> 11-. Resultados Algoritmos Genéticos</h2>
 				<h3> 11-.1 Evolución del Algoritmo Genético</h3>
 			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="grafica-evolucion1" onLoad="" />
+			<div className="col-sm-12" id="grafica-container">
+				<canvas id="grafica-peso" width="400" height="400" />
 			</div>
 			<p>
 				<h3>Visualización de la mejor estructura hallada</h3>

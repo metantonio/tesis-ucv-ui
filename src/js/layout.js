@@ -44,7 +44,7 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/calculus">
 							<Calculus />
-							<App />
+							{/* <App /> */}
 						</Route>
 						<Route exact path="/autor">
 							<Autor />
