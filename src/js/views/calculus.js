@@ -5,7 +5,7 @@ import { render } from "react-dom";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
-import { array, element } from "prop-types";
+import { array, element, func } from "prop-types";
 import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
 import { create, all } from "mathjs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -3910,11 +3910,16 @@ function Calculus() {
 		});
 		chart.update();
 	}
-	let myChart;
-	var ctx = document.getElementById("grafica-peso");
-	function graficaXY(canvasID, arrayX, arrayY, titulo) {
+	//let myChart;
+	let myChart1;
+	let myChart2;
+	let ctx1;
+	let ctx2;
+	//window.myChart;
+	//var ctx = document.getElementById("grafica-peso");
+	function graficaXY(myChart, canvasID, arrayX, arrayY, titulo, ctx) {
 		//console.log("histori e historiaPeso", historia, historiaPeso);
-		if (myChart) {
+		if (myChart != null) {
 			myChart.destroy();
 		}
 		//resetCanvas();
@@ -3937,9 +3942,21 @@ function Calculus() {
 				responsive: false
 			}
 		});
+		return myChart;
+	}
+	function start() {
+		graficaXY(myChart1, "grafica-peso", historia, historiaPeso, "Peso (kg) vs. Generaciones", ctx1);
+		graficaXY(
+			myChart2,
+			"grafica-estabilidad",
+			historia,
+			estabilidadPuntuacion,
+			"Estabilidad vs. Generaciones",
+			ctx2
+		);
 	}
 	window.onload = function() {
-		graficaXY("grafica-peso", historia, historiaPeso, "Peso (kg) vs. Generaciones");
+		start();
 	};
 
 	let resetCanvas = function() {
@@ -3956,6 +3973,8 @@ function Calculus() {
 		ctx.textAlign = "center";
 		ctx.fillText("Título gráfica", x, y);
 	};
+	var estabilidadPuntuacion = [];
+	var estabilidadY = 0;
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -4076,6 +4095,7 @@ function Calculus() {
 								historiax++;
 								historia.push(historiax);
 								historiapesoy = 0;
+								estabilidadY = 0;
 								//aquí se agrega una estructura aleatoria en cada generación de individuos
 								{
 									//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
@@ -4117,6 +4137,8 @@ function Calculus() {
 										historiapesoy += parseFloat(pesoEstructura[j].peso);
 									}
 								}
+								estabilidadY += parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
+								estabilidadPuntuacion.push(estabilidadY);
 								historiaPeso.push(historiapesoy);
 								console.log(
 									`Peso ${historiapesoy}kg \nGeneración ${
@@ -4149,7 +4171,22 @@ function Calculus() {
 								addTablaCodigoGenLateral("tabla-final5", pesoEstructura);
 
 								//se dibuja la gráfica
-								graficaXY("grafica-peso", historia, historiaPeso, "Peso (kg) vs. Generaciones");
+								myChart1 = graficaXY(
+									myChart1,
+									"grafica-peso",
+									historia,
+									historiaPeso,
+									"Peso (kg) vs. Generaciones",
+									ctx1
+								);
+								myChart2 = graficaXY(
+									myChart2,
+									"grafica-estabilidad",
+									historia,
+									estabilidadPuntuacion,
+									"Estabilidad vs. Generaciones",
+									ctx2
+								);
 								//removeData(myChart);
 								//graficaPeso();
 								//dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
@@ -4273,6 +4310,12 @@ function Calculus() {
 			</div>
 			<div className="col-sm-12" id="grafica-container">
 				<canvas id="grafica-peso" width="800px" height="350px" />
+			</div>
+			<div className="text-sm-left">
+				<h3> 11-.2 Evolución de la Estabilidad de la Estructura</h3>
+			</div>
+			<div className="col-sm-12" id="grafica-container-2">
+				<canvas id="grafica-estabilidad" width="800px" height="350px" />
 			</div>
 			<p>
 				<h3>Visualización de la mejor estructura hallada</h3>
