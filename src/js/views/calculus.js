@@ -3320,6 +3320,9 @@ function Calculus() {
 		var pesoAltura = 0;
 		var fuerzaLateralFicticia = [];
 		var desplazamientoLateral = [];
+		var desplazamientoElastico = 0;
+		var desplazamientoElasticoLista = [];
+
 		for (var i = 1; i <= cantidadPisos; i++) {
 			pesoPiso = 0;
 			for (let element of codigoGeneticoP1) {
@@ -3355,10 +3358,10 @@ function Calculus() {
 				//console.log("pesoPiso", pesoPiso);
 				//listaPesoPiso[i - 1] += pesoPiso;
 			}
-			//extracción de las derivas en una lista
+			//extracción de las derivas en una lista por piso
 			if (codigoGeneticoP1[i - 1]["tipo"] == "Columna") {
 				if (codigoGeneticoP1[i - 1]["nodoIni"][0] == 0) {
-					desplazamientoLateral.push(parseFloat(codigoGeneticoP1[i - 1]["derivaComboLateral"]));
+					desplazamientoLateral.push(Math.abs(parseFloat(codigoGeneticoP1[i - 1]["derivaComboLateral"])));
 				}
 			}
 
@@ -3373,10 +3376,13 @@ function Calculus() {
 			pesoAltura += listaPesoPisoAltura[j];
 			pesoEdificioSismo += listaPesoPiso[j];
 		}
-		for (var j = 0; j < listaPesoPisoAltura.length - 1; j++) {
-			pesoAltura += listaPesoPisoAltura[j];
-			pesoEdificioSismo += listaPesoPiso[j];
+
+		codigoGeneticoP1[0]["pesoEdificioSismo"] = pesoEdificioSismo;
+		for (var j = 0; j < desplazamientoLateral.length; j++) {
+			desplazamientoElastico += desplazamientoLateral[j];
+			desplazamientoElasticoLista.push(desplazamientoElastico);
 		}
+		codigoGeneticoP1[0]["desplazamientoElasticoNivel"] = desplazamientoElasticoLista;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
