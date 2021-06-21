@@ -2259,6 +2259,7 @@ function Calculus() {
 		var esfuerzoCritico = 0;
 		var resistenciaNominal = 0;
 		var resultado = 0;
+		var peso = 0;
 		desplazamientoEnCodigo(codigoGeneticoP1);
 		var codigoGeneticoP2 = JSON.parse(JSON.stringify(codigoGeneticoP1));
 		for (let element of codigoGeneticoP1) {
@@ -2343,6 +2344,7 @@ function Calculus() {
 				element["reaccionExterna"] = matrizPorVector(multiplicacionM2, element.desplazamientoNodoIni);
 			}
 			//falta agregar derivas, condiciones
+			peso += parseFloat(element.peso);
 
 			//Derivas
 			if (element["tipo"] == "Columna") {
@@ -2634,6 +2636,7 @@ function Calculus() {
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]);
 		//parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
+		codigoGeneticoP1[0]["pesoEstructura"] = peso;
 		return codigoGeneticoP1;
 	}
 
@@ -4139,7 +4142,8 @@ function Calculus() {
 								}
 								estabilidadY += parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
 								estabilidadPuntuacion.push(estabilidadY);
-								historiaPeso.push(historiapesoy);
+								//historiaPeso.push(historiapesoy);
+								historiaPeso.push(parseFloat(pesoEstructura[0].pesoEstructura));
 								console.log(
 									`Peso ${historiapesoy}kg \nGeneración ${
 										historia[historia.length - 1]
