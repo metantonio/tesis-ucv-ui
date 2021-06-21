@@ -3303,7 +3303,80 @@ function Calculus() {
 		entropia = 4;
 		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
 		addTablaCodigoGenLateral("tabla-final5", vectorConectividadf1);
+		metodoEstaticoEquivalente(vectorConectividadf1);
 		return vectorConectividadf1;
+	}
+
+	function metodoEstaticoEquivalente(codigoGeneticoP1) {
+		var pesoPiso = 0;
+		var cantidadPisos = parseFloat(actions.getNoPisos());
+		var cargaLosaPerm = parseFloat(actions.getCargaLosaPermanente());
+		var cargaLosaVar = parseFloat(actions.getCargaLosaVariable());
+		var cargaTechoPem = parseFloat(actions.getCargaTechoPermanente());
+		var cargaTechoVar = parseFloat(actions.getCargaTechoVariable());
+		var listaPesoPiso = [];
+		var listaPesoPisoAltura = [];
+		var pesoEdificioSismo = 0;
+		var pesoAltura = 0;
+		var fuerzaLateralFicticia = [];
+		var desplazamientoLateral = [];
+		for (var i = 1; i <= cantidadPisos; i++) {
+			pesoPiso = 0;
+			for (let element of codigoGeneticoP1) {
+				//primer caso para cuando el nodo final pertenece a un entrepiso
+				if (element.nodoFin[1] == i && element.nodoFin[1] != cantidadPisos) {
+					if (element["tipo"] == "Viga") {
+						pesoPiso +=
+							cargaLosaPerm * parseFloat(element.longitud) +
+							0.5 * cargaLosaVar * parseFloat(element.longitud);
+					}
+					if (element["tipo"] == "Columna") {
+						pesoPiso += parseFloat(element.peso / 2);
+					}
+				}
+				//segundo caso cuando nodo final coincide con el techo
+				if (element.nodoFin[1] == cantidadPisos) {
+					if (element["tipo"] == "Viga") {
+						pesoPiso +=
+							cargaTechoPem * parseFloat(element.longitud) +
+							0.5 * cargaTechoVar * parseFloat(element.longitud);
+					}
+					if (element["tipo"] == "Columna") {
+						pesoPiso += parseFloat(element.peso / 2);
+					}
+				}
+				//tercer caso para las columnas cuando el nodo inicial coincide
+				if (element.nodoIni[1] == i) {
+					if (element["tipo"] == "Columna") {
+						pesoPiso += parseFloat(element.peso / 2);
+					}
+				}
+
+				//console.log("pesoPiso", pesoPiso);
+				//listaPesoPiso[i - 1] += pesoPiso;
+			}
+			//extracción de las derivas en una lista
+			if (codigoGeneticoP1[i - 1]["tipo"] == "Columna") {
+				if (codigoGeneticoP1[i - 1]["nodoIni"][0] == 0) {
+					desplazamientoLateral.push(parseFloat(codigoGeneticoP1[i - 1]["derivaComboLateral"]));
+				}
+			}
+
+			listaPesoPiso.push(pesoPiso);
+			listaPesoPisoAltura.push(pesoPiso * parseFloat(actions.getEntrePiso()));
+		}
+		//Fin del For
+		codigoGeneticoP1[0]["pesoPisos"] = listaPesoPiso;
+		codigoGeneticoP1[0]["derivaPisos"] = desplazamientoLateral;
+
+		for (var j = 0; j < listaPesoPisoAltura.length - 1; j++) {
+			pesoAltura += listaPesoPisoAltura[j];
+			pesoEdificioSismo += listaPesoPiso[j];
+		}
+		for (var j = 0; j < listaPesoPisoAltura.length - 1; j++) {
+			pesoAltura += listaPesoPisoAltura[j];
+			pesoEdificioSismo += listaPesoPiso[j];
+		}
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
