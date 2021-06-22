@@ -235,7 +235,10 @@ function Forces() {
 								onChange={e => {
 									zonaSismica = document.getElementById("zona-sismica").value;
 									aceleracionAo = Aceleracion(zonaSismica);
+									actions.setZonaSismica(zonaSismica);
 									console.log("Ao = ", aceleracionAo);
+									actions.setAceleracionAo(aceleracionAo);
+
 									return zonaSismica;
 								}}
 							/>
@@ -247,6 +250,9 @@ function Forces() {
 									formaEspectro = getComboList1();
 									formaEspectral(formaEspectro);
 									console.log(`T*(s): ${tAst} \n β: ${beta} \n ρ: ${ro}`);
+									actions.setTAst(tAst);
+									actions.setBeta(beta);
+									actions.setRo(ro);
 								}}>
 								<select id="ddlViewBy">
 									<option value="1">S1</option>
@@ -272,6 +278,7 @@ function Forces() {
 								onChange={e => {
 									factorCorreccion = document.getElementById("factor-correccion").value;
 									console.log("ϕ = ", factorCorreccion);
+									actions.setFactorCorreccion(factorCorreccion);
 									return factorCorreccion;
 								}}
 							/>
@@ -282,6 +289,7 @@ function Forces() {
 								onChange={e => {
 									factorImportancia = getComboList2();
 									console.log("Factor de Importancia: ", factorImportancia);
+									actions.setFactorImportancia(factorImportancia);
 								}}>
 								<select id="ddlViewBy2">
 									<option value="1.15">B1</option>
@@ -300,6 +308,8 @@ function Forces() {
 									console.log("Factor de Reducción (R): ", factorReduccion);
 									tMas = valorTMas(factorReduccion);
 									console.log(`T+(s): ${tMas}`);
+									actions.setFactorReduccion(factorReduccion);
+									actions.setTMas(tMas);
 								}}>
 								<select id="ddlViewBy3">
 									<option value="4.5">ND2</option>
