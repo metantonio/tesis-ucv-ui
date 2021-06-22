@@ -4451,7 +4451,7 @@ function Calculus() {
 				<table className="table table-striped" id="tabla-final4" onLoad="" />
 			</div>
 			<div className="text-sm-left">
-				<h2> 10.5-. Tabla Combinación de cargas caso: 1CP + 1CV + cargas Laterales</h2>
+				<h2> 10.5-. Tabla Combinación de cargas caso: 1CP + 0.5CV + cargas Laterales</h2>
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final5" onLoad="" />
