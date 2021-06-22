@@ -7,8 +7,46 @@ import "../../styles/home-tesis.scss";
 
 function Forces() {
 	const { store, actions } = useContext(Context);
+	var zonaSismica = 6;
+	var aceleracionAo = 0;
+	var formaEspectro = "";
 
-	//var i = 2;
+	function Aceleracion(zona) {
+		if (zona == 7) {
+			aceleracionAo = 0.4;
+		} else {
+			if (zona == 6) {
+				aceleracionAo = 0.35;
+			}
+			if (zona == 5) {
+				aceleracionAo = 0.3;
+			}
+			if (zona == 4) {
+				aceleracionAo = 0.25;
+			}
+			if (zona == 3) {
+				aceleracionAo = 0.25;
+			}
+			if (zona == 2) {
+				aceleracionAo = 0.15;
+			}
+			if (zona == 1) {
+				aceleracionAo = 0.1;
+			}
+			if (zona == 0) {
+				aceleracionAo = 0;
+			}
+		}
+		return aceleracionAo;
+	}
+
+	function getComboList1() {
+		var e = document.getElementById("ddlViewBy");
+		var as = document.forms[0].ddlViewBy.value;
+		var strUser = e.options[e.selectedIndex].text;
+		console.log(as, strUser);
+		return strUser;
+	}
 
 	return (
 		<React.Fragment>
@@ -113,6 +151,51 @@ function Forces() {
 									return cargaViento;
 								}}
 							/>
+						</p>
+					</div>
+				</div>
+				<div className="col-md-12 justify-content">
+					<p>
+						<h2 className="sub-title">Paso 2.2: Configuración del Espectro de Diseño</h2>
+					</p>
+					<p>
+						<h4 className="sub-title 2">(COVENIN 1756-2001)</h4>
+					</p>
+					<br />
+					<div className="config-paso-1 justify-content">
+						<p>
+							<h4>Zona Sísmica</h4>
+							<input
+								className="no-columnas"
+								type="number"
+								placeholder="ej: 6"
+								id="zona-sismica"
+								name="no-columnas"
+								min="0"
+								step="1"
+								max="7"
+								onChange={e => {
+									zonaSismica = document.getElementById("zona-sismica").value;
+									aceleracionAo = Aceleracion(zonaSismica);
+									console.log("Ao = ", aceleracionAo);
+									return zonaSismica;
+								}}
+							/>
+						</p>
+						<p>
+							<form
+								onChange={e => {
+									formaEspectro = getComboList1();
+								}}>
+								<select id="ddlViewBy">
+									<option value="1">S1</option>
+									<option value="3" selected="selected">
+										S3
+									</option>
+									<option value="2">S2</option>
+									<option value="4">S4</option>
+								</select>
+							</form>
 						</p>
 					</div>
 				</div>
