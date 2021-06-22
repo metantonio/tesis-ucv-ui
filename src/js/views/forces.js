@@ -13,6 +13,9 @@ function Forces() {
 	var factorCorreccion = 0.85;
 	var factorImportancia = 1.3;
 	var factorReduccion = 6.0;
+	var tAst = 1.0;
+	var beta = 2.8;
+	var ro = 1.0;
 
 	function Aceleracion(zona) {
 		if (zona == 7) {
@@ -65,6 +68,30 @@ function Forces() {
 		var strUser = e.options[e.selectedIndex].text;
 		//console.log(as, strUser);
 		return as;
+	}
+
+	function formaEspectral(forma) {
+		if (forma == "S1") {
+			tAst = 0.4;
+			beta = 2.4;
+			ro = 1.0;
+		}
+		if (forma == "S2") {
+			tAst = 0.7;
+			beta = 2.6;
+			ro = 1.0;
+		}
+		if (forma == "S3") {
+			tAst = 1.0;
+			beta = 2.8;
+			ro = 1.0;
+		}
+		if (forma == "S4") {
+			tAst = 1.3;
+			beta = 3.0;
+			ro = 0.8;
+		}
+		return tAst, beta, ro;
 	}
 
 	return (
@@ -206,6 +233,8 @@ function Forces() {
 							<form
 								onChange={e => {
 									formaEspectro = getComboList1();
+									formaEspectral(formaEspectro);
+									console.log(`T*(s): ${tAst} \n β: ${beta} \n ρ: ${ro}`);
 								}}>
 								<select id="ddlViewBy">
 									<option value="1">S1</option>
