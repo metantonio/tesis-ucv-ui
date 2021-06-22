@@ -3322,6 +3322,9 @@ function Calculus() {
 		var desplazamientoLateral = [];
 		var desplazamientoElastico = 0;
 		var desplazamientoElasticoLista = [];
+		var numerador = 0;
+		var denominador = 0;
+		var periodoRayleigh = 0;
 
 		for (var i = 1; i <= cantidadPisos; i++) {
 			pesoPiso = 0;
@@ -3383,6 +3386,14 @@ function Calculus() {
 			desplazamientoElasticoLista.push(desplazamientoElastico);
 		}
 		codigoGeneticoP1[0]["desplazamientoElasticoNivel"] = desplazamientoElasticoLista;
+
+		//se hallan numerador de nominador:
+		for (var j = 0; j < desplazamientoLateral.length; j++) {
+			numerador += listaPesoPiso[j] * Math.pow(desplazamientoElasticoLista[j], 2);
+			denominador += 1000 * desplazamientoElasticoLista[j];
+		}
+		periodoRayleigh = 2 * Math.PI * Math.sqrt(numerador / (denominador * 981));
+		codigoGeneticoP1[0]["periodoRayleigh"] = round(periodoRayleigh,3);
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
