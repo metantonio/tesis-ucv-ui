@@ -3452,6 +3452,27 @@ function Calculus() {
 		} else {
 			codigoGeneticoP1[0]["coeficienteSismicoCond"] = "No Cumple";
 		}
+
+		//se halla la fuerza lateral concentrada en cada piso
+		var ft = 0;
+
+		ft = ((0.006 * aux) / tAst - 0.02) * cortanteBasal;
+		if (ft < 0.04 * cortanteBasal) {
+			ft = 0.04 * cortanteBasal;
+		} else {
+			if (ft > 0.1 * cortanteBasal) {
+				ft = 0.1 * cortanteBasal;
+			}
+		}
+
+		var listaFi = [];
+		for (var j = 0; j < desplazamientoLateral.length; j++) {
+			listaFi.push(
+				((cortanteBasal - ft) * (listaPesoPiso[j] * (j + 1) * parseFloat(actions.getEntrePiso()))) /
+					(pesoEdificioSismo * cantidadPisos * parseFloat(actions.getEntrePiso()))
+			);
+		}
+		codigoGeneticoP1[0]["FuerzasSismoPiso"] = listaFi;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
