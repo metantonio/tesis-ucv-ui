@@ -3336,6 +3336,7 @@ function Calculus() {
 		var Ad = 0;
 		var elevacionC = Math.sqrt(Math.sqrt(factorReduccion / beta));
 		var aux = 0;
+		var factorMayor = 0;
 
 		for (var i = 1; i <= cantidadPisos; i++) {
 			pesoPiso = 0;
@@ -3426,6 +3427,15 @@ function Calculus() {
 				Math.pow(tAst / aux, ro);
 		}
 		codigoGeneticoP1[0]["aceleracionAd"] = Ad;
+
+		//para hallar la cortante basa se considera el mayor entre los dos siguientes factores:
+		factorMayor = Math.max(
+			1.4 * ((cantidadPisos + 9) / (12 + 2 * cantidadPisos)),
+			0.8 + (1 / 20) * (aux / tAst - 1)
+		);
+
+		//La Cortante Basal será:
+		codigoGeneticoP1[0]["cortanteBasalVo"] = Ad * factorMayor * pesoEdificioSismo;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
