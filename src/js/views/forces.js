@@ -8,9 +8,11 @@ import "../../styles/home-tesis.scss";
 function Forces() {
 	const { store, actions } = useContext(Context);
 	var zonaSismica = 6;
-	var aceleracionAo = 0;
-	var formaEspectro = "";
+	var aceleracionAo = 0.35;
+	var formaEspectro = "S3";
 	var factorCorreccion = 0.85;
+	var factorImportancia = 1.3;
+	var factorReduccion = 6.0;
 
 	function Aceleracion(zona) {
 		if (zona == 7) {
@@ -47,6 +49,22 @@ function Forces() {
 		var strUser = e.options[e.selectedIndex].text;
 		console.log(as, strUser);
 		return strUser;
+	}
+
+	function getComboList2() {
+		var e = document.getElementById("ddlViewBy2");
+		var as = e.options[e.selectedIndex].value;
+		var strUser = e.options[e.selectedIndex].text;
+		//console.log(as, strUser);
+		return as;
+	}
+
+	function getComboList3() {
+		var e = document.getElementById("ddlViewBy3");
+		var as = e.options[e.selectedIndex].value;
+		var strUser = e.options[e.selectedIndex].text;
+		//console.log(as, strUser);
+		return as;
 	}
 
 	return (
@@ -216,6 +234,38 @@ function Forces() {
 									return factorCorreccion;
 								}}
 							/>
+						</p>
+						<p>
+							<h4>Factor de Importancia</h4>
+							<form
+								onChange={e => {
+									factorImportancia = getComboList2();
+									console.log("Factor de Importancia: ", factorImportancia);
+								}}>
+								<select id="ddlViewBy2">
+									<option value="1.15">B1</option>
+									<option value="1.30" selected="selected">
+										A
+									</option>
+									<option value="1.0">B2</option>
+								</select>
+							</form>
+						</p>
+						<p>
+							<h4>Factor de Reducción según Nivel de Diseño, para Estructuras de Acero del Tipo I</h4>
+							<form
+								onChange={e => {
+									factorReduccion = getComboList3();
+									console.log("Factor de Reducción (R): ", factorReduccion);
+								}}>
+								<select id="ddlViewBy3">
+									<option value="4.5">ND2</option>
+									<option value="6.0" selected="selected">
+										ND3
+									</option>
+									<option value="2.5">ND1</option>
+								</select>
+							</form>
 						</p>
 					</div>
 				</div>
