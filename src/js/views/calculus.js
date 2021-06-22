@@ -3173,7 +3173,7 @@ function Calculus() {
 		Calc2(codigoDelCruce, "tabla-final4", -1.275, 1.275, 1.05);
 
 		evaluacionCargasLaterales(vectorConectividadf1);
-
+		//evaluacionSismo(vectorConectividadf1);
 		listaEstructuras(vectorConectividadf1);
 
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final", "desCombo1");
@@ -3302,8 +3302,9 @@ function Calculus() {
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
 		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
-		addTablaCodigoGenLateral("tabla-final5", vectorConectividadf1);
+
 		metodoEstaticoEquivalente(vectorConectividadf1);
+		addTablaCodigoGenLateral("tabla-final5", vectorConectividadf1);
 		return vectorConectividadf1;
 	}
 
@@ -3473,6 +3474,122 @@ function Calculus() {
 			);
 		}
 		codigoGeneticoP1[0]["FuerzasSismoPiso"] = listaFi;
+	}
+
+	function sismoColumna2(cargaLateral, vectorConectividadf1) {
+		//let vectorAux = vectorConectividadf;
+		for (var j = 0; j < cargaLateral.length; j++) {
+			for (var i = 0; i < vectorConectividadf1.length; i++) {
+				//console.log("elemento", elementos, vectorAux);
+				if (
+					(vectorConectividadf1[i]["longitud"] == actions.getEntrePiso()) &
+					(vectorConectividadf1[i]["puntoIni"][0] == vectorConectividadf1[i]["puntoFin"][0])
+				) {
+					if (
+						vectorConectividadf1[i]["puntoIni"][0] == 0 &&
+						vectorConectividadf1[i]["puntoFin"][0] == 0 &&
+						vectorConectividadf1[i]["nodoFin"][1] == j + 1
+					) {
+						//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
+						vectorConectividadf1[i]["fuerzainterna"] = [
+							0,
+							cargaLateral[j],
+							-cargaLateral[j + 1] * vectorConectividadf1[i]["longitud"],
+							0,
+							cargaLateral[j + 1],
+							cargaLateral[j] * vectorConectividadf1[i]["longitud"]
+						];
+						//return vectorConectividadf[i]["fuerzainterna"];
+					} else {
+						if (
+							vectorConectividadf1[i]["puntoIni"][0] == 0 &&
+							vectorConectividadf1[i]["puntoFin"][0] == 0 &&
+							vectorConectividadf1[i]["nodoIni"][1] == 0
+						) {
+							//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
+							vectorConectividadf1[i]["fuerzainterna"] = [
+								0,
+								-cargaLateral[0],
+								-cargaLateral[0] * vectorConectividadf1[i]["longitud"],
+								0,
+								cargaLateral[0],
+								cargaLateral[0] * vectorConectividadf1[i]["longitud"]
+							];
+							//return vectorConectividadf[i]["fuerzainterna"];
+						} else {
+							vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+							//return vectorConectividadf[i]["fuerzainterna"];
+						}
+					}
+				}
+			}
+		}
+
+		//vectorConectividadf = [];
+		//vectorConectividadf = vectorAux;
+		return vectorConectividadf1;
+	}
+	function sismoVigas2(cargaLateral, vectorcConectividadf22) {
+		//reescritura de las fuerzas internas
+		for (var j = 0; j < cargaLateral.length; j++) {
+			for (var i = 0; i < vectorConectividadf22.length; i++) {
+				//vigas
+				if (
+					(vectorConectividadf22[i]["longitud"] == actions.getLuzVano()) &
+					(vectorConectividadf22[i]["puntoIni"][1] != 0)
+				) {
+					//console.log("entro en primer if reescrituraconectividadf2");
+					if (
+						vectorConectividadf22[i]["puntoIni"][1] == vectorConectividadf22[i]["puntoFin"][1] &&
+						vectorConectividadf22[i]["puntoIni"][0] == 0
+					) {
+						//console.log("entro en if reescrituraconectividadf2");
+						if (vectorConectividadf22[i]["nodoIni"][1] == j + 1)
+							vectorConectividadf22[i]["fuerzainterna"] = [
+								-cargaLateral[j],
+								0,
+								0,
+								-cargaLateral[j],
+								0,
+								0
+							];
+						//if del techo empieza aquí>
+
+						return vectorConectividadf22[i]["fuerzainterna"];
+					}
+				}
+
+				//diagonales
+			}
+		}
+
+		return vectorConectividadf22;
+	}
+
+	function evaluacionSismo(codigoGeneticoP1) {
+		vectorConectividadf1 = codigoGeneticoP1.slice();
+		vectorConectividadf22 = codigoGeneticoP1.slice();
+		var fuerzalateral = vectorConectividadf1[0]["FuerzasSismoPiso"];
+		sismoColumna2(fuerzalateral, vectorConectividadf1);
+		sismoVigas2(fuerzalateral, vectorConectividadf1);
+		matrizRigidLocal2(vectorConectividadf1);
+		vectorMatrizRigGlobal = matrizRigidGlogal2(vectorConectividadf1);
+		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
+		rigidezTotal2(vectorConectividadf1);
+		vectorFuerzasInternas = funcionFuerzasInt2(vectorConectividadf1);
+		//codigoDelCruce = codigoGeneticoP;
+		rigidezReducida2(vectorConectividadf1);
+		matrizReducidaInversa = matrizRigidezReduxInversa();
+		vectorFuerzasInternasRedux = vectorFReducido2(vectorConectividadf1);
+		//codigoDelCruce = codigoGeneticoP;
+		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
+		//desplazamientoEnCodigo(codigoGeneticoP1);
+		entropia = 4;
+		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
+
+		metodoEstaticoEquivalente(vectorConectividadf1);
+		addTablaCodigoGenLateral("tabla-final6", vectorConectividadf1);
+		return vectorConectividadf1;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
@@ -4476,6 +4593,12 @@ function Calculus() {
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final5" onLoad="" />
+			</div>
+			<div className="text-sm-left">
+				<h2> 10.6-. Tabla Combinación de cargas caso: 1CP + 0.5CV + S</h2>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final6" onLoad="" />
 			</div>
 			<div className="text-sm-left">
 				<h2> 11-. Resultados Algoritmos Genéticos</h2>
