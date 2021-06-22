@@ -3325,6 +3325,17 @@ function Calculus() {
 		var numerador = 0;
 		var denominador = 0;
 		var periodoRayleigh = 0;
+		var aceleracionAo = parseFloat(actions.getAceleracionAo());
+		var factorCorreccion = parseFloat(actions.getFactorCorreccion());
+		var factorImportancia = parseFloat(actions.getFactorImportancia());
+		var factorReduccion = parseFloat(actions.getFactorReduccion());
+		var tAst = parseFloat(actions.getTAst());
+		var beta = parseFloat(actions.getBeta());
+		var ro = parseFloat(actions.getRo());
+		var tMas = parseFloat(actions.getTMas());
+		var Ad = 0;
+		var elevacionC = Math.sqrt(Math.sqrt(factorReduccion / beta));
+		var aux = 0;
 
 		for (var i = 1; i <= cantidadPisos; i++) {
 			pesoPiso = 0;
@@ -3399,6 +3410,22 @@ function Calculus() {
 		var periodoTa = 0.08 * Math.pow(parseFloat(actions.getEntrePiso()) * parseFloat(actions.getNoPisos()), 0.75);
 		codigoGeneticoP1[0]["periodoTa"] = round(periodoTa, 3);
 		codigoGeneticoP1[0]["periodoT"] = Math.min(periodoTa, periodoRayleigh);
+		aux = Math.min(periodoTa, periodoRayleigh);
+
+		if (aux < tMas) {
+			Ad =
+				(factorCorreccion * factorImportancia * aceleracionAo * (1 + (aux / tMas) * (beta - 1))) /
+				(1 + Math.pow(aux / tMas, elevacionC) * (factorReduccion - 1));
+		}
+		if (aux >= tMas && aux <= tAst) {
+			Ad = (factorCorreccion * factorImportancia * aceleracionAo * beta) / factorReduccion;
+		}
+		if (aux > tAst) {
+			Ad =
+				((factorCorreccion * factorImportancia * aceleracionAo * beta) / factorReduccion) *
+				Math.pow(tAst / aux, ro);
+		}
+		codigoGeneticoP1[0]["aceleracionAd"] = Ad;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {

@@ -106,6 +106,21 @@ function Forces() {
 		return round(tMas, 3);
 	}
 
+	window.onload = function() {
+		actions.setZonaSismica(zonaSismica);
+		actions.setAceleracionAo(aceleracionAo);
+		actions.setTAst(tAst);
+		actions.setBeta(beta);
+		actions.setRo(ro);
+		actions.setFactorCorreccion(factorCorreccion);
+		actions.setFactorImportancia(factorImportancia);
+		actions.setFactorReduccion(factorReduccion);
+		actions.setTMas(tMas);
+	};
+	useEffect(() => {
+		window.scroll(0, top);
+	});
+
 	return (
 		<React.Fragment>
 			<div className="text-center mt-6 title">
