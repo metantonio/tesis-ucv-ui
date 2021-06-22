@@ -10,6 +10,7 @@ function Forces() {
 	var zonaSismica = 6;
 	var aceleracionAo = 0;
 	var formaEspectro = "";
+	var factorCorreccion = 0.85;
 
 	function Aceleracion(zona) {
 		if (zona == 7) {
@@ -183,6 +184,7 @@ function Forces() {
 							/>
 						</p>
 						<p>
+							<h4>Forma Espectral</h4>
 							<form
 								onChange={e => {
 									formaEspectro = getComboList1();
@@ -196,6 +198,24 @@ function Forces() {
 									<option value="4">S4</option>
 								</select>
 							</form>
+						</p>
+						<p>
+							<h4>ϕ: Factor de Corrección del coeficiente de aceleración horizontal</h4>
+							<input
+								className="no-columnas"
+								type="number"
+								placeholder="ej: 0.85"
+								id="factor-correccion"
+								name="no-columnas"
+								min="0.60"
+								step="0.05"
+								max="0.90"
+								onChange={e => {
+									factorCorreccion = document.getElementById("factor-correccion").value;
+									console.log("ϕ = ", factorCorreccion);
+									return factorCorreccion;
+								}}
+							/>
 						</p>
 					</div>
 				</div>
