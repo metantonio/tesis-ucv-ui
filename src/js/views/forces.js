@@ -116,9 +116,10 @@ function Forces() {
 		actions.setFactorImportancia(factorImportancia);
 		actions.setFactorReduccion(factorReduccion);
 		actions.setTMas(tMas);
-		window.scroll(0, top);
 	};
-	useEffect(() => {});
+	useEffect(() => {
+		window.scroll(0, top);
+	});
 
 	return (
 		<React.Fragment>
