@@ -3448,7 +3448,7 @@ function Calculus() {
 
 		if (coeficienteSismico >= comparacion) {
 			codigoGeneticoP1[0]["coeficienteSismicoCond"] = "Cumple";
-			codigoGeneticoP1[0]["evaluacionCodigoGenetico"] = codigoGeneticoP1[0]["evaluacionCodigoGenetico"] + 15;
+			//codigoGeneticoP1[0]["evaluacionCodigoGenetico"] = codigoGeneticoP1[0]["evaluacionCodigoGenetico"] + 15;
 		} else {
 			codigoGeneticoP1[0]["coeficienteSismicoCond"] = "No Cumple";
 		}
