@@ -3392,8 +3392,13 @@ function Calculus() {
 			numerador += listaPesoPiso[j] * Math.pow(desplazamientoElasticoLista[j], 2);
 			denominador += 1000 * desplazamientoElasticoLista[j];
 		}
-		periodoRayleigh = 2 * Math.PI * Math.sqrt(numerador / (denominador * 981));
-		codigoGeneticoP1[0]["periodoRayleigh"] = round(periodoRayleigh,3);
+		periodoRayleigh = 2 * Math.PI * Math.sqrt(numerador / (Math.abs(denominador) * 981));
+		codigoGeneticoP1[0]["periodoRayleigh"] = round(periodoRayleigh, 3);
+
+		//se calcula Ta= ct*Ht^0.75
+		var periodoTa = 0.08 * Math.pow(parseFloat(actions.getEntrePiso()) * parseFloat(actions.getNoPisos()), 0.75);
+		codigoGeneticoP1[0]["periodoTa"] = round(periodoTa, 3);
+		codigoGeneticoP1[0]["periodoT"] = Math.min(periodoTa, periodoRayleigh);
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
