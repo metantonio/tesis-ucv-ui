@@ -4,6 +4,8 @@ import { Context } from "../store/appContext";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 import "../../styles/home-tesis.scss";
+import { func } from "prop-types";
+import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
 
 function Forces() {
 	const { store, actions } = useContext(Context);
@@ -16,6 +18,7 @@ function Forces() {
 	var tAst = 1.0;
 	var beta = 2.8;
 	var ro = 1.0;
+	var tMas = 0.4;
 
 	function Aceleracion(zona) {
 		if (zona == 7) {
@@ -92,6 +95,15 @@ function Forces() {
 			ro = 0.8;
 		}
 		return tAst, beta, ro;
+	}
+
+	function valorTMas(factor) {
+		if (factor < 5) {
+			tMas = 0.1 * (factor - 1);
+		} else {
+			tMas = 0.4;
+		}
+		return round(tMas, 3);
 	}
 
 	return (
@@ -286,6 +298,8 @@ function Forces() {
 								onChange={e => {
 									factorReduccion = getComboList3();
 									console.log("Factor de Reducción (R): ", factorReduccion);
+									tMas = valorTMas(factorReduccion);
+									console.log(`T+(s): ${tMas}`);
 								}}>
 								<select id="ddlViewBy3">
 									<option value="4.5">ND2</option>
