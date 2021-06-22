@@ -51,6 +51,25 @@ const injectContext = PassedComponent => {
 			state.actions.getCargaTechoPermanente();
 			state.actions.getCargaTechoVariable();
 
+			state.actions.getZonaSismica();
+			state.actions.setZonaSismica();
+			state.actions.getAceleracionAo();
+			state.actions.setAceleracionAo();
+			state.actions.getFactorCorreccion();
+			state.actions.setFactorCorreccion();
+			state.actions.getFactorImportancia();
+			state.actions.setFactorImportancia();
+			state.actions.getFactorReduccion();
+			state.actions.setFactorReduccion();
+			state.actions.getTAst();
+			state.actions.setTAst();
+			state.actions.getBeta();
+			state.actions.setBeta();
+			state.actions.getRo();
+			state.actions.setRo();
+			state.actions.getTMas();
+			state.actions.setTMas();
+
 			state.actions.getVectorConect();
 		}, []);
 

@@ -180,7 +180,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					tw: "5.0"
 				}
 			],
-			vectorConect: []
+			vectorConect: [],
+			zonaSismica: "6",
+			aceleracionAo: "0.35",
+			factorCorreccion: "0.85",
+			factorImportancia: "1.3",
+			factorReduccion: "6.0",
+			tAst: "1.0",
+			beta: "2.8",
+			ro: "1.0",
+			tMas: "0.4"
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -340,6 +349,105 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				console.log(`getVectorConect ${store.vectorConect}`);
 				return store.vectorConect;
+			},
+			getZonaSismica: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.zonaSismica;
+			},
+
+			setZonaSismica: zonaSismicaVar => {
+				const store = getStore();
+				setStore({ zonaSismica: zonaSismicaVar });
+				return console.log(`setZonaSismica ${store.zonaSismica}`);
+			},
+			getAceleracionAo: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.aceleracionAo;
+			},
+
+			setAceleracionAo: aceleracionVar => {
+				const store = getStore();
+				setStore({ aceleracionAo: aceleracionVar });
+				return console.log(`setAceleracionA0 ${store.aceleracionAo}`);
+			},
+			getFactorCorreccion: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.factorCorreccion;
+			},
+
+			setFactorCorreccion: factorVar => {
+				const store = getStore();
+				setStore({ factorCorreccion: factorVar });
+				return console.log(`setFactorCorreccion ${store.factorCorreccion}`);
+			},
+			getFactorImportancia: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.factorImportancia;
+			},
+
+			setFactorImportancia: factorVar => {
+				const store = getStore();
+				setStore({ factorImportancia: factorVar });
+				return console.log(`setfactorImportancia ${store.factorImportancia}`);
+			},
+			getFactorReduccion: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.factorReduccion;
+			},
+
+			setFactorReduccion: factorVar => {
+				const store = getStore();
+				setStore({ factorReduccion: factorVar });
+				return console.log(`setfactorReducción ${store.factorReduccion}`);
+			},
+			getTAst: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.tAst;
+			},
+
+			setTAst: factorVar => {
+				const store = getStore();
+				setStore({ tAst: factorVar });
+				return console.log(`setT* ${store.tAst}`);
+			},
+			getBeta: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.beta;
+			},
+
+			setBeta: factorVar => {
+				const store = getStore();
+				setStore({ beta: factorVar });
+				return console.log(`setT* ${store.beta}`);
+			},
+			getRo: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.ro;
+			},
+
+			setRo: factorVar => {
+				const store = getStore();
+				setStore({ ro: factorVar });
+				return console.log(`setρ ${store.ro}`);
+			},
+			getTMas: () => {
+				const store = getStore();
+				//console.log(`getNoColumnas ${store.nocolumnasEstado}`);
+				return store.tMas;
+			},
+
+			setTMas: factorVar => {
+				const store = getStore();
+				setStore({ tMas: factorVar });
+				return console.log(`setT+ ${store.tMas}`);
 			}
 		}
 	};
