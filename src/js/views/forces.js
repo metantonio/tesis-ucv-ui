@@ -116,10 +116,9 @@ function Forces() {
 		actions.setFactorImportancia(factorImportancia);
 		actions.setFactorReduccion(factorReduccion);
 		actions.setTMas(tMas);
-	};
-	useEffect(() => {
 		window.scroll(0, top);
-	});
+	};
+	useEffect(() => {});
 
 	return (
 		<React.Fragment>
@@ -150,7 +149,7 @@ function Forces() {
 								id="cargaVEntrepiso"
 								name="no-columnas"
 								min="1.00"
-								step="0.01"
+								step="10"
 								onChange={e => {
 									var cargaVEntrepiso = document.getElementById("cargaVEntrepiso").value;
 									return cargaVEntrepiso;
@@ -166,7 +165,7 @@ function Forces() {
 								id="cargaPEntrepiso"
 								name="no-columnas"
 								min="1.00"
-								step="0.01"
+								step="10"
 								onChange={e => {
 									var cargaPEntrepiso = document.getElementById("cargaPEntrepiso").value;
 									return cargaPEntrepiso;
@@ -186,7 +185,7 @@ function Forces() {
 								id="cargaVTecho"
 								name="no-columnas"
 								min="40.00"
-								step="0.01"
+								step="10"
 								onChange={e => {
 									var cargaVTecho = document.getElementById("cargaVTecho").value;
 									return cargaVTecho;
@@ -202,7 +201,7 @@ function Forces() {
 								id="cargaPTecho"
 								name="no-columnas"
 								min="1.00"
-								step="0.01"
+								step="10"
 								onChange={e => {
 									var cargaPTecho = document.getElementById("cargaPTecho").value;
 									return cargaPTecho;
@@ -218,7 +217,7 @@ function Forces() {
 								id="cargaViento"
 								name="no-columnas"
 								min="30.00"
-								step="0.01"
+								step="0.1"
 								onChange={e => {
 									var cargaViento = document.getElementById("cargaViento").value;
 									return cargaViento;
@@ -341,15 +340,24 @@ function Forces() {
 					<p>
 						<button
 							className="btnPaso text-center mt-12 title"
-							onClick={e =>
+							onClick={e => {
 								actions.setCargas(
 									cargaVEntrepiso.value,
 									cargaPEntrepiso.value,
 									cargaVTecho.value,
 									cargaPTecho.value,
 									cargaViento.value
-								)
-							}>
+								);
+								actions.setZonaSismica(zonaSismica);
+								actions.setAceleracionAo(aceleracionAo);
+								actions.setTAst(tAst);
+								actions.setBeta(beta);
+								actions.setRo(ro);
+								actions.setFactorCorreccion(factorCorreccion);
+								actions.setFactorImportancia(factorImportancia);
+								actions.setFactorReduccion(factorReduccion);
+								actions.setTMas(tMas);
+							}}>
 							<span>Guardar configuración de Cargas</span>
 						</button>
 					</p>

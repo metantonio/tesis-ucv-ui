@@ -425,7 +425,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setBeta: factorVar => {
 				const store = getStore();
 				setStore({ beta: factorVar });
-				return console.log(`setT* ${store.beta}`);
+				return console.log(`setBeta ${store.beta}`);
 			},
 			getRo: () => {
 				const store = getStore();
