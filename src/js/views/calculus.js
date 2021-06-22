@@ -3436,6 +3436,22 @@ function Calculus() {
 
 		//La Cortante Basal será:
 		codigoGeneticoP1[0]["cortanteBasalVo"] = Ad * factorMayor * pesoEdificioSismo;
+		var cortanteBasal = Ad * factorMayor * pesoEdificioSismo;
+
+		//el coeficiente sismico será
+		codigoGeneticoP1[0]["coeficienteSismico"] = cortanteBasal / pesoEdificioSismo;
+		var coeficienteSismico = cortanteBasal / pesoEdificioSismo;
+
+		//comparación del coeficiente sismimo:
+		var comparacion = (factorImportancia * aceleracionAo) / factorReduccion;
+		codigoGeneticoP1[0]["coeficienteSismicoMin"] = comparacion;
+
+		if (coeficienteSismico >= comparacion) {
+			codigoGeneticoP1[0]["coeficienteSismicoCond"] = "Cumple";
+			codigoGeneticoP1[0]["evaluacionCodigoGenetico"] = codigoGeneticoP1[0]["evaluacionCodigoGenetico"] + 15;
+		} else {
+			codigoGeneticoP1[0]["coeficienteSismicoCond"] = "No Cumple";
+		}
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
