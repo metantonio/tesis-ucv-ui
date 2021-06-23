@@ -4226,14 +4226,14 @@ function Calculus() {
 				scales: {
 					x: {
 						title: {
-							color: "red",
+							color: "black",
 							display: true,
 							text: nombreX
 						}
 					},
 					y: {
 						title: {
-							color: "red",
+							color: "black",
 							display: true,
 							text: nombreY
 						}
