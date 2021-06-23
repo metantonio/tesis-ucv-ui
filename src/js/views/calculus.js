@@ -4206,7 +4206,7 @@ function Calculus() {
 	let ctx2;
 	//window.myChart;
 	//var ctx = document.getElementById("grafica-peso");
-	function graficaXY(myChart, canvasID, arrayX, arrayY, titulo, ctx, nombreY) {
+	function graficaXY(myChart, canvasID, arrayX, arrayY, titulo, ctx, nombreY, nombreX) {
 		//console.log("histori e historiaPeso", historia, historiaPeso);
 		if (myChart != null) {
 			myChart.destroy();
@@ -4234,14 +4234,14 @@ function Calculus() {
 						title: {
 							color: "red",
 							display: true,
-							text: "Month"
+							text: nombreX
 						}
 					},
 					y: {
 						title: {
 							color: "red",
 							display: true,
-							text: "Month2"
+							text: nombreY
 						}
 					}
 				}
@@ -4250,7 +4250,16 @@ function Calculus() {
 		return myChart;
 	}
 	function start() {
-		graficaXY(myChart1, "grafica-peso", historia, historiaPeso, "Peso (kg) vs. Generaciones", ctx1, "Peso (kg)");
+		graficaXY(
+			myChart1,
+			"grafica-peso",
+			historia,
+			historiaPeso,
+			"Peso (kg) vs. Generaciones",
+			ctx1,
+			"Peso (kg)",
+			"Generación (No)"
+		);
 		graficaXY(
 			myChart2,
 			"grafica-estabilidad",
@@ -4258,7 +4267,8 @@ function Calculus() {
 			estabilidadPuntuacion,
 			"Pseudo-Estabilidad vs. Generaciones",
 			ctx2,
-			"Pseudo-Estabilidad"
+			"Pseudo-Estabilidad",
+			"Generación (No)"
 		);
 	}
 	window.onload = function() {
@@ -4485,7 +4495,8 @@ function Calculus() {
 									historiaPeso,
 									"Peso (kg) vs. Generaciones",
 									ctx1,
-									"Peso (kg)"
+									"Peso (kg)",
+									"Generación (No)"
 								);
 								myChart2 = graficaXY(
 									myChart2,
@@ -4494,7 +4505,8 @@ function Calculus() {
 									estabilidadPuntuacion,
 									"Estabilidad vs. Generaciones",
 									ctx2,
-									"Pseudo-Estabilidad"
+									"Pseudo-Estabilidad",
+									"Generación (No)"
 								);
 								//removeData(myChart);
 								//graficaPeso();
