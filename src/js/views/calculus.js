@@ -2611,6 +2611,25 @@ function Calculus() {
 				codigoGeneticoP1[i]["chequeoCompresionComboLateral"] = codigoGeneticoP1[i]["chequeoCompresion"];
 				//return element;
 			}
+
+			if (cargaAcc == 10) {
+				//console.log("entra en datosCombo5");
+				codigoGeneticoP1[i]["derivaComboSismop"] = codigoGeneticoP1[i]["deriva"];
+				codigoGeneticoP1[i]["esfuerzosInternosComboSismop"] = codigoGeneticoP1[i]["esfuerzosInternos"];
+				codigoGeneticoP1[i]["reaccionExternaComboSismop"] = codigoGeneticoP1[i]["reaccionExterna"];
+				codigoGeneticoP1[i]["desplazamientoNodoIniComboSismop"] = codigoGeneticoP2[i]["desplazamientoNodoIni"];
+				codigoGeneticoP1[i]["puntuacionComboSismop"] = codigoGeneticoP1[i]["puntuacion"];
+				codigoGeneticoP1[i]["derivaChequeoComboSismop"] = codigoGeneticoP1[i]["derivaChequeo"];
+				codigoGeneticoP1[i]["alaλOkComboSismop"] = codigoGeneticoP1[i]["alaλOk"];
+				codigoGeneticoP1[i]["almaλOkComboSismop"] = codigoGeneticoP1[i]["almaλOk"];
+				codigoGeneticoP1[i]["almaλMnOkComboSismop"] = codigoGeneticoP1[i]["almaλMnOk"];
+				codigoGeneticoP1[i]["pandeoAlmaCorteComboSismop"] = codigoGeneticoP1[i]["pandeoAlmaCorte"];
+				codigoGeneticoP1[i]["alaCompresionComboSismop"] = codigoGeneticoP1[i]["alaCompresion"];
+				codigoGeneticoP1[i]["almaCompresionComboSismop"] = codigoGeneticoP1[i]["almaCompresion"];
+				codigoGeneticoP1[i]["pandeoCompresionComboSismop"] = codigoGeneticoP1[i]["pandeoCompresion"];
+				codigoGeneticoP1[i]["chequeoCompresionComboSismop"] = codigoGeneticoP1[i]["chequeoCompresion"];
+				//return element;
+			}
 		}
 		codigoGeneticoP1[0]["resultadoFinal"] = (resultado / codigoGeneticoP1.length).toFixed(3);
 		if (cargaPerm === 1.4) {
@@ -2625,15 +2644,16 @@ function Calculus() {
 		if (cargaAcc === -1.275) {
 			codigoGeneticoP1[0]["resultadoCombo4"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
-		if (cargaAcc === 1.0) {
-			codigoGeneticoP1[0]["resultadoComboLateral"] = codigoGeneticoP1[0]["resultadoFinal"];
+		if (cargaAcc == 10) {
+			codigoGeneticoP1[0]["resultadoComboSismop"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		//evaluación del codigo genético de genera correctamente después de correr los casos de carga
 		codigoGeneticoP1[0]["evaluacionCodigoGenetico"] =
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo1"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo2"]) +
 			parseFloat(codigoGeneticoP1[0]["resultadoCombo3"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]);
+			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]) +
+			parseFloat(codigoGeneticoP1[0]["resultadoComboSismop"]);
 		//parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
 		codigoGeneticoP1[0]["pesoEstructura"] = peso;
@@ -3482,50 +3502,56 @@ function Calculus() {
 	function sismoColumna2(cargaLateral, vectorConectividadf1) {
 		//let vectorAux = vectorConectividadf;
 		for (var j = 0; j < cargaLateral.length; j++) {
-			for (var i = 0; i < vectorConectividadf1.length; i++) {
-				//console.log("elemento", elementos, vectorAux);
-				if (
-					(vectorConectividadf1[i]["longitud"] == actions.getEntrePiso()) &
-					(vectorConectividadf1[i]["puntoIni"][0] == vectorConectividadf1[i]["puntoFin"][0])
-				) {
-					if (
-						vectorConectividadf1[i]["puntoIni"][0] == 0 &&
-						vectorConectividadf1[i]["puntoFin"][0] == 0 &&
-						vectorConectividadf1[i]["nodoFin"][1] == j + 1
-					) {
-						//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
-						vectorConectividadf1[i]["fuerzainterna"] = [
-							0,
-							cargaLateral[j],
-							-cargaLateral[j + 1] * vectorConectividadf1[i]["longitud"],
-							0,
-							cargaLateral[j + 1],
-							cargaLateral[j] * vectorConectividadf1[i]["longitud"]
-						];
-						//return vectorConectividadf[i]["fuerzainterna"];
-					} else {
-						if (
-							vectorConectividadf1[i]["puntoIni"][0] == 0 &&
-							vectorConectividadf1[i]["puntoFin"][0] == 0 &&
-							vectorConectividadf1[i]["nodoIni"][1] == 0
-						) {
-							//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
-							vectorConectividadf1[i]["fuerzainterna"] = [
-								0,
-								-cargaLateral[0],
-								-cargaLateral[0] * vectorConectividadf1[i]["longitud"],
-								0,
-								cargaLateral[0],
-								cargaLateral[0] * vectorConectividadf1[i]["longitud"]
-							];
-							//return vectorConectividadf[i]["fuerzainterna"];
-						} else {
-							vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
-							//return vectorConectividadf[i]["fuerzainterna"];
-						}
-					}
-				}
+			if (j == 0) {
+				//entraría en la primera columna de Planta Baja, de izquierda a derecha (la que le pegaría el Sismo)
+				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+			} else {
+				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
 			}
+			// for (var i = 0; i < vectorConectividadf1.length; i++) {
+			// 	//console.log("elemento", elementos, vectorAux);
+			// 	if (
+			// 		(vectorConectividadf1[i]["longitud"] == actions.getEntrePiso()) &
+			// 		(vectorConectividadf1[i]["puntoIni"][0] == vectorConectividadf1[i]["puntoFin"][0])
+			// 	) {
+			// 		if (
+			// 			vectorConectividadf1[i]["puntoIni"][0] == 0 &&
+			// 			vectorConectividadf1[i]["puntoFin"][0] == 0 &&
+			// 			vectorConectividadf1[i]["nodoFin"][1] == j + 1
+			// 		) {
+			// 			//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
+			// 			vectorConectividadf1[i]["fuerzainterna"] = [
+			// 				0,
+			// 				cargaLateral[j],
+			// 				-cargaLateral[j + 1] * vectorConectividadf1[i]["longitud"],
+			// 				0,
+			// 				cargaLateral[j + 1],
+			// 				cargaLateral[j] * vectorConectividadf1[i]["longitud"]
+			// 			];
+			// 			//return vectorConectividadf[i]["fuerzainterna"];
+			// 		} else {
+			// 			if (
+			// 				vectorConectividadf1[i]["puntoIni"][0] == 0 &&
+			// 				vectorConectividadf1[i]["puntoFin"][0] == 0 &&
+			// 				vectorConectividadf1[i]["nodoIni"][1] == 0
+			// 			) {
+			// 				//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
+			// 				vectorConectividadf1[i]["fuerzainterna"] = [
+			// 					0,
+			// 					-cargaLateral[0],
+			// 					-cargaLateral[0] * vectorConectividadf1[i]["longitud"],
+			// 					0,
+			// 					cargaLateral[0],
+			// 					cargaLateral[0] * vectorConectividadf1[i]["longitud"]
+			// 				];
+			// 				//return vectorConectividadf[i]["fuerzainterna"];
+			// 			} else {
+			// 				vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+			// 				//return vectorConectividadf[i]["fuerzainterna"];
+			// 			}
+			// 		}
+			// 	}
+			// }
 		}
 
 		//vectorConectividadf = [];
@@ -3575,9 +3601,9 @@ function Calculus() {
 		var fuerzalateral = vectorConectividadf1[0]["FuerzasSismoPiso"].slice();
 		//console.log("fuerza Lateral", fuerzalateral);
 		sismoColumna2(fuerzalateral, vectorConectividadf1);
-		console.log("ocurre evaluacion de columna sismo");
+		//console.log("ocurre evaluacion de columna sismo");
 		sismoVigas2(fuerzalateral, vectorConectividadf1);
-		console.log("ocurre evaluacion de vigas sismo");
+		//console.log("ocurre evaluacion de vigas sismo");
 		matrizRigidLocal2(vectorConectividadf1);
 		vectorMatrizRigGlobal = matrizRigidGlogal2(vectorConectividadf1);
 		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
@@ -3591,10 +3617,10 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
-		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
+		vectorConectividadf1 = calculosFinales(10, 0.5, 1, codigoGeneticoP1); //en Sismo cW no actúa, se le puso 10 como identificación interna de la función
 
 		//metodoEstaticoEquivalente(vectorConectividadf1);
-		//addTablaCodigoGenLateral("tabla-final6", vectorConectividadf1);
+		addTablaCodigoGen6("tabla-final6", vectorConectividadf1);
 		return vectorConectividadf1;
 	}
 
@@ -4163,6 +4189,118 @@ function Calculus() {
 		return final;
 	}
 
+	function addTablaCodigoGen6(getElementByIdf, codigoGeneticoP1) {
+		var fila = "";
+
+		var final = codigoGeneticoP1.map(function(element, index, array) {
+			var a = "<th scope='row'>No</th>";
+			a += "<th>Perfil</th>";
+			a += "<th>Tipo Elemento</th>";
+			a += "<th>Coordenada Inicial (m, m)</th>";
+			a += "<th>Coordenada Final (m, m)</th>";
+			a += "<th>Longitud(cm)</th>";
+			a += "<th>Peso(kg)</th>";
+			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
+			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
+			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
+			a += "<th>Deriva (cm)</th>";
+			a += "<th>Deriva Chequeo</th>";
+			a += "<th>Ala Flexión</th>";
+			a += "<th>Alma Flexión</th>";
+			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
+			a += "<th>Pandeo del Alma por Corte</th>";
+			a += "<th>Compresión del Ala</th>";
+			a += "<th>Compresión del Alma</th>";
+			a += "<th>Tipo de Pandeo</th>";
+			a += "<th>Chequeo compresión</th>";
+			a += "<th>Puntuación Elemento</th>";
+			a += "<th>Puntuación Combinación de Carga</th>";
+
+			//serían los encabezados de la tabla
+			var html = "<thead><tr>" + a + "</tr></thead>";
+
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(index + 1) +
+				"</td>" +
+				"<td>" +
+				element.elemento +
+				"</td>" +
+				"<td>" +
+				element.tipo +
+				"</td>" +
+				"<td>(" +
+				element.puntoIni +
+				")</td>" +
+				"<td>(" +
+				element.puntoFin +
+				")</td>" +
+				"<td>" +
+				element.longitud * 100 +
+				"</td>" +
+				"<td>" +
+				element.peso +
+				"</td>" +
+				"<td>[" +
+				element.desplazamientoNodoIniComboSismop +
+				"]</td>" +
+				"<td>(" +
+				element.esfuerzosInternosComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.reaccionExternaComboSismop[0] +
+				"," +
+				" " +
+				element.reaccionExternaComboSismop[1] +
+				", " +
+				element.reaccionExternaComboSismop[2] +
+				")</td>" +
+				"<td>" +
+				element.derivaComboSismop +
+				"</td>" +
+				"<td>" +
+				element.derivaChequeoComboSismop +
+				"</td>" +
+				"<td>(" +
+				element.alaλOkComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.almaλOkComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.almaλMnOkComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.pandeoAlmaCorteComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.alaCompresionComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.almaCompresionComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.pandeoCompresionComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.chequeoCompresionComboSismop +
+				")</td>" +
+				"<td>(" +
+				element.puntuacionComboSismop +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["resultadoFinal"] +
+				")</td>" +
+				"</tr>";
+			//+"<br/>";
+			document.getElementById(getElementByIdf).innerHTML = html + fila;
+
+			return html + fila, fila;
+		});
+		return final;
+	}
+
 	function dibujaGrafica(getElementByIdf, etiquetaX, etiquetaY) {
 		var a =
 			"<LineChart width=500 height=300 data=" + dataGraph + " margin={{top: 5, right: 30, left: 20, bottom: 5}}>";
@@ -4482,6 +4620,7 @@ function Calculus() {
 								d3.selectAll("#tabla-final3 > *").remove();
 								d3.selectAll("#tabla-final4 > *").remove();
 								d3.selectAll("#tabla-final5 > *").remove();
+								d3.selectAll("#tabla-final6 > *").remove();
 
 								//addTablasAgain(pesoEstructura);
 								addTablaCodigoGen1("tabla-final", pesoEstructura);
@@ -4489,6 +4628,7 @@ function Calculus() {
 								addTablaCodigoGen3("tabla-final3", pesoEstructura);
 								addTablaCodigoGen4("tabla-final4", pesoEstructura);
 								addTablaCodigoGenLateral("tabla-final5", pesoEstructura);
+								addTablaCodigoGen6("tabla-final6", pesoEstructura);
 
 								//se dibuja la gráfica
 								myChart1 = graficaXY(
@@ -4674,8 +4814,8 @@ function Calculus() {
 						</option>
 						<option value="3">desCombo3</option>
 						<option value="4">desCombo4</option>
-						<option value="5">desComboSismo+</option>
-						<option value="5">desComboSismo-</option>
+						<option value="5">desplazamientoNodoIniComboSismop</option>
+						{/* <option value="5">desplazamientoNodoIniComboSismon</option> */}
 					</select>
 				</form>
 				<p>
