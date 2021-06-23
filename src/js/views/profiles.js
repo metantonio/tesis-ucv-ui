@@ -205,7 +205,7 @@ function Profiles() {
 			<div className="row justify-content">
 				<div className="col-md-12 justify-content">
 					<p>
-						<h2 className="sub-title">Paso 3: Selección de Perfiles de Acero Estructural</h2>
+						<h2 className="sub-title">Paso 3: Perfiles de Acero Estructural Seleccionados</h2>
 					</p>
 					<p>
 						<h4 className="sub-title 2">Perfiles Comúnes en Venezuela</h4>
