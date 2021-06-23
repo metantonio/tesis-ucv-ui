@@ -4488,7 +4488,9 @@ function Calculus() {
 							}}>
 							<span>Calcular una estructura al azar</span>
 						</button>
-						<p>Muestra los pasos de cálculo (no aplica Algoritmos Genéticos)</p>
+						<p>
+							Muestra los pasos de cálculo (no aplica Algoritmos Genéticos ni Método Estático Equivalente)
+						</p>
 					</p>
 				</div>
 				<div className="col-sm-4">
@@ -4506,8 +4508,8 @@ function Calculus() {
 					/>
 					<p>
 						<span>
-							Se recomienda ir de 50 generaciones en 50 para observar resultados. En celulares ir de 10 en
-							10.
+							Se recomienda ir de 50 generaciones en 50 para observar resultados. En celulares ir de 2 en
+							2.
 						</span>
 					</p>
 				</div>
@@ -4665,7 +4667,10 @@ function Calculus() {
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
-					<p>No muestra pasos de cálculo para mayor rendimiento (Aplica el Algoritmo Genético)</p>
+					<p>
+						No muestra pasos de cálculo para mayor rendimiento (Aplica el Algoritmo Genético y el Método
+						Estático Equivalente)
+					</p>
 				</div>
 			</div>
 			<div className="row justify-content">

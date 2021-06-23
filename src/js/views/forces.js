@@ -378,10 +378,11 @@ function Forces() {
 								}}>
 								<select id="ddlViewBy">
 									<option value="1">S1</option>
+									<option value="2">S2</option>
 									<option value="3" selected="selected">
 										S3
 									</option>
-									<option value="2">S2</option>
+
 									<option value="4">S4</option>
 								</select>
 							</form>
@@ -414,10 +415,10 @@ function Forces() {
 									//actions.setFactorImportancia(factorImportancia);
 								}}>
 								<select id="ddlViewBy2">
-									<option value="1.15">B1</option>
 									<option value="1.30" selected="selected">
 										A
 									</option>
+									<option value="1.15">B1</option>
 									<option value="1.0">B2</option>
 								</select>
 							</form>
@@ -434,11 +435,11 @@ function Forces() {
 									//actions.setTMas(tMas);
 								}}>
 								<select id="ddlViewBy3">
+									<option value="2.5">ND1</option>
 									<option value="4.5">ND2</option>
 									<option value="6.0" selected="selected">
 										ND3
 									</option>
-									<option value="2.5">ND1</option>
 								</select>
 							</form>
 						</p>
