@@ -3427,7 +3427,7 @@ function Calculus() {
 				((factorCorreccion * factorImportancia * aceleracionAo * beta) / factorReduccion) *
 				Math.pow(tAst / aux, ro);
 		}
-		codigoGeneticoP1[0]["aceleracionAd"] = Ad;
+		codigoGeneticoP1[0]["aceleracionAd"] = round(Ad, 3);
 
 		//para hallar la cortante basa se considera el mayor entre los dos siguientes factores:
 		factorMayor = Math.max(
@@ -3436,7 +3436,7 @@ function Calculus() {
 		);
 
 		//La Cortante Basal será:
-		codigoGeneticoP1[0]["cortanteBasalVo"] = Ad * factorMayor * pesoEdificioSismo;
+		codigoGeneticoP1[0]["cortanteBasalVo"] = round(Ad * factorMayor * pesoEdificioSismo, 3);
 		var cortanteBasal = Ad * factorMayor * pesoEdificioSismo;
 
 		//el coeficiente sismico será
@@ -3445,7 +3445,7 @@ function Calculus() {
 
 		//comparación del coeficiente sismimo:
 		var comparacion = (factorImportancia * aceleracionAo) / factorReduccion;
-		codigoGeneticoP1[0]["coeficienteSismicoMin"] = comparacion;
+		codigoGeneticoP1[0]["coeficienteSismicoMin"] = round(comparacion, 3);
 
 		if (coeficienteSismico >= comparacion) {
 			codigoGeneticoP1[0]["coeficienteSismicoCond"] = "Cumple";
@@ -3469,8 +3469,11 @@ function Calculus() {
 		var listaFi = [];
 		for (var j = 0; j < desplazamientoLateral.length; j++) {
 			listaFi.push(
-				((cortanteBasal - ft) * (listaPesoPiso[j] * (j + 1) * parseFloat(actions.getEntrePiso()))) /
-					(pesoEdificioSismo * cantidadPisos * parseFloat(actions.getEntrePiso()))
+				round(
+					((cortanteBasal - ft) * (listaPesoPiso[j] * (j + 1) * parseFloat(actions.getEntrePiso()))) /
+						(pesoEdificioSismo * cantidadPisos * parseFloat(actions.getEntrePiso())),
+					2
+				)
 			);
 		}
 		codigoGeneticoP1[0]["FuerzasSismoPiso"] = listaFi;
@@ -4066,20 +4069,19 @@ function Calculus() {
 			a += "<th>Longitud(cm)</th>";
 			a += "<th>Peso(kg)</th>";
 			a += "<th>Desplazamientos (Xi(cm), Yi(cm), Gi(rad), Xf(cm), Yf(cm), Gf(rad))</th>";
-			a += "<th>Esfuerzos Internos (Xi(kg), Yi (kg), Mzi(kg-cm), Xf(kg), Yf (kg), Mzf(kg-cm))</th>";
-			a += "<th>Reacciones Externas (X (kg), Y(kg), Mz(kg-cm))</th>";
 			a += "<th>Deriva (cm)</th>";
-			a += "<th>Deriva Chequeo</th>";
-			a += "<th>Ala Flexión</th>";
-			a += "<th>Alma Flexión</th>";
-			a += "<th>Chequeo Flexión Ejes Débil y Fuerte</th>";
-			a += "<th>Pandeo del Alma por Corte</th>";
-			a += "<th>Compresión del Ala</th>";
-			a += "<th>Compresión del Alma</th>";
-			a += "<th>Tipo de Pandeo</th>";
-			a += "<th>Chequeo compresión</th>";
-			a += "<th>Puntuación Elemento</th>";
-			a += "<th>Puntuación Combinación de Carga</th>";
+			a += "<th>Pesos por Nivel (kg)</th>";
+			a += "<th>Desplazamiento elástico Δe (cm)</th>";
+			a += "<th>Peso Edificación CP+0.5CV (kg)</th>";
+			a += "<th>Periodo Fórmula Rayleigh (s)</th>";
+			a += "<th>Periodo Ct*Ht^(0.75) (s)</th>";
+			a += "<th>Periodo de Diseño (s)</th>";
+			a += "<th>Ordenada del Espectro de Diseño (g)</th>";
+			a += "<th>Cortante Basal (kgf)</th>";
+			a += "<th>Coeficiente Sísmico Norma</th>";
+			a += "<th>Coeficiente Sísmico Cálculo</th>";
+			a += "<th>Coeficiente Sísmico Condición</th>";
+			a += "<th>Fuerzas Laterales de Diseño por Nivel (kgf) </th>";
 
 			//serían los encabezados de la tabla
 			var html = "<thead><tr>" + a + "</tr></thead>";
@@ -4110,52 +4112,44 @@ function Calculus() {
 				"<td>[" +
 				element.desplazamientoNodoIniComboLateral +
 				"]</td>" +
-				"<td>(" +
-				element.esfuerzosInternosComboLateral +
-				")</td>" +
-				"<td>(" +
-				element.reaccionExternaComboLateral[0] +
-				"," +
-				" " +
-				element.reaccionExternaComboLateral[1] +
-				", " +
-				element.reaccionExternaComboLateral[2] +
-				")</td>" +
 				"<td>" +
 				element.derivaComboLateral +
 				"</td>" +
-				"<td>" +
-				element.derivaChequeoComboLateral +
-				"</td>" +
 				"<td>(" +
-				element.alaλOkComboLateral +
+				codigoGeneticoP1[0]["pesoPisos"] +
 				")</td>" +
 				"<td>(" +
-				element.almaλOkComboLateral +
+				codigoGeneticoP1[0]["desplazamientoElasticoNivel"] +
 				")</td>" +
 				"<td>(" +
-				element.almaλMnOkComboLateral +
+				codigoGeneticoP1[0]["pesoEdificioSismo"] +
 				")</td>" +
 				"<td>(" +
-				element.pandeoAlmaCorteComboLateral +
+				codigoGeneticoP1[0]["periodoRayleigh"] +
 				")</td>" +
 				"<td>(" +
-				element.alaCompresionComboLateral +
+				codigoGeneticoP1[0]["periodoTa"] +
 				")</td>" +
 				"<td>(" +
-				element.almaCompresionComboLateral +
+				codigoGeneticoP1[0]["periodoT"] +
 				")</td>" +
 				"<td>(" +
-				element.pandeoCompresionComboLateral +
+				codigoGeneticoP1[0]["aceleracionAd"] +
 				")</td>" +
 				"<td>(" +
-				element.chequeoCompresionComboLateral +
+				codigoGeneticoP1[0]["cortanteBasalVo"] +
 				")</td>" +
 				"<td>(" +
-				element.puntuacionComboLateral +
+				codigoGeneticoP1[0]["coeficienteSismicoMin"] +
 				")</td>" +
 				"<td>(" +
-				codigoGeneticoP1[0]["resultadoFinal"] +
+				codigoGeneticoP1[0]["coeficienteSismico"] +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["coeficienteSismicoCond"] +
+				")</td>" +
+				"<td>(" +
+				codigoGeneticoP1[0]["FuerzasSismoPiso"] +
 				")</td>" +
 				"</tr>";
 			//+"<br/>";
