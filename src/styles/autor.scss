@@ -1,0 +1,51 @@
+#carta *{
+    //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    //font-family: arial;
+  }
+  #carta {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 400px;
+    font-family: arial;
+  }
+  
+  #nombre-tesista {
+    color: grey;
+    font-size: 18px;
+  }
+  
+  #contacto {
+    margin: auto;
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
+  
+  a {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+  }
+  
+  #contacto:hover, a:hover {
+    opacity: 0.7;
+  }
+
+  img {
+      width: 100%;
+      padding: 2px;
+      margin: auto;
+  }
+  i {
+    margin: 5px;
+    text-align: center;
+  }

@@ -2,19 +2,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/autor.scss";
+import antonio from "../../img/antonio.jpg";
 
 export const Autor = () => (
-	<div className="text mt-6 title">
-		<h1 className="title">Autor</h1>
-		<p>
-			<h3 className="sub-title">Antonio L. III Martínez B.</h3>
+	<div className="card" id="carta">
+		<img src={antonio} alt="Antonio Martínez" />
+		<h1>Antonio L. III Martínez B.</h1>
+		<p className="title" id="nombre-tesista">
+			Tesista para el título de Ing. Civil
 		</p>
-		<h1 className="title">Tutor</h1>
+		<p>Universidad Central de Venezuela</p>
+		<div>
+			<a href="https://twitter.com/metantonio">
+				<i className="fa fa-twitter" />
+			</a>
+			<a href="https://www.linkedin.com/in/metantonio/">
+				<i className="fa fa-linkedin" />
+			</a>
+			<a href="https://www.instagram.com/metantonio/">
+				<i className="fa fa-instagram" />
+			</a>
+			<a href="https://github.com/metantonio">
+				<i className="fa fa-github" />
+			</a>
+		</div>
 		<p>
-			<h3 className="sub-title">Ing. Ronald Torres</h3>
+			<button id="contacto">Contact</button>
 		</p>
-		<button className="btnHome">
-			<Link to="/">Ir a Home</Link>
-		</button>
 	</div>
 );

@@ -23,9 +23,9 @@ export const Navbar = () => {
 				<span className="navbar-brand mb-0 col-4 h1">Acerca del Autor</span>
 			</Link>
 			<div className="ml-auto">
-				<Link to="/">
+				{/* <Link to="/">
 					<button className="btn btn-primary">Futuro Botón Login</button>
-				</Link>
+				</Link> */}
 			</div>
 		</nav>
 	);
