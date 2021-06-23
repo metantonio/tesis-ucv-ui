@@ -4359,10 +4359,16 @@ function Calculus() {
 						id="generacion-box"
 						name="no-columnas"
 						min="1"
-						step="10"
+						step="1"
 						max="100"
 						onChange={e => (generaciones = document.getElementById("generacion-box").value)}
 					/>
+					<p>
+						<span>
+							Se recomienda ir de 50 generaciones en 50 para observar resultados. En celulares ir de 10 en
+							10.
+						</span>
+					</p>
 				</div>
 				<div className="col-sm-4">
 					<button
@@ -4614,7 +4620,7 @@ function Calculus() {
 				<table className="table table-striped" id="tabla-final4" onLoad="" />
 			</div>
 			<div className="text-sm-left">
-				<h2> 10.5-. Tabla Combinación de cargas caso: 1CP + 0.5CV + cargas Laterales</h2>
+				<h2> 10.5-. Método estático equivalente: 1CP + 0.5CV + cargas Laterales de 1000kgf</h2>
 			</div>
 			<div className="col-sm-12">
 				<table className="table table-striped" id="tabla-final5" onLoad="" />
