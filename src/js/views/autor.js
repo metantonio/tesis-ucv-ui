@@ -7,7 +7,11 @@ export const Autor = () => (
 	<div className="text mt-6 title">
 		<h1 className="title">Autor</h1>
 		<p>
-			<h2 className="sub-title">Antonio Martínez</h2>
+			<h3 className="sub-title">Antonio L. III Martínez B.</h3>
+		</p>
+		<h1 className="title">Tutor</h1>
+		<p>
+			<h3 className="sub-title">Ing. Ronald Torres</h3>
 		</p>
 		<button className="btnHome">
 			<Link to="/">Ir a Home</Link>

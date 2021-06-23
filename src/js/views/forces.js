@@ -225,6 +225,7 @@ function Forces() {
 
 	useEffect(() => {
 		//graficaXY();
+		scrollToTop();
 	});
 
 	return (
