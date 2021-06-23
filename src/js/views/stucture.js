@@ -158,6 +158,9 @@ function Structure() {
 						id="caja-dibujo">
 						{}
 					</svg>
+					<p>
+						<h5 className="sub-title">Representación Gráfica de la Estructura</h5>
+					</p>
 				</div>
 				<p className="save-btn">
 					<button
