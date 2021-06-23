@@ -6,6 +6,7 @@ import "../../styles/structure.scss";
 import "../../styles/home-tesis.scss";
 import { func } from "prop-types";
 import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
+import Chart from "chart.js/auto";
 
 function Forces() {
 	const { store, actions } = useContext(Context);
@@ -116,9 +117,106 @@ function Forces() {
 		actions.setFactorImportancia(factorImportancia);
 		actions.setFactorReduccion(factorReduccion);
 		actions.setTMas(tMas);
+		//let myChart1;
+		//document.getElementById("grafica-peso").remove(); // <canvas> element
+		myChart1 = graficaXY(
+			myChart1,
+			"grafica-peso",
+			periodos,
+			aceleraciones,
+			"Espectro de Diseno Elástico:Aceleración (g) vs. Periodo (s)",
+			ctx1,
+			"Aceleración (g)",
+			"Periodo (s)"
+		);
+		myChart1.destroy();
 	};
+
+	let myChart1;
+	//let myChart2;
+	let ctx1 = document.getElementById("grafica-peso");
+	//let ctx2;
+	//window.myChart;
+	//var ctx = document.getElementById("grafica-peso");
+	function graficaXY(myChart, canvasID, arrayX, arrayY, titulo, ctx, nombreY, nombreX) {
+		//console.log("histori e historiaPeso", historia, historiaPeso);
+		if (myChart != null) {
+			myChart.destroy();
+			//document.getElementById("grafica-peso").destroy();
+		}
+		//resetCanvas();
+		ctx = document.getElementById(canvasID);
+		myChart = new Chart(ctx, {
+			type: "line",
+			data: {
+				labels: arrayX,
+				datasets: [
+					{
+						label: titulo,
+						data: arrayY,
+						fill: false,
+						borderColor: "rgb(75, 192, 192)",
+						tension: 0.1
+					}
+				]
+			},
+			options: {
+				responsive: false,
+				scales: {
+					x: {
+						title: {
+							color: "black",
+							display: true,
+							text: nombreX
+						},
+						ticks: {
+							autoSkip: false,
+							maxTicksLimit: 1
+						}
+					},
+					y: {
+						title: {
+							color: "black",
+							display: true,
+							text: nombreY
+						}
+					}
+				}
+			}
+		});
+		return myChart;
+	}
+
+	var periodos = [];
+	var aceleraciones = [];
+
+	function datosGrafica() {
+		periodos = [];
+		aceleraciones = [];
+
+		periodos.push(0);
+		aceleraciones.push(aceleracionAo * factorCorreccion * factorImportancia);
+		periodos.push(tAst / 4);
+		aceleraciones.push(aceleracionAo * factorCorreccion * factorImportancia * beta);
+
+		periodos.push(tAst);
+		aceleraciones.push(aceleracionAo * factorCorreccion * factorImportancia * beta);
+		var aux = tAst;
+		var aux2 = 0;
+
+		for (var i = 1; i < 40; i++) {
+			aux = round(tAst + 0.1 * i, 3);
+			periodos.push(aux);
+
+			aux2 = factorImportancia * factorCorreccion * beta * aceleracionAo * Math.pow(tAst / aux, ro);
+			aceleraciones.push(aux2);
+		}
+		return aceleraciones, periodos;
+	}
+
 	useEffect(() => {
 		window.scroll(0, top);
+		//graficaXY();
 	});
 
 	return (
@@ -337,6 +435,9 @@ function Forces() {
 						</p>
 					</div>
 				</div>
+				<div className="col-sm-12" id="grafica-container">
+					<canvas id="grafica-peso" width="800px" height="350px" />
+				</div>
 				<div className="btn sub-title col-md-12">
 					<p>
 						<button
@@ -358,6 +459,21 @@ function Forces() {
 								actions.setFactorImportancia(factorImportancia);
 								actions.setFactorReduccion(factorReduccion);
 								actions.setTMas(tMas);
+								datosGrafica();
+								// if (myChart1) {
+								// 	myChart1.destroy();
+								// 	let myChart1;
+								// }
+								myChart1 = graficaXY(
+									myChart1,
+									"grafica-peso",
+									periodos,
+									aceleraciones,
+									"Espectro de Diseno Elástico:Aceleración (g) vs. Periodo (s)",
+									ctx1,
+									"Aceleración (g)",
+									"Periodo (s)"
+								);
 							}}>
 							<span>Guardar configuración de Cargas</span>
 						</button>
