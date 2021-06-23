@@ -3173,14 +3173,14 @@ function Calculus() {
 		Calc2(codigoDelCruce, "tabla-final4", -1.275, 1.275, 1.05);
 
 		evaluacionCargasLaterales(vectorConectividadf1);
-		//evaluacionSismo(vectorConectividadf1);
+		evaluacionSismo(vectorConectividadf1);
 		listaEstructuras(vectorConectividadf1);
 
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final", "desCombo1");
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final2", "desCombo2");
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final3", "desCombo3");
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final4", "desCombo4");
-		obtenerDesplazamiento(vectorConectividadf1, "tabla-final5", "desComboLateral");
+		//obtenerDesplazamiento(vectorConectividadf1, "tabla-final5", "desComboLateral");
 		codigoDelCruce = vectorConectividadf1.slice();
 		return (
 			vectorFuerzasInternas,
@@ -3572,9 +3572,12 @@ function Calculus() {
 	function evaluacionSismo(codigoGeneticoP1) {
 		vectorConectividadf1 = codigoGeneticoP1.slice();
 		vectorConectividadf22 = codigoGeneticoP1.slice();
-		var fuerzalateral = vectorConectividadf1[0]["FuerzasSismoPiso"];
+		var fuerzalateral = vectorConectividadf1[0]["FuerzasSismoPiso"].slice();
+		//console.log("fuerza Lateral", fuerzalateral);
 		sismoColumna2(fuerzalateral, vectorConectividadf1);
+		console.log("ocurre evaluacion de columna sismo");
 		sismoVigas2(fuerzalateral, vectorConectividadf1);
+		console.log("ocurre evaluacion de vigas sismo");
 		matrizRigidLocal2(vectorConectividadf1);
 		vectorMatrizRigGlobal = matrizRigidGlogal2(vectorConectividadf1);
 		codigoGeneticoP = codigoGenetico2(vectorMatrizRigGlobal);
@@ -3590,8 +3593,8 @@ function Calculus() {
 		entropia = 4;
 		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
 
-		metodoEstaticoEquivalente(vectorConectividadf1);
-		addTablaCodigoGenLateral("tabla-final6", vectorConectividadf1);
+		//metodoEstaticoEquivalente(vectorConectividadf1);
+		//addTablaCodigoGenLateral("tabla-final6", vectorConectividadf1);
 		return vectorConectividadf1;
 	}
 
@@ -4515,7 +4518,7 @@ function Calculus() {
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
+								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
 
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
@@ -4671,7 +4674,8 @@ function Calculus() {
 						</option>
 						<option value="3">desCombo3</option>
 						<option value="4">desCombo4</option>
-						<option value="5">desComboLateral</option>
+						<option value="5">desComboSismo+</option>
+						<option value="5">desComboSismo-</option>
 					</select>
 				</form>
 				<p>

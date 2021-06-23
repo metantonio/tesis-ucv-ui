@@ -107,7 +107,16 @@ function Forces() {
 		return round(tMas, 3);
 	}
 
+	function scrollToBottom(idContainer) {
+		window.scrollTo(0, document.getElementById(idContainer).scrollHeight);
+		window.scrollTo(0, document.body.scrollHeight);
+	}
+	function scrollToTop() {
+		window.scroll(0, top);
+	}
+
 	window.onload = function() {
+		scrollToTop();
 		actions.setZonaSismica(zonaSismica);
 		actions.setAceleracionAo(aceleracionAo);
 		actions.setTAst(tAst);
@@ -215,7 +224,6 @@ function Forces() {
 	}
 
 	useEffect(() => {
-		window.scroll(0, top);
 		//graficaXY();
 	});
 
@@ -474,6 +482,7 @@ function Forces() {
 									"Aceleración (g)",
 									"Periodo (s)"
 								);
+								scrollToBottom("grafica-container");
 							}}>
 							<span>Guardar configuración de Cargas</span>
 						</button>
