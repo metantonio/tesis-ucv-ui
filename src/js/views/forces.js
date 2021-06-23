@@ -446,6 +446,7 @@ function Forces() {
 				<div className="col-sm-12" id="grafica-container">
 					<canvas id="grafica-peso" width="800px" height="350px" />
 				</div>
+				<span className="sub-title">Nota: El eje X no se encuentra a escala.</span>
 				<div className="btn sub-title col-md-12">
 					<p>
 						<button
