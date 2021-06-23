@@ -4850,7 +4850,7 @@ function Calculus() {
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
-						<span>Ir al Paso 5</span>
+						<span>Volver al Home</span>
 					</Link>
 				</button>
 			</p>

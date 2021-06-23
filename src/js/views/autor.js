@@ -6,7 +6,7 @@ import antonio from "../../img/antonio.jpg";
 
 export const Autor = () => (
 	<div className="card" id="carta">
-		<img src={antonio} alt="Antonio Martínez" />
+		<img src={antonio} alt="Antonio Martínez" className="imagen-personas" />
 		<h1>Antonio L. III Martínez B.</h1>
 		<p className="title" id="nombre-tesista">
 			Tesista para el título de Ing. Civil
