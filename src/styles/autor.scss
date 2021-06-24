@@ -6,9 +6,11 @@
     //font-family: arial;
   }
   #carta {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.432);
     width: 400px;
     font-family: arial;
+    justify-content: center;
+    margin: auto;
   }
   
   #nombre-tesista {
@@ -22,7 +24,7 @@
     outline: 0;
     display: inline-block;
     padding: 2px;
-    color: white;
+    color: rgb(161, 161, 161);
     background-color: #000;
     text-align: center;
     cursor: pointer;
