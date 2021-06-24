@@ -3257,17 +3257,10 @@ function Calculus() {
 			) {
 				if ((vectorConectividadf1[i]["puntoIni"][0] == 0) & (vectorConectividadf1[i]["puntoFin"][0] == 0)) {
 					//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
-					vectorConectividadf1[i]["fuerzainterna"] = [
-						0,
-						cargaLateral,
-						-cargaLateral * vectorConectividadf1[i]["longitud"],
-						0,
-						cargaLateral,
-						0
-					];
+					vectorConectividadf1[i]["fuerzainterna"] = [cargaLateral, 0, 0, cargaLateral, 0, 0];
 					//return vectorConectividadf[i]["fuerzainterna"];
 				} else {
-					vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+					vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, cargaLateral, 0, 0];
 					//return vectorConectividadf[i]["fuerzainterna"];
 				}
 			}
@@ -3291,7 +3284,7 @@ function Calculus() {
 					vectorConectividadf22[i]["puntoIni"][0] == 0
 				) {
 					//console.log("entro en if reescrituraconectividadf2");
-					vectorConectividadf22[i]["fuerzainterna"] = [-cargaLateral, 0, 0, -cargaLateral, 0, 0];
+					vectorConectividadf22[i]["fuerzainterna"] = [cargaLateral, 0, 0, 0, 0, 0];
 					//if del techo empieza aquí>
 
 					return vectorConectividadf22[i]["fuerzainterna"];
@@ -3504,54 +3497,10 @@ function Calculus() {
 		for (var j = 0; j < cargaLateral.length; j++) {
 			if (j == 0) {
 				//entraría en la primera columna de Planta Baja, de izquierda a derecha (la que le pegaría el Sismo)
-				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, -cargaLateral[j], 0];
+				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, cargaLateral[j], 0];
 			} else {
-				vectorConectividadf1[j]["fuerzainterna"] = [cargaLateral[j - 1], 0, 0, -cargaLateral[j], 0, 0];
+				vectorConectividadf1[j]["fuerzainterna"] = [cargaLateral[j - 1], 0, 0, cargaLateral[j], 0, 0];
 			}
-			// for (var i = 0; i < vectorConectividadf1.length; i++) {
-			// 	//console.log("elemento", elementos, vectorAux);
-			// 	if (
-			// 		(vectorConectividadf1[i]["longitud"] == actions.getEntrePiso()) &
-			// 		(vectorConectividadf1[i]["puntoIni"][0] == vectorConectividadf1[i]["puntoFin"][0])
-			// 	) {
-			// 		if (
-			// 			vectorConectividadf1[i]["puntoIni"][0] == 0 &&
-			// 			vectorConectividadf1[i]["puntoFin"][0] == 0 &&
-			// 			vectorConectividadf1[i]["nodoFin"][1] == j + 1
-			// 		) {
-			// 			//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
-			// 			vectorConectividadf1[i]["fuerzainterna"] = [
-			// 				0,
-			// 				cargaLateral[j],
-			// 				-cargaLateral[j + 1] * vectorConectividadf1[i]["longitud"],
-			// 				0,
-			// 				cargaLateral[j + 1],
-			// 				cargaLateral[j] * vectorConectividadf1[i]["longitud"]
-			// 			];
-			// 			//return vectorConectividadf[i]["fuerzainterna"];
-			// 		} else {
-			// 			if (
-			// 				vectorConectividadf1[i]["puntoIni"][0] == 0 &&
-			// 				vectorConectividadf1[i]["puntoFin"][0] == 0 &&
-			// 				vectorConectividadf1[i]["nodoIni"][1] == 0
-			// 			) {
-			// 				//console.log("entro en el if en columnas que le entran viento", cViento * actions.getCargaViento());
-			// 				vectorConectividadf1[i]["fuerzainterna"] = [
-			// 					0,
-			// 					-cargaLateral[0],
-			// 					-cargaLateral[0] * vectorConectividadf1[i]["longitud"],
-			// 					0,
-			// 					cargaLateral[0],
-			// 					cargaLateral[0] * vectorConectividadf1[i]["longitud"]
-			// 				];
-			// 				//return vectorConectividadf[i]["fuerzainterna"];
-			// 			} else {
-			// 				vectorConectividadf1[i]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
-			// 				//return vectorConectividadf[i]["fuerzainterna"];
-			// 			}
-			// 		}
-			// 	}
-			// }
 		}
 
 		//vectorConectividadf = [];
@@ -3574,14 +3523,7 @@ function Calculus() {
 					) {
 						//console.log("entro en if reescrituraconectividadf2");
 						if (vectorConectividadf22[i]["nodoIni"][1] == j + 1)
-							vectorConectividadf22[i]["fuerzainterna"] = [
-								-cargaLateral[j],
-								0,
-								0,
-								-cargaLateral[j],
-								0,
-								0
-							];
+							vectorConectividadf22[i]["fuerzainterna"] = [cargaLateral[j], 0, 0, 0, 0, 0];
 						//if del techo empieza aquí>
 
 						return vectorConectividadf22[i]["fuerzainterna"];
