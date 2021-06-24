@@ -3504,9 +3504,9 @@ function Calculus() {
 		for (var j = 0; j < cargaLateral.length; j++) {
 			if (j == 0) {
 				//entraría en la primera columna de Planta Baja, de izquierda a derecha (la que le pegaría el Sismo)
-				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, -cargaLateral[j], 0];
 			} else {
-				vectorConectividadf1[j]["fuerzainterna"] = [0, 0, 0, 0, 0, 0];
+				vectorConectividadf1[j]["fuerzainterna"] = [cargaLateral[j - 1], 0, 0, -cargaLateral[j], 0, 0];
 			}
 			// for (var i = 0; i < vectorConectividadf1.length; i++) {
 			// 	//console.log("elemento", elementos, vectorAux);
