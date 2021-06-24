@@ -26,7 +26,7 @@ export const Autor = () => (
 				<i className="fa fa-github" />
 			</a>
 		</div>
-		<p>
+		<p id="contacto-button">
 			<button id="contacto">Contact</button>
 		</p>
 	</div>

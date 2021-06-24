@@ -21,7 +21,7 @@
     border: none;
     outline: 0;
     display: inline-block;
-    padding: 8px;
+    padding: 2px;
     color: white;
     background-color: #000;
     text-align: center;
@@ -48,4 +48,8 @@
   i {
     margin: 5px;
     text-align: center;
+  }
+
+  #contacto-button {
+    width: 100%;
   }
