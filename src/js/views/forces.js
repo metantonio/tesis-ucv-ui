@@ -424,7 +424,7 @@ function Forces() {
 							</form>
 						</p>
 						<p>
-							<h4>Factor de Reducción según Nivel de Diseño, para Estructuras de Acero del Tipo I</h4>
+							<h4>Factor de Reducción según Nivel de Diseño, para Estructuras de Acero del Tipo II</h4>
 							<form
 								onChange={e => {
 									factorReduccion = getComboList3();
@@ -435,9 +435,9 @@ function Forces() {
 									//actions.setTMas(tMas);
 								}}>
 								<select id="ddlViewBy3">
-									<option value="2.5">ND1</option>
-									<option value="4.5">ND2</option>
-									<option value="6.0" selected="selected">
+									<option value="2.25">ND1</option>
+									<option value="4.0">ND2</option>
+									<option value="5.0" selected="selected">
 										ND3
 									</option>
 								</select>
