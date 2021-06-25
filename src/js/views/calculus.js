@@ -4596,7 +4596,7 @@ function Calculus() {
 
 								listaOrden();
 								if (
-									reserva[0]["evaluacionCodigoGenetico"] >=
+									reserva[0]["evaluacionCodigoGenetico"] >
 									estructurasLista[0][0].evaluacionCodigoGenetico
 								) {
 									//console.log("reserva", reserva);
