@@ -4585,8 +4585,8 @@ function Calculus() {
 									reserva = estructurasLista[0].slice();
 								} else {
 									if (
-										reserva[0].evaluacionCodigoGenetico <
-										estructurasLista[0][0].evaluacionCodigoGenetico
+										parseFloat(reserva[0].evaluacionCodigoGenetico) <
+										parseFloat(estructurasLista[0][0].evaluacionCodigoGenetico)
 									) {
 										reserva = [];
 										reserva = estructurasLista[0].slice();
@@ -4675,7 +4675,7 @@ function Calculus() {
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
-
+							console.log("Reserva Gen", reserva);
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
