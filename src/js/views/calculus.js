@@ -4403,7 +4403,7 @@ function Calculus() {
 	var estabilidadPuntuacion = [];
 	var estabilidadY = 0;
 	var poblacionIni = 20;
-
+	let reserva;
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -4581,7 +4581,25 @@ function Calculus() {
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 								}
 								BotonCruce();
+								if (reserva == null || reserva == undefined) {
+									reserva = estructurasLista[0].slice();
+								} else {
+									if (
+										parseFloat(reserva[0]["evaluacionCodigoGenetico"]) <
+										parseFloat(estructurasLista[0][0]["evaluacionCodigoGenetico"])
+									) {
+										reserva[0]["evaluacionCodigoGenetico"] =
+											estructurasLista[0][0]["evaluacionCodigoGenetico"];
+									}
+								}
+
 								listaOrden();
+								if (
+									parseFloat(reserva[0]["evaluacionCodigoGenetico"]) >
+									parseFloat(estructurasLista[0][0]["evaluacionCodigoGenetico"])
+								) {
+									estructurasLista[0] = reserva;
+								}
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
 								var pesoEstructura = estructurasLista[0];
 								for (var j = 0; j < pesoEstructura.length; j++) {
