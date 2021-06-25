@@ -2667,7 +2667,7 @@ function Calculus() {
 			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
 		});
 		//console.log("lista de Estructuras", estructurasLista);
-		if (estructurasLista.length > 30) {
+		if (estructurasLista.length > poblacionIni * 2) {
 			estructurasLista = estructurasLista.slice(0, 10);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
@@ -4364,6 +4364,7 @@ function Calculus() {
 	};
 	var estabilidadPuntuacion = [];
 	var estabilidadY = 0;
+	var poblacionIni = 20;
 
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
@@ -4446,9 +4447,24 @@ function Calculus() {
 					/>
 					<p>
 						<span>
-							Se recomienda ir de 50 generaciones en 50 para observar resultados. En celulares ir de 2 en
-							2.
+							Se recomienda ir de 5 generaciones en 5 para observar resultados en pc poco potentes. En
+							celulares ir de 1 en 1.
 						</span>
+					</p>
+					<h4>Población Inicial</h4>
+					<input
+						className="no-columnas"
+						type="number"
+						placeholder="Ej: 20"
+						id="poblacion-box"
+						name="no-columnas"
+						min="1"
+						step="1"
+						max="100"
+						onChange={e => (poblacionIni = document.getElementById("poblacion-box").value)}
+					/>
+					<p>
+						<span>Se recomienda 3 para probar en celulares.</span>
 					</p>
 				</div>
 				<div className="col-sm-4">
@@ -4457,7 +4473,7 @@ function Calculus() {
 						id="myBtn"
 						onClick={() => {
 							generaciones = document.getElementById("generacion-box").value;
-							while (estructurasLista.length < 20) {
+							while (estructurasLista.length < poblacionIni) {
 								//caso 1.4 carga permanente
 								entropia = 0;
 								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
