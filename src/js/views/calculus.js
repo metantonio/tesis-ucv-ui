@@ -4516,7 +4516,7 @@ function Calculus() {
 								//ver código genético
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
-								listaEstructuras(codigoGeneticoP);
+								listaEstructuraPush(codigoGeneticoP);
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4558,7 +4558,7 @@ function Calculus() {
 									//ver código genético
 									console.log("codigo genético P", codigoGeneticoP);
 									repetir++; //sirve para borrar div en caso de que repetir>0
-									listaEstructuras(codigoGeneticoP);
+									listaEstructuraPush(codigoGeneticoP);
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4566,6 +4566,7 @@ function Calculus() {
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 								}
 								BotonCruce();
+								listaOrden();
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
 								var pesoEstructura = estructurasLista[0];
 								for (var j = 0; j < pesoEstructura.length; j++) {
