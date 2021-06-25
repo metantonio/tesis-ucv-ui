@@ -3278,7 +3278,7 @@ function Calculus() {
 		// var mutacion2 = mutacion(cruceGen2);
 		// EvaluacionCruce(mutacion2);
 
-		listaOrden();
+		//listaOrden();
 		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
@@ -4590,15 +4590,16 @@ function Calculus() {
 									) {
 										reserva = [];
 										reserva = estructurasLista[0].slice();
-										console.log("reserva", reserva);
+										//console.log("reserva", reserva);
 									}
 								}
 
 								listaOrden();
 								if (
-									parseFloat(reserva[0]["evaluacionCodigoGenetico"]) >
-									parseFloat(estructurasLista[0][0]["evaluacionCodigoGenetico"])
+									reserva[0]["evaluacionCodigoGenetico"] >=
+									estructurasLista[0][0].evaluacionCodigoGenetico
 								) {
+									//console.log("reserva", reserva);
 									estructurasLista.unshift(reserva);
 								}
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
