@@ -2667,7 +2667,7 @@ function Calculus() {
 			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
 		});
 		//console.log("lista de Estructuras", estructurasLista);
-		if (estructurasLista.length > 14) {
+		if (estructurasLista.length > 30) {
 			estructurasLista = estructurasLista.slice(0, 10);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
@@ -2675,16 +2675,11 @@ function Calculus() {
 	}
 	var desplazamientosFinalesLista = [];
 
-	function desplazamientosFinales(codigoGeneticoP1) {
-		desplazamientosFinalesLista = [];
-		desplazamientoEnCodigo(codigoGeneticoP);
-		for (let element of codigoGeneticoP1) {
-			if (element["desplazamientoLista"] == undefined) {
-				element["desplazamientoLista"] = [];
-			}
-			element["desplazamientoLista"].push(element.desplazamientoNodoIni);
-		}
-		return codigoGeneticoP1;
+	function listaEstructuraPush(codigoGen) {
+		estructurasLista.push(codigoGen);
+
+		//console.log("lista de Estructuras", estructurasLista);
+		return estructurasLista;
 	}
 
 	function cruceGenetico1(primeroLista, segundoLista) {
@@ -3194,7 +3189,7 @@ function Calculus() {
 
 		evaluacionCargasLaterales(vectorConectividadf1);
 		evaluacionSismo(vectorConectividadf1);
-		listaEstructuras(vectorConectividadf1);
+		listaEstructuraPush(vectorConectividadf1);
 
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final", "desCombo1");
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final2", "desCombo2");
@@ -3245,6 +3240,7 @@ function Calculus() {
 		var mutacion2 = mutacion(cruceGen2);
 		EvaluacionCruce(mutacion2);
 
+		listaEstructuraPush(cruceGen0);
 		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
@@ -4461,7 +4457,7 @@ function Calculus() {
 						id="myBtn"
 						onClick={() => {
 							generaciones = document.getElementById("generacion-box").value;
-							while (estructurasLista.length < 3) {
+							while (estructurasLista.length < 20) {
 								//caso 1.4 carga permanente
 								entropia = 0;
 								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
