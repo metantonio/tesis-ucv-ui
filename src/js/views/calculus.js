@@ -4585,11 +4585,12 @@ function Calculus() {
 									reserva = estructurasLista[0].slice();
 								} else {
 									if (
-										parseFloat(reserva[0]["evaluacionCodigoGenetico"]) <
-										parseFloat(estructurasLista[0][0]["evaluacionCodigoGenetico"])
+										reserva[0].evaluacionCodigoGenetico <
+										estructurasLista[0][0].evaluacionCodigoGenetico
 									) {
-										reserva[0]["evaluacionCodigoGenetico"] =
-											estructurasLista[0][0]["evaluacionCodigoGenetico"];
+										reserva = [];
+										reserva = estructurasLista[0].slice();
+										console.log("reserva", reserva);
 									}
 								}
 
@@ -4598,7 +4599,7 @@ function Calculus() {
 									parseFloat(reserva[0]["evaluacionCodigoGenetico"]) >
 									parseFloat(estructurasLista[0][0]["evaluacionCodigoGenetico"])
 								) {
-									estructurasLista[0] = reserva;
+									estructurasLista.unshift(reserva);
 								}
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
 								var pesoEstructura = estructurasLista[0];
@@ -4607,7 +4608,7 @@ function Calculus() {
 										historiapesoy += parseFloat(pesoEstructura[j].peso);
 									}
 								}
-								estabilidadY += parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
+								estabilidadY = parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
 								estabilidadPuntuacion.push(estabilidadY);
 								//historiaPeso.push(historiapesoy);
 								historiaPeso.push(parseFloat(pesoEstructura[0].pesoEstructura));
