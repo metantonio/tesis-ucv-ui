@@ -3209,38 +3209,50 @@ function Calculus() {
 	function BotonCruce() {
 		//listaAEvaluar = [];
 		repetir++;
-		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[1]);
-		var cruceGen0 = listaAEvaluar[0];
-		var cruceGen1 = listaAEvaluar[1];
-		EvaluacionCruce(cruceGen0);
-		EvaluacionCruce(cruceGen1);
-		//listaAEvaluar = [];
+		let cruceGen0, cruceGen1, mutacion0;
+		var canti = estructurasLista.length;
+		for (var i = 0; i < canti - 1; i++) {
+			listaAEvaluar = cruceGenetico1(estructurasLista[i], estructurasLista[i + 1]);
+			cruceGen0 = listaAEvaluar[0];
+			cruceGen1 = listaAEvaluar[1];
 
-		listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[2]);
-		var cruceGen2 = listaAEvaluar[0];
-		var cruceGen3 = listaAEvaluar[1];
-		EvaluacionCruce(cruceGen2);
-		EvaluacionCruce(cruceGen3);
-		//listaAEvaluar = [];
+			EvaluacionCruce(cruceGen0);
+			EvaluacionCruce(cruceGen1);
+			mutacion0 = mutacion(cruceGen0);
+			EvaluacionCruce(mutacion0);
+		}
+		// listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[1]);
+		// var cruceGen0 = listaAEvaluar[0];
+		// var cruceGen1 = listaAEvaluar[1];
+		// EvaluacionCruce(cruceGen0);
+		// EvaluacionCruce(cruceGen1);
+		// //listaAEvaluar = [];
 
-		listaAEvaluar = cruceGenetico1(estructurasLista[1], estructurasLista[2]);
-		var cruceGen4 = listaAEvaluar[0];
-		var cruceGen5 = listaAEvaluar[1];
-		EvaluacionCruce(cruceGen4);
-		EvaluacionCruce(cruceGen5);
-		//listaAEvaluar = [];
+		// listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[2]);
+		// var cruceGen2 = listaAEvaluar[0];
+		// var cruceGen3 = listaAEvaluar[1];
+		// EvaluacionCruce(cruceGen2);
+		// EvaluacionCruce(cruceGen3);
+		// //listaAEvaluar = [];
 
-		var mutacion0 = mutacion(cruceGen0);
-		//console.log("ver mutacion0", mutacion0);
-		EvaluacionCruce(mutacion0);
+		// listaAEvaluar = cruceGenetico1(estructurasLista[1], estructurasLista[2]);
+		// var cruceGen4 = listaAEvaluar[0];
+		// var cruceGen5 = listaAEvaluar[1];
+		// EvaluacionCruce(cruceGen4);
+		// EvaluacionCruce(cruceGen5);
+		// //listaAEvaluar = [];
 
-		var mutacion1 = mutacion(cruceGen1);
-		EvaluacionCruce(mutacion1);
+		// var mutacion0 = mutacion(cruceGen0);
+		// //console.log("ver mutacion0", mutacion0);
+		// EvaluacionCruce(mutacion0);
 
-		var mutacion2 = mutacion(cruceGen2);
-		EvaluacionCruce(mutacion2);
+		// var mutacion1 = mutacion(cruceGen1);
+		// EvaluacionCruce(mutacion1);
 
-		listaEstructuraPush(cruceGen0);
+		// var mutacion2 = mutacion(cruceGen2);
+		// EvaluacionCruce(mutacion2);
+
+		// listaEstructuraPush(cruceGen0);
 		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
