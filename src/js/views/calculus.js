@@ -2668,7 +2668,7 @@ function Calculus() {
 		});
 		//console.log("lista de Estructuras", estructurasLista);
 		if (estructurasLista.length > poblacionIni * 2) {
-			estructurasLista = estructurasLista.slice(0, 10);
+			estructurasLista = estructurasLista.slice(0, poblacionIni);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
@@ -2678,6 +2678,17 @@ function Calculus() {
 	function listaEstructuraPush(codigoGen) {
 		estructurasLista.push(codigoGen);
 
+		//console.log("lista de Estructuras", estructurasLista);
+		return estructurasLista;
+	}
+
+	function listaOrden() {
+		estructurasLista = estructurasLista.sort(function(a, b) {
+			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
+		});
+		if (estructurasLista.length > poblacionIni * 2) {
+			estructurasLista = estructurasLista.slice(0, poblacionIni);
+		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
@@ -3252,7 +3263,7 @@ function Calculus() {
 		// var mutacion2 = mutacion(cruceGen2);
 		// EvaluacionCruce(mutacion2);
 
-		// listaEstructuraPush(cruceGen0);
+		listaOrden();
 		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
