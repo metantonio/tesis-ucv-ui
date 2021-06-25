@@ -4458,13 +4458,13 @@ function Calculus() {
 						placeholder="Ej: 20"
 						id="poblacion-box"
 						name="no-columnas"
-						min="1"
+						min="3"
 						step="1"
-						max="100"
+						max="200"
 						onChange={e => (poblacionIni = document.getElementById("poblacion-box").value)}
 					/>
 					<p>
-						<span>Se recomienda 3 para probar en celulares.</span>
+						<span>Mínimo: 3, Máx:200. Se recomienda 3 para probar en celulares.</span>
 					</p>
 				</div>
 				<div className="col-sm-4">
