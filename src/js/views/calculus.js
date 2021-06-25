@@ -2668,7 +2668,7 @@ function Calculus() {
 		});
 		//console.log("lista de Estructuras", estructurasLista);
 		if (estructurasLista.length > poblacionIni * 2) {
-			estructurasLista = estructurasLista.slice(0, poblacionIni);
+			estructurasLista = estructurasLista.slice(0, poblacionIni * 2);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
@@ -2687,7 +2687,7 @@ function Calculus() {
 			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
 		});
 		if (estructurasLista.length > poblacionIni * 2) {
-			estructurasLista = estructurasLista.slice(0, poblacionIni);
+			estructurasLista = estructurasLista.slice(0, poblacionIni * 2);
 		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
