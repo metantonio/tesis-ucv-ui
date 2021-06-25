@@ -2664,7 +2664,7 @@ function Calculus() {
 	function listaEstructuras(codigoGen) {
 		estructurasLista.push(codigoGen);
 		estructurasLista = estructurasLista.sort(function(a, b) {
-			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
+			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
 		//console.log("lista de Estructuras", estructurasLista);
 		if (estructurasLista.length > poblacionIni * 2) {
@@ -2672,6 +2672,20 @@ function Calculus() {
 		}
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
+	}
+	function dynamicSort(property) {
+		var sortOrder = 1;
+		if (property[0] === "-") {
+			sortOrder = -1;
+			property = property.substr(1);
+		}
+		return function(a, b) {
+			/* next line works with strings and numbers, 
+			 * and you may want to customize it to your needs
+			 */
+			var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+			return result * sortOrder;
+		};
 	}
 	var desplazamientosFinalesLista = [];
 
@@ -2684,8 +2698,9 @@ function Calculus() {
 
 	function listaOrden() {
 		estructurasLista = estructurasLista.sort(function(a, b) {
-			return b[0].evaluacionCodigoGenetico - a[0].evaluacionCodigoGenetico;
+			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
+		estructurasLista.sort();
 		if (estructurasLista.length > poblacionIni * 2) {
 			estructurasLista = estructurasLista.slice(0, poblacionIni * 2);
 		}
