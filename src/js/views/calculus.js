@@ -2711,6 +2711,16 @@ function Calculus() {
 		if (provi.length > poblacionIni * 2) {
 			provi = provi.slice(0, poblacionIni * 2);
 		}
+
+		if (reserva == null || reserva == undefined) {
+			reserva = provi[0].slice();
+		} else {
+			if (reserva[0].evaluacionCodigoGenetico < provi[0][0].evaluacionCodigoGenetico) {
+				reserva = [];
+				reserva = provi[0].slice();
+				//console.log("reserva", reserva);
+			}
+		}
 		estructurasLista = [];
 		estructurasLista = provi.slice();
 		//console.log("lista de Estructuras", estructurasLista);
@@ -3066,7 +3076,7 @@ function Calculus() {
 			d3.selectAll("#vector-reducido > *").remove();
 			d3.selectAll("#desplazamiento-nodos > *").remove();
 		}
-		exagerar = 1;
+		exagerar = 1.0;
 		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
 		// console.log(drawLines, drawLines2);
 		tablaConectividad(coefViento);
@@ -3196,12 +3206,12 @@ function Calculus() {
 		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 0;
 		var clon5 = vectorConectividadf1.slice();
-		clon5 = calculosFinales(0, 0, 1.4, vectorConectividadf1);
-		vectorConectividadf1 = clon5.slice();
-		codigoGeneticoP = vectorConectividadf1.slice();
-		codigoDelCruce = vectorConectividadf1.slice();
-		addTablaCodigoGen1("tabla-final", vectorConectividadf1);
-		return codigoDelCruce;
+		var clon11 = calculosFinales(0, 0, 1.4, clon5);
+		//vectorConectividadf1 = clon5.slice();
+		codigoGeneticoP = clon11.slice();
+		codigoDelCruce = clon11.slice();
+		addTablaCodigoGen1("tabla-final", clon11);
+		return clon11;
 	}
 
 	function Calc2(codigoDelCruce, refTabla, cW, CV, CP) {
@@ -3217,29 +3227,29 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		entropia = 1;
 		var clon4 = vectorConectividadf1.slice();
-		clon4 = calculosFinales(cW, CV, CP, vectorConectividadf1);
-		vectorConectividadf1 = clon4.slice();
+		var clon12 = calculosFinales(cW, CV, CP, clon4);
+		//vectorConectividadf1 = clon4.slice();
 		//clon4 = [];
-		codigoDelCruce = vectorConectividadf1.slice();
-		addTablaCodigoGen22(refTabla, vectorConectividadf1);
+		codigoDelCruce = clon12.slice();
+		addTablaCodigoGen22(refTabla, clon12);
 	}
 	function EvaluacionCruce(codigoDelCruce) {
 		Calc1(codigoDelCruce);
 		Calc2(codigoDelCruce, "tabla-final2", 0, 1.6, 1.2);
 		Calc2(codigoDelCruce, "tabla-final3", 1.275, 1.275, 1.05);
 		Calc2(codigoDelCruce, "tabla-final4", -1.275, 1.275, 1.05);
-
-		evaluacionCargasLaterales(vectorConectividadf1);
-		evaluacionSismo(vectorConectividadf1);
-		var clon8 = vectorConectividadf1.slice();
+		var clon8 = codigoDelCruce.slice();
+		evaluacionCargasLaterales(clon8);
+		evaluacionSismo(clon8);
+		//clon8 = vectorConectividadf1.slice();
 		listaEstructuraPush(clon8);
 
-		obtenerDesplazamiento(vectorConectividadf1, "tabla-final", "desCombo1");
-		obtenerDesplazamiento(vectorConectividadf1, "tabla-final2", "desCombo2");
-		obtenerDesplazamiento(vectorConectividadf1, "tabla-final3", "desCombo3");
-		obtenerDesplazamiento(vectorConectividadf1, "tabla-final4", "desCombo4");
+		obtenerDesplazamiento(clon8, "tabla-final", "desCombo1");
+		obtenerDesplazamiento(clon8, "tabla-final2", "desCombo2");
+		obtenerDesplazamiento(clon8, "tabla-final3", "desCombo3");
+		obtenerDesplazamiento(clon8, "tabla-final4", "desCombo4");
 		//obtenerDesplazamiento(vectorConectividadf1, "tabla-final5", "desComboLateral");
-		codigoDelCruce = vectorConectividadf1.slice();
+		codigoDelCruce = clon8.slice(); //se podría silenciar esto
 		return (
 			vectorFuerzasInternas,
 			matrizReducidaInversa,
@@ -3264,39 +3274,6 @@ function Calculus() {
 			mutacion0 = mutacion(cruceGen0);
 			EvaluacionCruce(mutacion0);
 		}
-		// listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[1]);
-		// var cruceGen0 = listaAEvaluar[0];
-		// var cruceGen1 = listaAEvaluar[1];
-		// EvaluacionCruce(cruceGen0);
-		// EvaluacionCruce(cruceGen1);
-		// //listaAEvaluar = [];
-
-		// listaAEvaluar = cruceGenetico1(estructurasLista[0], estructurasLista[2]);
-		// var cruceGen2 = listaAEvaluar[0];
-		// var cruceGen3 = listaAEvaluar[1];
-		// EvaluacionCruce(cruceGen2);
-		// EvaluacionCruce(cruceGen3);
-		// //listaAEvaluar = [];
-
-		// listaAEvaluar = cruceGenetico1(estructurasLista[1], estructurasLista[2]);
-		// var cruceGen4 = listaAEvaluar[0];
-		// var cruceGen5 = listaAEvaluar[1];
-		// EvaluacionCruce(cruceGen4);
-		// EvaluacionCruce(cruceGen5);
-		// //listaAEvaluar = [];
-
-		// var mutacion0 = mutacion(cruceGen0);
-		// //console.log("ver mutacion0", mutacion0);
-		// EvaluacionCruce(mutacion0);
-
-		// var mutacion1 = mutacion(cruceGen1);
-		// EvaluacionCruce(mutacion1);
-
-		// var mutacion2 = mutacion(cruceGen2);
-		// EvaluacionCruce(mutacion2);
-
-		//listaOrden();
-		//document.getElementById("myBtn").addEventListener("mouseover", updateDraw());
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
 		//let vectorAux = vectorConectividadf;
@@ -3316,11 +3293,12 @@ function Calculus() {
 				}
 			}
 		}
+		var clon13 = vectorConectividadf1.slice();
 		//vectorConectividadf = [];
 		//vectorConectividadf = vectorAux;
-		return vectorConectividadf1;
+		return clon13;
 	}
-	function sismoVigas(cargaLateral, vectorcConectividadf22) {
+	function sismoVigas(cargaLateral, vectorConectividadf22) {
 		//reescritura de las fuerzas internas
 
 		for (var i = 0; i < vectorConectividadf22.length; i++) {
@@ -3366,13 +3344,16 @@ function Calculus() {
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
 		var clon3 = vectorConectividadf1.slice();
-		clon3 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
-		vectorConectividadf1 = clon3.slice();
+		var clon9 = vectorConectividadf1.slice();
+		clon9 = calculosFinales(1, 0.5, 1, clon3);
+		//vectorConectividadf1 = clon3.slice();
 		//clon3 = [];
 
-		metodoEstaticoEquivalente(vectorConectividadf1);
-		addTablaCodigoGenLateral("tabla-final5", vectorConectividadf1);
-		return vectorConectividadf1;
+		metodoEstaticoEquivalente(clon9);
+		//vectorConectividadf1 = clon9.slice();
+		addTablaCodigoGenLateral("tabla-final5", clon9);
+		codigoGeneticoP1 = clon9.slice();
+		return clon9;
 	}
 
 	function metodoEstaticoEquivalente(codigoGeneticoP1) {
@@ -3561,7 +3542,7 @@ function Calculus() {
 		//vectorConectividadf = vectorAux;
 		return vectorConectividadf1;
 	}
-	function sismoVigas2(cargaLateral, vectorcConectividadf22) {
+	function sismoVigas2(cargaLateral, vectorConectividadf22) {
 		//reescritura de las fuerzas internas
 		for (var j = 0; j < cargaLateral.length; j++) {
 			for (var i = 0; i < vectorConectividadf22.length; i++) {
@@ -3614,12 +3595,13 @@ function Calculus() {
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
 		var clon7 = vectorConectividadf1.slice();
-		clon7 = calculosFinales(10, 0.5, 1, codigoGeneticoP1); //en Sismo cW no actúa, se le puso 10 como identificación interna de la función
-		vectorConectividadf1 = clon7.slice();
-
+		var clon13 = calculosFinales(10, 0.5, 1, clon7); //en Sismo cW no actúa, se le puso 10 como identificación interna de la función
+		//vectorConectividadf1 = clon7.slice();
+		vectorConectividadf1 = clon13.slice();
+		codigoGeneticoP1 = clon13.slice();
 		//metodoEstaticoEquivalente(vectorConectividadf1);
-		addTablaCodigoGen6("tabla-final6", vectorConectividadf1);
-		return vectorConectividadf1;
+		addTablaCodigoGen6("tabla-final6", clon13);
+		return clon13;
 	}
 
 	function addTablasAgain(codigoGeneticoP1) {
@@ -4557,7 +4539,7 @@ function Calculus() {
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								clon = codigoGeneticoP.slice();
 								listaEstructuraPush(clon);
-								clon = [];
+								//clon = [];
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4611,25 +4593,14 @@ function Calculus() {
 								BotonCruce();
 
 								listaOrden();
-								if (reserva == null || reserva == undefined) {
-									reserva = estructurasLista[0].slice();
-								} else {
-									if (
-										reserva[0].evaluacionCodigoGenetico <
-										estructurasLista[0][0].evaluacionCodigoGenetico
-									) {
-										reserva = [];
-										reserva = estructurasLista[0].slice();
-										//console.log("reserva", reserva);
-									}
-								}
-								if (
-									reserva[0].evaluacionCodigoGenetico >
-									estructurasLista[0][0].evaluacionCodigoGenetico
-								) {
-									//console.log("reserva", reserva);
-									estructurasLista.unshift(reserva);
-								}
+
+								// if (
+								// 	reserva[0].evaluacionCodigoGenetico >
+								// 	estructurasLista[0][0].evaluacionCodigoGenetico
+								// ) {
+								// 	//console.log("reserva", reserva);
+								// 	estructurasLista.unshift(reserva);
+								// }
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
 								var pesoEstructura = estructurasLista[0].slice();
 								for (var j = 0; j < pesoEstructura.length; j++) {
@@ -4637,6 +4608,17 @@ function Calculus() {
 										historiapesoy += parseFloat(pesoEstructura[j].peso);
 									}
 								}
+								// if (reserva == null || reserva == undefined) {
+								// 	reserva = pesoEstructura.slice();
+								// } else {
+								// 	if (
+								// 		reserva[0].evaluacionCodigoGenetico < pesoEstructura[0].evaluacionCodigoGenetico
+								// 	) {
+								// 		reserva = [];
+								// 		reserva = pesoEstructura.slice();
+								// 		//console.log("reserva", reserva);
+								// 	}
+								// }
 								estabilidadY = parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
 								estabilidadPuntuacion.push(estabilidadY);
 								//historiaPeso.push(historiapesoy);
@@ -4647,7 +4629,7 @@ function Calculus() {
 									}, \nPuntuación: ${pesoEstructura[0].evaluacionCodigoGenetico}`
 								);
 								//ahora se agregan las tablas
-								codigoGeneticoP = pesoEstructura.slice();
+								//codigoGeneticoP = pesoEstructura.slice();
 								addTableConnect2(pesoEstructura);
 								//borrar tablas innecesarias
 								d3.selectAll("#matrices-rigid-local > *").remove();
