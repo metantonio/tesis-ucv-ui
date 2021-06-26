@@ -2700,7 +2700,7 @@ function Calculus() {
 		estructurasLista = estructurasLista.sort(function(a, b) {
 			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
-		estructurasLista.sort();
+		//estructurasLista.sort();
 		if (estructurasLista.length > poblacionIni * 2) {
 			estructurasLista = estructurasLista.slice(0, poblacionIni * 2);
 		}
@@ -4581,22 +4581,22 @@ function Calculus() {
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 								}
 								BotonCruce();
+
+								listaOrden();
 								if (reserva == null || reserva == undefined) {
 									reserva = estructurasLista[0].slice();
 								} else {
 									if (
-										parseFloat(reserva[0].evaluacionCodigoGenetico) <
-										parseFloat(estructurasLista[0][0].evaluacionCodigoGenetico)
+										reserva[0].evaluacionCodigoGenetico <
+										estructurasLista[0][0].evaluacionCodigoGenetico
 									) {
 										reserva = [];
 										reserva = estructurasLista[0].slice();
 										//console.log("reserva", reserva);
 									}
 								}
-
-								listaOrden();
 								if (
-									reserva[0]["evaluacionCodigoGenetico"] >
+									reserva[0].evaluacionCodigoGenetico >
 									estructurasLista[0][0].evaluacionCodigoGenetico
 								) {
 									//console.log("reserva", reserva);
