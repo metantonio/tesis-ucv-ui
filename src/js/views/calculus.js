@@ -2665,14 +2665,9 @@ function Calculus() {
 
 	var estructurasLista = [];
 	function listaEstructuras(codigoGen) {
-		listaEstructuraPush(codigoGen);
-		estructurasLista = estructurasLista.sort(function(a, b) {
-			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
-		});
-		//console.log("lista de Estructuras", estructurasLista);
-		if (estructurasLista.length > poblacionIni * 2) {
-			estructurasLista = estructurasLista.slice(0, poblacionIni * 2);
-		}
+		var clon15 = codigoGen.slice();
+		listaEstructuraPush(clon15);
+
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
@@ -2705,22 +2700,28 @@ function Calculus() {
 
 	function listaOrden() {
 		var provi = estructurasLista.sort(function(a, b) {
-			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
+			if (
+				!isNaN(parseFloat(b[0].evaluacionCodigoGenetico)) &&
+				!isNaN(parseFloat(a[0].evaluacionCodigoGenetico))
+			) {
+				return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
+			}
 		});
-		//estructurasLista.sort();
-		if (provi.length > poblacionIni * 2) {
-			provi = provi.slice(0, poblacionIni * 2);
-		}
-
 		if (reserva == null || reserva == undefined) {
 			reserva = provi[0].slice();
 		} else {
-			if (reserva[0].evaluacionCodigoGenetico < provi[0][0].evaluacionCodigoGenetico) {
-				reserva = [];
-				reserva = provi[0].slice();
-				//console.log("reserva", reserva);
+			for (var i = 0; i < provi.length; i++) {
+				if (
+					reserva[0].evaluacionCodigoGenetico < provi[i][0].evaluacionCodigoGenetico &&
+					!isNaN(provi[i][0].evaluacionCodigoGenetico)
+				) {
+					reserva = [];
+					reserva = provi[0].slice();
+					//console.log("reserva", reserva);
+				}
 			}
 		}
+		//estructurasLista.sort();
 		estructurasLista = [];
 		estructurasLista = provi.slice();
 		//console.log("lista de Estructuras", estructurasLista);
@@ -3166,9 +3167,9 @@ function Calculus() {
 		//console.log("codigo genético P", codigoGeneticoP);
 		//desplazamientoEnCodigo(codigoGeneticoP);
 		var clon6 = codigoGeneticoP.slice();
-		calculosFinales(coefViento, coefVariable, coefPermanente, clon6);
-		codigoGeneticoP = clon6.slice();
-		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
+		var clon14 = calculosFinales(coefViento, coefVariable, coefPermanente, clon6);
+		codigoGeneticoP = clon14.slice();
+		addTablaFinal(getElementByIdTablaFinal, clon14);
 		//desplazamientosFinales(codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
 		// drawini = dibujoIni();
