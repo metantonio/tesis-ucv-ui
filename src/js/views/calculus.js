@@ -2662,7 +2662,7 @@ function Calculus() {
 
 	var estructurasLista = [];
 	function listaEstructuras(codigoGen) {
-		estructurasLista.push(codigoGen);
+		listaEstructuraPush(codigoGen);
 		estructurasLista = estructurasLista.sort(function(a, b) {
 			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
@@ -2691,19 +2691,23 @@ function Calculus() {
 
 	function listaEstructuraPush(codigoGen) {
 		estructurasLista.push(codigoGen);
-
+		var provisoria = estructurasLista.slice();
+		estructurasLista = [];
+		estructurasLista = provisoria.slice();
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
 
 	function listaOrden() {
-		estructurasLista = estructurasLista.sort(function(a, b) {
+		var provi = estructurasLista.sort(function(a, b) {
 			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
 		//estructurasLista.sort();
-		if (estructurasLista.length > poblacionIni * 2) {
-			estructurasLista = estructurasLista.slice(0, poblacionIni * 2);
+		if (provi.length > poblacionIni * 2) {
+			provi = provi.slice(0, poblacionIni * 2);
 		}
+		estructurasLista = [];
+		estructurasLista = provi.slice();
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
@@ -4404,6 +4408,7 @@ function Calculus() {
 	var estabilidadY = 0;
 	var poblacionIni = 20;
 	let reserva;
+	let clon;
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
 		window.scroll(0, top);
@@ -4454,8 +4459,9 @@ function Calculus() {
 								//ver código genético
 								console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
-								listaEstructuras(codigoGeneticoP);
-
+								clon = codigoGeneticoP.slice();
+								listaEstructuras(clon);
+								clon = [];
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4531,7 +4537,9 @@ function Calculus() {
 								//ver código genético
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
-								listaEstructuraPush(codigoGeneticoP);
+								clon = codigoGeneticoP.slice();
+								listaEstructuraPush(clon);
+								clon = [];
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4573,7 +4581,9 @@ function Calculus() {
 									//ver código genético
 									console.log("codigo genético P", codigoGeneticoP);
 									repetir++; //sirve para borrar div en caso de que repetir>0
-									listaEstructuraPush(codigoGeneticoP);
+									clon = codigoGeneticoP.slice();
+									listaEstructuraPush(clon);
+									clon = [];
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
 									//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
@@ -4619,7 +4629,7 @@ function Calculus() {
 									}, \nPuntuación: ${pesoEstructura[0].evaluacionCodigoGenetico}`
 								);
 								//ahora se agregan las tablas
-								codigoGeneticoP = pesoEstructura;
+								codigoGeneticoP = pesoEstructura.slice();
 								addTableConnect2(pesoEstructura);
 								//borrar tablas innecesarias
 								d3.selectAll("#matrices-rigid-local > *").remove();
