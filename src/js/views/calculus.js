@@ -2693,8 +2693,10 @@ function Calculus() {
 	var desplazamientosFinalesLista = [];
 
 	function listaEstructuraPush(codigoGen) {
-		estructurasLista.push(codigoGen);
+		//estructurasLista.push(codigoGen);
 		var provisoria = estructurasLista.slice();
+		var copy = codigoGen.slice();
+		provisoria.push(copy);
 		estructurasLista = [];
 		estructurasLista = provisoria.slice();
 		//console.log("lista de Estructuras", estructurasLista);
