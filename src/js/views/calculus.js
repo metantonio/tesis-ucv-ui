@@ -59,6 +59,7 @@ function Calculus() {
 	var historiaPeso = [];
 	var texto = "";
 	var entropia = 0;
+	let clon2;
 
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
@@ -2648,14 +2649,16 @@ function Calculus() {
 			codigoGeneticoP1[0]["resultadoComboSismop"] = codigoGeneticoP1[0]["resultadoFinal"];
 		}
 		//evaluación del codigo genético de genera correctamente después de correr los casos de carga
+		clon2 = codigoGeneticoP1.slice();
 		codigoGeneticoP1[0]["evaluacionCodigoGenetico"] =
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo1"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo2"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo3"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoCombo4"]) +
-			parseFloat(codigoGeneticoP1[0]["resultadoComboSismop"]);
+			parseFloat(clon2[0]["resultadoCombo1"]) +
+			parseFloat(clon2[0]["resultadoCombo2"]) +
+			parseFloat(clon2[0]["resultadoCombo3"]) +
+			parseFloat(clon2[0]["resultadoCombo4"]) +
+			parseFloat(clon2[0]["resultadoComboSismop"]);
 		//parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
+		clon2 = [];
 		codigoGeneticoP1[0]["pesoEstructura"] = peso;
 		return codigoGeneticoP1;
 	}
@@ -2715,8 +2718,8 @@ function Calculus() {
 	function cruceGenetico1(primeroLista, segundoLista) {
 		let cruce1 = [];
 		let cruce2 = [];
-		var cod1 = primeroLista;
-		var cod2 = segundoLista;
+		var cod1 = primeroLista.slice();
+		var cod2 = segundoLista.slice();
 		let listaCruce = [];
 		if (segundoLista.length > 1) {
 			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos());
@@ -2962,7 +2965,7 @@ function Calculus() {
 	//var getElementByIdf = "";
 
 	function mutacion(codigoGeneticoP1) {
-		var numeroAleatorio = aleatorio(0, 2);
+		var numeroAleatorio = aleatorio(0, 9);
 
 		if (numeroAleatorio == 1) {
 			if (codigoGeneticoP1[codigoGeneticoP1.length - 1].tipo == "Diagonal") {
@@ -3150,7 +3153,9 @@ function Calculus() {
 		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
 		//console.log("codigo genético P", codigoGeneticoP);
 		//desplazamientoEnCodigo(codigoGeneticoP);
-		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
+		var clon6 = codigoGeneticoP.slice();
+		calculosFinales(coefViento, coefVariable, coefPermanente, clon6);
+		codigoGeneticoP = clon6.slice();
 		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
 		//desplazamientosFinales(codigoGeneticoP);
 		//drawLines3 = dibujoDesplazamiento();
@@ -3188,7 +3193,9 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		//desplazamientoEnCodigo(codigoDelCruce);
 		entropia = 0;
-		vectorConectividadf1 = calculosFinales(0, 0, 1.4, vectorConectividadf1);
+		var clon5 = vectorConectividadf1.slice();
+		clon5 = calculosFinales(0, 0, 1.4, vectorConectividadf1);
+		vectorConectividadf1 = clon5.slice();
 		codigoGeneticoP = vectorConectividadf1.slice();
 		codigoDelCruce = vectorConectividadf1.slice();
 		addTablaCodigoGen1("tabla-final", vectorConectividadf1);
@@ -3207,7 +3214,10 @@ function Calculus() {
 		vectorFuerzasInternasRedux = vectorFReducido();
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		entropia = 1;
-		vectorConectividadf1 = calculosFinales(cW, CV, CP, vectorConectividadf1);
+		var clon4 = vectorConectividadf1.slice();
+		clon4 = calculosFinales(cW, CV, CP, vectorConectividadf1);
+		vectorConectividadf1 = clon4.slice();
+		//clon4 = [];
 		codigoDelCruce = vectorConectividadf1.slice();
 		addTablaCodigoGen22(refTabla, vectorConectividadf1);
 	}
@@ -3219,7 +3229,8 @@ function Calculus() {
 
 		evaluacionCargasLaterales(vectorConectividadf1);
 		evaluacionSismo(vectorConectividadf1);
-		listaEstructuraPush(vectorConectividadf1);
+		var clon8 = vectorConectividadf1.slice();
+		listaEstructuraPush(clon8);
 
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final", "desCombo1");
 		obtenerDesplazamiento(vectorConectividadf1, "tabla-final2", "desCombo2");
@@ -3241,10 +3252,10 @@ function Calculus() {
 		repetir++;
 		let cruceGen0, cruceGen1, mutacion0;
 		var canti = estructurasLista.length;
-		for (var i = 0; i < canti - 1; i++) {
+		for (var i = 0; i < canti - 1; i += 2) {
 			listaAEvaluar = cruceGenetico1(estructurasLista[i], estructurasLista[i + 1]);
-			cruceGen0 = listaAEvaluar[0];
-			cruceGen1 = listaAEvaluar[1];
+			cruceGen0 = listaAEvaluar[0].slice();
+			cruceGen1 = listaAEvaluar[1].slice();
 
 			EvaluacionCruce(cruceGen0);
 			EvaluacionCruce(cruceGen1);
@@ -3352,7 +3363,10 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
-		vectorConectividadf1 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
+		var clon3 = vectorConectividadf1.slice();
+		clon3 = calculosFinales(1, 0.5, 1, codigoGeneticoP1);
+		vectorConectividadf1 = clon3.slice();
+		//clon3 = [];
 
 		metodoEstaticoEquivalente(vectorConectividadf1);
 		addTablaCodigoGenLateral("tabla-final5", vectorConectividadf1);
@@ -3597,7 +3611,9 @@ function Calculus() {
 		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
 		//desplazamientoEnCodigo(codigoGeneticoP1);
 		entropia = 4;
-		vectorConectividadf1 = calculosFinales(10, 0.5, 1, codigoGeneticoP1); //en Sismo cW no actúa, se le puso 10 como identificación interna de la función
+		var clon7 = vectorConectividadf1.slice();
+		clon7 = calculosFinales(10, 0.5, 1, codigoGeneticoP1); //en Sismo cW no actúa, se le puso 10 como identificación interna de la función
+		vectorConectividadf1 = clon7.slice();
 
 		//metodoEstaticoEquivalente(vectorConectividadf1);
 		addTablaCodigoGen6("tabla-final6", vectorConectividadf1);
@@ -4613,7 +4629,7 @@ function Calculus() {
 									estructurasLista.unshift(reserva);
 								}
 								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
-								var pesoEstructura = estructurasLista[0];
+								var pesoEstructura = estructurasLista[0].slice();
 								for (var j = 0; j < pesoEstructura.length; j++) {
 									if (pesoEstructura[j]["peso"] != undefined) {
 										historiapesoy += parseFloat(pesoEstructura[j].peso);
