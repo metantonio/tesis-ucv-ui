@@ -4774,9 +4774,7 @@ function Calculus() {
 							}}>
 							<span>Calcular una estructura al azar</span>
 						</button>
-						<p>
-							Muestra los pasos de cálculo (no aplica Algoritmos Genéticos ni Método Estático Equivalente)
-						</p>
+						<p>Muestra los pasos de cálculo (no aplica Algoritmos Genéticos)</p>
 					</p>
 				</div>
 				<div className="col-sm-4">
@@ -5021,7 +5019,7 @@ function Calculus() {
 					</button>
 					<p>
 						No muestra pasos de cálculo para mayor rendimiento (Aplica el Algoritmo Genético y el Método
-						Estático Equivalente)
+						Estático Equivalente, apto sólo para 10 pisos o alturas menores a 30 metros)
 					</p>
 				</div>
 			</div>
