@@ -3712,7 +3712,7 @@ function Calculus() {
 						//console.log("entro en if reescrituraconectividadf2");
 						if (vectorConectividadf22[i]["nodoIni"][1] == j + 1)
 							vectorConectividadf22[i]["fuerzainterna"] = [
-								-cargaLateral[j] + sismoVertical,
+								-cargaLateral[j] - sismoVertical,
 								0,
 								0,
 								0,
