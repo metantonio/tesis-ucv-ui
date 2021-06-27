@@ -4739,6 +4739,9 @@ function Calculus() {
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
+							if (estructurasLista.length > 2 * poblacionIni) {
+								estructurasLista = estructurasLista.slice(0, 2 * poblacionIni);
+							}
 							console.log("Reserva Gen", reserva);
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 						}}>
