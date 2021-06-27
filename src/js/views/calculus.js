@@ -6,7 +6,21 @@ import { render } from "react-dom";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
 import { array, element, func } from "prop-types";
-import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt, inv, matrix } from "mathjs";
+import {
+	atan2,
+	chain,
+	derivative,
+	e,
+	evaluate,
+	log,
+	pi,
+	pow,
+	round,
+	sqrt,
+	inv,
+	matrix,
+	evaluateDependencies
+} from "mathjs";
 import { create, all } from "mathjs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import App from "./App";
@@ -2723,7 +2737,11 @@ function Calculus() {
 		}
 		//estructurasLista.sort();
 		estructurasLista = [];
+		if (provi.length > 2 * poblacionIni) {
+			provi = provi.slice(0, 2 * poblacionIni);
+		}
 		estructurasLista = provi.slice();
+
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
@@ -4461,13 +4479,14 @@ function Calculus() {
 								console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								clon = codigoGeneticoP.slice();
-								listaEstructuras(clon);
-								clon = [];
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
+								EvaluacionCruce(clon);
+								listaOrden();
+								//clon = [];
+								obtenerDesplazamiento(clon, "tabla-final", "desCombo1");
+								obtenerDesplazamiento(clon, "tabla-final2", "desCombo2");
+								obtenerDesplazamiento(clon, "tabla-final3", "desCombo3");
+								obtenerDesplazamiento(clon, "tabla-final4", "desCombo4");
+								obtenerDesplazamiento(clon, "tabla-final5", "desComboLateral");
 								console.log("Lista de las Estructuras Generadas", estructurasLista);
 							}}>
 							<span>Calcular una estructura al azar</span>
@@ -4539,7 +4558,7 @@ function Calculus() {
 								//console.log("codigo genético P", codigoGeneticoP);
 								repetir++; //sirve para borrar div en caso de que repetir>0
 								clon = codigoGeneticoP.slice();
-								listaEstructuraPush(clon);
+								EvaluacionCruce(clon);
 								//clon = [];
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
@@ -4557,40 +4576,35 @@ function Calculus() {
 								historiapesoy = 0;
 								estabilidadY = 0;
 								//aquí se agrega una estructura aleatoria en cada generación de individuos
-								{
-									//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
-									//caso 1.4 carga permanente
-									entropia = 0;
-									botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
-									//caso 1.2CP+1.6CV
-									entropia = 1;
-									botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
-									//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-									entropia = 2;
-									botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
-									//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
-									entropia = 3;
-									botonCalcular2(
-										"tabla-final4",
-										-1.275,
-										1.275,
-										1.05,
-										"0.75 (1.4CP + 1.7 CV - 1.7 W)"
-									);
-									entropia = 4;
-									botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
-									//ver código genético
-									console.log("codigo genético P", codigoGeneticoP);
-									repetir++; //sirve para borrar div en caso de que repetir>0
-									clon = codigoGeneticoP.slice();
-									listaEstructuraPush(clon);
-									clon = [];
-									//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
-									//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
-									//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
-									//obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
-									//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
-								}
+								// {
+								// 	////se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
+								// 	////caso 1.4 carga permanente
+								// 	entropia = 0;
+								// 	botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+								// 	////caso 1.2CP+1.6CV
+								// 	entropia = 1;
+								// 	botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
+								// 	////caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+								// 	entropia = 2;
+								// 	botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
+								// 	////caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+								// 	entropia = 3;
+								// 	botonCalcular2(
+								// 		"tabla-final4",
+								// 		-1.275,
+								// 		1.275,
+								// 		1.05,
+								// 		"0.75 (1.4CP + 1.7 CV - 1.7 W)"
+								// 	);
+								// 	entropia = 4;
+								// 	botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
+								// 	////ver código genético
+								// 	console.log("codigo genético P", codigoGeneticoP);
+								// 	repetir++;
+								// 	clon = codigoGeneticoP.slice();
+								// 	EvaluacionCruce(clon);
+
+								// }
 								BotonCruce();
 
 								listaOrden();
