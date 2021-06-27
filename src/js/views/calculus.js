@@ -2718,7 +2718,7 @@ function Calculus() {
 		// } else {
 		// 	mejor = 0;
 		// }
-		console.log("mejor puntaje", mejor);
+		console.log("mejor puntaje histórico", mejor);
 		var provi = estructurasLista.sort(function(a, b) {
 			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
@@ -2726,12 +2726,10 @@ function Calculus() {
 			reserva = provi[0].slice();
 		}
 
-		for (var i = 0; i < provi.length; i++) {
-			if (mejor < provi[i][0].evaluacionCodigoGenetico && !isNaN(provi[i][0].evaluacionCodigoGenetico)) {
-				//reserva = [];
-				reserva = provi[0].slice();
-				//console.log("reserva", reserva);
-			}
+		if (mejor < provi[0][0].evaluacionCodigoGenetico) {
+			//reserva = [];
+			reserva = provi[0].slice();
+			//console.log("reserva", reserva);
 		}
 
 		//estructurasLista.sort();
