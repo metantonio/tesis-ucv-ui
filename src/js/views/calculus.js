@@ -3278,11 +3278,13 @@ function Calculus() {
 		);
 	}
 	var listaAEvaluar = [];
+	var probabilidadUsuario = 10;
 	function BotonCruce() {
 		//listaAEvaluar = [];
 		repetir++;
 		let cruceGen0, cruceGen1, mutacion0, mutacion1, codigoA, codigoB;
 		var canti = estructurasLista.length;
+		var probabilidadMutacion;
 		for (var i = 0; i < canti - 1; i++) {
 			codigoA = estructurasLista[i].slice();
 			codigoB = estructurasLista[i + 1].slice();
@@ -3290,14 +3292,18 @@ function Calculus() {
 			cruceGen0 = listaAEvaluar[0].slice();
 			cruceGen1 = listaAEvaluar[1].slice();
 
-			// EvaluacionCruce(cruceGen0);
-			// EvaluacionCruce(cruceGen1);
-			// var clonMutado = cruceGen0.slice();
-			// mutacion0 = mutacion(clonMutado);
-			// EvaluacionCruce(mutacion0);
-			// var clonMutado2 = cruceGen1.slice();
-			// mutacion1 = mutacion(clonMutado2);
-			// EvaluacionCruce(mutacion1);
+			probabilidadMutacion = aleatorio(1, probabilidadUsuario);
+
+			if (probabilidadMutacion == 1) {
+				EvaluacionCruce(cruceGen0);
+				EvaluacionCruce(cruceGen1);
+				var clonMutado = cruceGen0.slice();
+				mutacion0 = mutacion(clonMutado);
+				EvaluacionCruce(mutacion0);
+				var clonMutado2 = cruceGen1.slice();
+				mutacion1 = mutacion(clonMutado2);
+				EvaluacionCruce(mutacion1);
+			}
 		}
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
@@ -4535,6 +4541,25 @@ function Calculus() {
 					/>
 					<p>
 						<span>Mínimo: 3, Máx:200. Se recomienda 3 para probar en celulares.</span>
+					</p>
+					<h4>Probabilidad de Mutación en el cruce</h4>
+					<input
+						className="no-columnas"
+						type="number"
+						placeholder="Ej: 10"
+						id="probabilidad-box"
+						name="no-columnas"
+						min="1"
+						step="1"
+						max="100"
+						onChange={e => {
+							probabilidadUsuario = parseInt(document.getElementById("probabilidad-box").value);
+							document.getElementById("probabilidad-text").innerHTML =
+								"Probabilidad: " + (100 / probabilidadUsuario).toFixed(2) + "%";
+						}}
+					/>
+					<p>
+						<span id="probabilidad-text">La probabilidad será 1/N, N: numero entero </span>
 					</p>
 				</div>
 				<div className="col-sm-4">
