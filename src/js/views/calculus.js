@@ -2711,39 +2711,45 @@ function Calculus() {
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
 	}
-
+	var mejor = 0;
 	function listaOrden() {
+		// if (estabilidadPuntuacion != null) {
+		// 	var mejor = mejorPuntaje(estabilidadPuntuacion);
+		// } else {
+		// 	mejor = 0;
+		// }
+		console.log("mejor puntaje", mejor);
 		var provi = estructurasLista.sort(function(a, b) {
-			if (
-				!isNaN(parseFloat(b[0].evaluacionCodigoGenetico)) &&
-				!isNaN(parseFloat(a[0].evaluacionCodigoGenetico))
-			) {
-				return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
-			}
+			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
 		if (reserva == null || reserva == undefined) {
 			reserva = provi[0].slice();
-		} else {
-			for (var i = 0; i < provi.length; i++) {
-				if (
-					reserva[0].evaluacionCodigoGenetico < provi[i][0].evaluacionCodigoGenetico &&
-					!isNaN(provi[i][0].evaluacionCodigoGenetico)
-				) {
-					reserva = [];
-					reserva = provi[0].slice();
-					//console.log("reserva", reserva);
-				}
+		}
+
+		for (var i = 0; i < provi.length; i++) {
+			if (mejor < provi[i][0].evaluacionCodigoGenetico && !isNaN(provi[i][0].evaluacionCodigoGenetico)) {
+				//reserva = [];
+				reserva = provi[0].slice();
+				//console.log("reserva", reserva);
 			}
 		}
+
 		//estructurasLista.sort();
-		estructurasLista = [];
+		//estructurasLista = [];
 		if (provi.length > 2 * poblacionIni) {
-			provi = provi.slice(0, 2 * poblacionIni);
+			estructurasLista = provi.slice(0, 2 * poblacionIni);
 		}
 		estructurasLista = provi.slice();
 
 		//console.log("lista de Estructuras", estructurasLista);
 		return estructurasLista;
+	}
+
+	function mejorPuntaje(listaPuntos) {
+		var listaje = listaPuntos.sort(function(a, b) {
+			return parseFloat(b) - parseFloat(a);
+		});
+		return listaje[0];
 	}
 
 	function cruceGenetico1(primeroLista, segundoLista) {
@@ -3003,7 +3009,7 @@ function Calculus() {
 				var filter = codigoGeneticoP1.filter((element, index) => index < codigoGeneticoP1.length - 1);
 
 				//codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
-				console.log("hubo mutación tipo 1: Eliminación de Diagonal");
+				//console.log("hubo mutación tipo 1: Eliminación de Diagonal");
 				return filter;
 			}
 		}
@@ -3060,7 +3066,7 @@ function Calculus() {
 					item["peso"] * codigoGeneticoP1[numeroAleatorio]["longitud"]
 				).toFixed(2);
 
-				console.log("hubo mutación tipo 2: Cambio de Perfil");
+				//console.log("hubo mutación tipo 2: Cambio de Perfil");
 				return codigoGeneticoP1;
 			}
 		}
@@ -3286,8 +3292,8 @@ function Calculus() {
 		var canti = estructurasLista.length;
 		var probabilidadMutacion;
 		for (var i = 0; i < canti - 1; i++) {
-			codigoA = estructurasLista[i].slice();
-			codigoB = estructurasLista[i + 1].slice();
+			codigoA = JSON.parse(JSON.stringify(estructurasLista[i]));
+			codigoB = JSON.parse(JSON.stringify(estructurasLista[i + 1]));
 			listaAEvaluar = cruceGenetico1(codigoA, codigoB);
 			cruceGen0 = listaAEvaluar[0].slice();
 			cruceGen1 = listaAEvaluar[1].slice();
@@ -4668,6 +4674,9 @@ function Calculus() {
 								// }
 								estabilidadY = parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
 								estabilidadPuntuacion.push(estabilidadY);
+								if (estabilidadY > mejor) {
+									mejor = estabilidadY;
+								}
 								//historiaPeso.push(historiapesoy);
 								historiaPeso.push(parseFloat(pesoEstructura[0].pesoEstructura));
 								console.log(
