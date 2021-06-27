@@ -2996,7 +2996,7 @@ function Calculus() {
 	//var getElementByIdf = "";
 
 	function mutacion(codigoGeneticoP1) {
-		var numeroAleatorio = aleatorio(0, 9);
+		var numeroAleatorio = aleatorio(1, 2);
 
 		if (numeroAleatorio == 1) {
 			if (codigoGeneticoP1[codigoGeneticoP1.length - 1].tipo == "Diagonal") {
@@ -3281,17 +3281,23 @@ function Calculus() {
 	function BotonCruce() {
 		//listaAEvaluar = [];
 		repetir++;
-		let cruceGen0, cruceGen1, mutacion0;
+		let cruceGen0, cruceGen1, mutacion0, mutacion1, codigoA, codigoB;
 		var canti = estructurasLista.length;
-		for (var i = 0; i < canti - 1; i += 2) {
-			listaAEvaluar = cruceGenetico1(estructurasLista[i], estructurasLista[i + 1]);
+		for (var i = 0; i < canti - 1; i++) {
+			codigoA = estructurasLista[i].slice();
+			codigoB = estructurasLista[i + 1].slice();
+			listaAEvaluar = cruceGenetico1(codigoA, codigoB);
 			cruceGen0 = listaAEvaluar[0].slice();
 			cruceGen1 = listaAEvaluar[1].slice();
 
-			EvaluacionCruce(cruceGen0);
-			EvaluacionCruce(cruceGen1);
-			mutacion0 = mutacion(cruceGen0);
-			EvaluacionCruce(mutacion0);
+			// EvaluacionCruce(cruceGen0);
+			// EvaluacionCruce(cruceGen1);
+			// var clonMutado = cruceGen0.slice();
+			// mutacion0 = mutacion(clonMutado);
+			// EvaluacionCruce(mutacion0);
+			// var clonMutado2 = cruceGen1.slice();
+			// mutacion1 = mutacion(clonMutado2);
+			// EvaluacionCruce(mutacion1);
 		}
 	}
 	function sismoColumna(cargaLateral, vectorConectividadf1) {
@@ -4566,6 +4572,7 @@ function Calculus() {
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 							}
+							listaOrden();
 							//A partir de este punto corre el algoritmo genético
 							if (historiax > 1) {
 								d3.selectAll("#tabla-final5 > *").remove();
