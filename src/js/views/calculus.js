@@ -5019,7 +5019,7 @@ function Calculus() {
 					</button>
 					<p>
 						No muestra pasos de cálculo para mayor rendimiento (Aplica el Algoritmo Genético y el Método
-						Estático Equivalente, apto sólo para 10 pisos o alturas menores a 30 metros)
+						Estático Equivalente, apto para estructuras de hasta 10 pisos o alturas menores a 30 metros)
 					</p>
 				</div>
 			</div>
