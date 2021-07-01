@@ -2370,7 +2370,7 @@ function Calculus() {
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) != 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
 
-					puntuacion += 1 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
+					puntuacion += 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
 				} else {
 				}
 			} else {
@@ -2382,8 +2382,10 @@ function Calculus() {
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) <= 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
 					element["derivaChequeo"] = "Cumple";
+					//puntuacion += 1;
 				} else {
 					element["derivaChequeo"] = "No Cumple";
+					//puntuacion += -1;
 				}
 			}
 
@@ -2514,16 +2516,18 @@ function Calculus() {
 			if (element["tipo"] == "Diagonal") {
 				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.08 * element["longitud"]).toFixed(2) != 0) {
-					element["puntuacion"] = puntuacion + 2 / (element["peso"] - 6.08 * element["longitud"]);
+					element["puntuacion"] =
+						puntuacion + (1 / (element["peso"] - 6.08 * element["longitud"])) * element["peso"];
 				} else {
-					element["puntuacion"] = puntuacion + 2;
+					element["puntuacion"] = puntuacion + 1;
 				}
 			} else {
 				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.1 * element["longitud"]).toFixed(2) != 0) {
-					element["puntuacion"] = puntuacion + 1 / (element["peso"] - 6.1 * element["longitud"]);
+					element["puntuacion"] =
+						puntuacion + (1 / (element["peso"] - 6.1 * element["longitud"])) * element["peso"];
 				} else {
-					element["puntuacion"] = puntuacion + 2;
+					element["puntuacion"] = puntuacion + 1;
 				}
 			}
 
