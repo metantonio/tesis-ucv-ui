@@ -3334,6 +3334,9 @@ function Calculus() {
 				var clonMutado2 = cruceGen1.slice();
 				mutacion1 = mutacion(clonMutado2);
 				EvaluacionCruce(mutacion1);
+			} else {
+				EvaluacionCruce(cruceGen0);
+				EvaluacionCruce(cruceGen1);
 			}
 		}
 	}
