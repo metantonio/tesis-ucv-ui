@@ -2460,7 +2460,7 @@ function Calculus() {
 				n++;
 				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
 					element["alaCompresion"] = "Cumple";
-					puntuacion += 0.5;
+					puntuacion += 1;
 				} else {
 					element["alaCompresion"] = "No Cumple";
 					//puntuacion += 1 * n;
@@ -2478,7 +2478,7 @@ function Calculus() {
 			if (element["tipo"] == "Diagonal") {
 				if (lr <= 0.44 * Math.sqrt(2100000 / 4200)) {
 					element["almaCompresion"] = "Cumple";
-					puntuacion += 0.5;
+					puntuacion += 1;
 				} else {
 					element["almaCompresion"] = "No Cumple";
 					//puntuacion += 1 * n;
