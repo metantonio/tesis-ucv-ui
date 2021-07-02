@@ -4595,6 +4595,34 @@ function Calculus() {
 		});
 		return final;
 	}
+	function addTablaResultados(getElementByIdf, arrayPeso, arrayPuntuacion) {
+		var fila = "";
+		var a = "<th scope='row'>No</th>";
+		a += "<th>Peso (kg)</th>";
+		a += "<th>Estabilidad-Puntuación</th>";
+
+		//serían los encabezados de la tabla
+		var html = "<thead><tr>" + a + "</tr></thead>";
+
+		for (var i = 0; i < arrayPeso.length; i++) {
+			fila +=
+				"<tr>" +
+				"<td>" +
+				(i + 1) +
+				"</td>" +
+				"<td>" +
+				arrayPeso[i] +
+				"</td>" +
+				"<td>" +
+				arrayPuntuacion[i] +
+				"</td>" +
+				"</tr>";
+			//return html + fila, fila;
+		}
+		document.getElementById(getElementByIdf).innerHTML = html + fila;
+		return html + fila;
+	}
+
 	function dibujaGrafica(getElementByIdf, etiquetaX, etiquetaY) {
 		var a =
 			"<LineChart width=500 height=300 data=" + dataGraph + " margin={{top: 5, right: 30, left: 20, bottom: 5}}>";
@@ -4977,6 +5005,8 @@ function Calculus() {
 								d3.selectAll("#tabla-final4 > *").remove();
 								d3.selectAll("#tabla-final5 > *").remove();
 								d3.selectAll("#tabla-final6 > *").remove();
+								d3.selectAll("#tabla-final7 > *").remove();
+								d3.selectAll("#tabla-final8 > *").remove();
 
 								//addTablasAgain(pesoEstructura);
 								addTablaCodigoGen1("tabla-final", pesoEstructura);
@@ -5017,7 +5047,7 @@ function Calculus() {
 								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
 								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
 
-								if (estructurasLista.length > 3 * poblacionIni) {
+								if (estructurasLista.length > 2 * poblacionIni) {
 									estructurasLista = estructurasLista.slice(0, 2 * poblacionIni);
 								}
 							}
@@ -5026,6 +5056,8 @@ function Calculus() {
 							}
 							console.log("Reserva Gen", reserva);
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
+							//agrega tabla con que se dibujan las gráficas
+							addTablaResultados("tabla-final8", historiaPeso, estabilidadPuntuacion);
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
@@ -5220,7 +5252,13 @@ function Calculus() {
 					}}>
 					<span>Dibujar deformada</span>
 				</button>
-			</p>
+			</p>			
+			<div className="text-sm-left">
+				<h2> Tabla resultado por generación</h2>
+			</div>
+			<div className="col-sm-12">
+				<table className="table table-striped" id="tabla-final8" onLoad="" />
+			</div>
 			<p>
 				<button className="btnPaso2 text-center mt-12 title">
 					<Link to="/">
