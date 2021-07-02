@@ -2275,6 +2275,7 @@ function Calculus() {
 		var resistenciaNominal = 0;
 		var resultado = 0;
 		var peso = 0;
+		var contarDiagonales = 0;
 		desplazamientoEnCodigo(codigoGeneticoP1);
 		var codigoGeneticoP2 = JSON.parse(JSON.stringify(codigoGeneticoP1));
 		for (let element of codigoGeneticoP1) {
@@ -2369,8 +2370,7 @@ function Calculus() {
 				);
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) != 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
-
-					puntuacion += 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
+					//puntuacion += 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
 				} else {
 				}
 			} else {
@@ -2391,6 +2391,7 @@ function Calculus() {
 
 			if (element["tipo"] != "Diagonal") {
 				//evaluación del ala flexión
+				contarDiagonales++;
 				element["alaλ"] = element.bf / element.tf;
 				if (element["alaλ"] <= limiteCompactoIAla) {
 					element["alaλOk"] = "Compacta";
@@ -2533,6 +2534,9 @@ function Calculus() {
 
 			//guarda el valor de la puntuación del elemento es una variable acumulativa temporal
 			resultado += element["puntuacion"];
+		}
+		if (contarDiagonales % 2 == 0) {
+			codigoGeneticoP1[0]["puntuacion"] += 5;
 		}
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
 			//guardar los desplazamientos de cada caso
