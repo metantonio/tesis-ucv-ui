@@ -2391,12 +2391,13 @@ function Calculus() {
 
 			if (element["tipo"] != "Diagonal") {
 				//evaluación del ala flexión
-				contarDiagonales++;
+
 				element["alaλ"] = element.bf / element.tf;
 				if (element["alaλ"] <= limiteCompactoIAla) {
 					element["alaλOk"] = "Compacta";
 					puntuacion += 1;
 				} else {
+					contarDiagonales++;
 					//n--;
 					if (element["alaλ"] <= limiteNoCompactoIAla) {
 						element["alaλOk"] = "No Compacta";
