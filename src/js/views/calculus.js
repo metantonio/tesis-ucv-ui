@@ -3321,7 +3321,7 @@ function Calculus() {
 		let cruceGen0, cruceGen1, mutacion0, mutacion1, codigoA, codigoB;
 		var canti = estructurasLista.length;
 		var probabilidadMutacion;
-		for (var i = 0; i < canti - 1; i++) {
+		for (var i = 0; i < canti - 1; i += 2) {
 			codigoA = JSON.parse(JSON.stringify(estructurasLista[i]));
 			codigoB = JSON.parse(JSON.stringify(estructurasLista[i + 1]));
 			listaAEvaluar = cruceGenetico1(codigoA, codigoB);
