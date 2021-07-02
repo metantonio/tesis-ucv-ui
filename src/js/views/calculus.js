@@ -5252,7 +5252,7 @@ function Calculus() {
 					}}>
 					<span>Dibujar deformada</span>
 				</button>
-			</p>			
+			</p>
 			<div className="text-sm-left">
 				<h2> Tabla resultado por generación</h2>
 			</div>
