@@ -4937,35 +4937,34 @@ function Calculus() {
 								historiapesoy = 0;
 								estabilidadY = 0;
 								//aquí se agrega una estructura aleatoria en cada generación de individuos
-								// {
-								// 	////se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
-								// 	////caso 1.4 carga permanente
-								// 	entropia = 0;
-								// 	botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
-								// 	////caso 1.2CP+1.6CV
-								// 	entropia = 1;
-								// 	botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
-								// 	////caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-								// 	entropia = 2;
-								// 	botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
-								// 	////caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
-								// 	entropia = 3;
-								// 	botonCalcular2(
-								// 		"tabla-final4",
-								// 		-1.275,
-								// 		1.275,
-								// 		1.05,
-								// 		"0.75 (1.4CP + 1.7 CV - 1.7 W)"
-								// 	);
-								// 	entropia = 4;
-								// 	botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
-								// 	////ver código genético
-								// 	console.log("codigo genético P", codigoGeneticoP);
-								// 	repetir++;
-								// 	clon = codigoGeneticoP.slice();
-								// 	EvaluacionCruce(clon);
-
-								// }
+								{
+									////se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
+									////caso 1.4 carga permanente
+									entropia = 0;
+									botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
+									////caso 1.2CP+1.6CV
+									entropia = 1;
+									botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
+									////caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
+									entropia = 2;
+									botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
+									////caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
+									entropia = 3;
+									botonCalcular2(
+										"tabla-final4",
+										-1.275,
+										1.275,
+										1.05,
+										"0.75 (1.4CP + 1.7 CV - 1.7 W)"
+									);
+									entropia = 4;
+									botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
+									////ver código genético
+									console.log("codigo genético P", codigoGeneticoP);
+									repetir++;
+									clon = codigoGeneticoP.slice();
+									EvaluacionCruce(clon);
+								}
 								BotonCruce();
 
 								listaOrden();
