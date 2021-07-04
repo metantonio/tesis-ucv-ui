@@ -2827,6 +2827,34 @@ function Calculus() {
 		return listaCruce;
 	}
 
+	function cruceGenetico2(primeroLista, segundoLista) {
+		let cruce1 = [];
+		let cruce2 = [];
+		var cod1 = primeroLista.slice();
+		var cod2 = segundoLista.slice();
+		let listaCruce = [];
+		var numAleatorio = 0;
+		var codigoCorto = Math.min(cod1.length, cod2.length);
+		for (var i = 0; i < codigoCorto; i++) {
+			numAleatorio = aleatorio(0, 1);
+			if (numAleatorio == 1) {
+				//primer cruce
+				cruce1.push(cod1[i]);
+				//segundo cruce
+				cruce2.push(cod2[i]);
+			} else {
+				//segundo cruce
+				cruce2.push(cod1[i]);
+				//primer cruce
+				cruce1.push(cod2[i]);
+			}
+		}
+		listaCruce.push(cruce1);
+		listaCruce.push(cruce2);
+
+		return listaCruce;
+	}
+
 	function addTablaFinal(getElementByIdf, codigoGeneticoP1) {
 		var fila = "";
 
@@ -3306,9 +3334,16 @@ function Calculus() {
 		let cruceGen0, cruceGen1, mutacion0, mutacion1, codigoA, codigoB;
 		var canti = estructurasLista.length;
 		var probabilidadMutacion;
+		var aletoriedadCruce = 0;
 		for (var i = 0; i < canti - 1; i++) {
 			codigoA = JSON.parse(JSON.stringify(estructurasLista[i]));
 			codigoB = JSON.parse(JSON.stringify(estructurasLista[i + 1]));
+			aletoriedadCruce = aleatorio(0, 1);
+			if (aletoriedadCruce == 1) {
+				listaAEvaluar = cruceGenetico1(codigoA, codigoB);
+			} else {
+				listaAEvaluar = cruceGenetico2(codigoA, codigoB);
+			}
 			listaAEvaluar = cruceGenetico1(codigoA, codigoB);
 			cruceGen0 = listaAEvaluar[0].slice();
 			cruceGen1 = listaAEvaluar[1].slice();
