@@ -2519,7 +2519,7 @@ function Calculus() {
 				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.08 * element["longitud"]).toFixed(2) != 0) {
 					element["puntuacion"] =
-						puntuacion + (4 / (element["peso"] - 6.08 * element["longitud"])) * element["peso"];
+						puntuacion + (2 / (element["peso"] - 6.08 * element["longitud"])) * element["peso"];
 				} else {
 					element["puntuacion"] = puntuacion + 4;
 				}
@@ -2527,7 +2527,7 @@ function Calculus() {
 				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.1 * element["longitud"]).toFixed(2) != 0) {
 					element["puntuacion"] =
-						puntuacion + (4 / (element["peso"] - 6.1 * element["longitud"])) * element["peso"];
+						puntuacion + (2 / (element["peso"] - 6.1 * element["longitud"])) * element["peso"];
 				} else {
 					element["puntuacion"] = puntuacion + 4;
 				}
@@ -2789,56 +2789,41 @@ function Calculus() {
 		let listaCruce = [];
 		if (segundoLista.length > 1) {
 			var cantidadCol = parseInt(actions.getNoColumnas()) * parseInt(actions.getNoPisos());
-			//console.log(cantidadCol);
+
 			var mediaCol = Math.floor(cantidadCol / 2);
 
 			var cantidadVig = (parseInt(actions.getNoColumnas()) - 1) * parseInt(actions.getNoPisos());
 			var mediaVig = Math.floor(cantidadVig / 2);
-			//console.log("mediaCol mediaVig", mediaCol, mediaVig);
-			//var cantidadDiag1 = listaE[0].length - cantidadVig - cantidadCol;
-			//var cantidadDiag2 = listaE[1].length - cantidadVig - cantidadCol;
-			//primer cruce:
-			//console.log("cod1[0]", cod1); //hay que convertir listaE[0][0] en array (mapearlo)
+
 			for (var i = 0; i < mediaCol; i++) {
-				//console.log("cod1[0][i]", i, cod1[i]);
+				//primer cruce
 				cruce1.push(cod1[i]);
-				//cruce1.push(Object.entries(cod1[i]));
+				//segundo cruce
+				cruce2.push(cod2[i]);
 			}
 			for (var i = mediaCol; i < cantidadCol; i++) {
-				cruce1.push(cod2[i]);
+				cruce1.push(cod2[i]); //primer cruce
+				cruce2.push(cod1[i]); //segundo cruce
 			}
 			for (var i = cantidadCol; i < cantidadCol + mediaVig; i++) {
-				cruce1.push(cod1[i]);
+				cruce1.push(cod1[i]); //primer cruce
+				cruce2.push(cod2[i]); //segundo cruce
 			}
 			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
-				cruce1.push(cod2[i]);
+				cruce1.push(cod2[i]); //primer cruce
+				cruce2.push(cod1[i]); //segundo cruce
 			}
 			for (var i = cantidadCol + cantidadVig; i < primeroLista.length; i++) {
-				cruce1.push(cod1[i]);
+				cruce1.push(cod1[i]); //primer cruce
 			}
-			//segundo cruce:
-			for (var i = 0; i < mediaCol; i++) {
-				cruce2[i] = cod2[i];
-			}
-			for (var i = mediaCol; i < cantidadCol; i++) {
-				cruce2[i] = cod1[i];
-			}
-			for (var i = cantidadCol; i < cantidadCol + mediaVig; i++) {
-				cruce2[i] = cod2[i];
-			}
-			for (var i = cantidadCol + mediaVig; i < cantidadCol + cantidadVig; i++) {
-				cruce2[i] = cod1[i];
-			}
+
 			for (var i = cantidadCol + cantidadVig; i < segundoLista.length; i++) {
-				cruce2[i] = cod2[i];
+				cruce2.push(cod2[i]); //segundo cruce:
 			}
-			//console.log("cruce1", cruce1);
+
 			listaCruce.push(cruce1);
 			listaCruce.push(cruce2);
-			//estructurasLista.push(cruce1);
-			//estructurasLista.push(cruce2);
 		}
-		//console.log("listaCruce", listaCruce);
 		return listaCruce;
 	}
 

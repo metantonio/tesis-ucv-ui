@@ -293,13 +293,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getCargasV: () => {
 				const store = getStore();
-				console.log(`getCargasV ${store.cargasV}`);
+				//console.log(`getCargasV ${store.cargasV}`);
 				return store.cargasV;
 			},
 
 			getCargasP: () => {
 				const store = getStore();
-				console.log(`getCargasP ${store.cargasP}`);
+				//console.log(`getCargasP ${store.cargasP}`);
 				return store.cargasP;
 			},
 
@@ -335,19 +335,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getPerfilIPN: () => {
 				const store = getStore();
-				console.log(`getIPN ${store.perfilIPN}`);
+				//console.log(`getIPN ${store.perfilIPN}`);
 				return store.perfilIPN;
 			},
 
 			getPerfilUPL: () => {
 				const store = getStore();
-				console.log(`getUPN ${store.perfilUPL}`);
+				//console.log(`getUPN ${store.perfilUPL}`);
 				return store.perfilUPL;
 			},
 
 			getVectorConect: () => {
 				const store = getStore();
-				console.log(`getVectorConect ${store.vectorConect}`);
+				//console.log(`getVectorConect ${store.vectorConect}`);
 				return store.vectorConect;
 			},
 			getZonaSismica: () => {
