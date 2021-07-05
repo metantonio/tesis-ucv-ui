@@ -2523,17 +2523,17 @@ function Calculus() {
 				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.08 * element["longitud"]).toFixed(2) != 0) {
 					element["puntuacion"] =
-						puntuacion + (2 / (element["peso"] - 6.08 * element["longitud"])) * element["peso"];
+						puntuacion + (1 / (element["peso"] - 6.08 * element["longitud"])) * element["peso"];
 				} else {
-					element["puntuacion"] = puntuacion + 4;
+					element["puntuacion"] = puntuacion + 1;
 				}
 			} else {
 				//console.log("puntuación", puntuacion);
 				if (element["peso"] - (6.1 * element["longitud"]).toFixed(2) != 0) {
 					element["puntuacion"] =
-						puntuacion + (2 / (element["peso"] - 6.1 * element["longitud"])) * element["peso"];
+						puntuacion + (1 / (element["peso"] - 6.1 * element["longitud"])) * element["peso"];
 				} else {
-					element["puntuacion"] = puntuacion + 4;
+					element["puntuacion"] = puntuacion + 1;
 				}
 			}
 
