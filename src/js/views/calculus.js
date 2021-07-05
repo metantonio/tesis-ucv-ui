@@ -3093,7 +3093,60 @@ function Calculus() {
 			var numeroAleatorio2;
 			numeroAleatorio2 = aleatorio(0, codigoGeneticoP1.length - 1);
 			if (codigoGeneticoP1[numeroAleatorio2].tipo != "Diagonal") {
-				var item = listaIPN[aleatorio(0, 1)]; //de donde copiará los perfiles aleatorios
+				var item = listaIPN[aleatorio(0, 3)]; //de donde copiará los perfiles aleatorios
+
+				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
+				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
+				codigoGeneticoP1[numeroAleatorio2]["inerciaY"] = item["iy"];
+				codigoGeneticoP1[numeroAleatorio2]["dmm"] = item["altura"];
+				codigoGeneticoP1[numeroAleatorio2]["bf"] = item["bf"];
+				codigoGeneticoP1[numeroAleatorio2]["tf"] = item["tf"];
+				codigoGeneticoP1[numeroAleatorio2]["tw"] = item["tw"];
+				codigoGeneticoP1[numeroAleatorio2]["sx"] = item["sx"];
+				codigoGeneticoP1[numeroAleatorio2]["zx"] = item["zx"];
+				codigoGeneticoP1[numeroAleatorio2]["rx"] = item["rx"];
+				codigoGeneticoP1[numeroAleatorio2]["sy"] = item["sy"];
+				codigoGeneticoP1[numeroAleatorio2]["zy"] = item["zy"];
+				codigoGeneticoP1[numeroAleatorio2]["ry"] = item["ry"];
+				codigoGeneticoP1[numeroAleatorio2]["jj"] = item["j"];
+				codigoGeneticoP1[numeroAleatorio2]["cw"] = item["cw"];
+				codigoGeneticoP1[numeroAleatorio2]["area"] = item["area"];
+				codigoGeneticoP1[numeroAleatorio2]["a"] = (
+					(codigoGeneticoP1[numeroAleatorio2]["elasticidad"] * codigoGeneticoP1[numeroAleatorio2]["area"]) /
+					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio2]["b"] = (
+					(12 *
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 3)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio2]["c"] = (
+					(6 *
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 2)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio2]["d"] = (
+					(4 *
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio]["e"] = (
+					(2 *
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
+				).toFixed(3);
+				codigoGeneticoP1[numeroAleatorio2]["peso"] = (
+					item["peso"] * codigoGeneticoP1[numeroAleatorio2]["longitud"]
+				).toFixed(2);
+
+				//console.log("hubo mutación tipo 2: Cambio de Perfil");
+				return codigoGeneticoP1;
+			} else {
+				var item = listUPL[aleatorio(0, 3)]; //de donde copiará los perfiles aleatorios
 
 				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
 				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
