@@ -604,7 +604,7 @@ function Calculus() {
 			};
 		} // aquí termina el for de Vigas
 
-		for (var i = 0; i < aleatorio(1, actions.getNoPisos() * actions.getNoColumnas()); i++) {
+		for (var i = 0; i < aleatorio(2, actions.getNoPisos() * actions.getNoColumnas()); i++) {
 			item = listUPL[Math.floor(Math.random() * listUPL.length)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
@@ -2839,18 +2839,48 @@ function Calculus() {
 		let listaCruce = [];
 		var numAleatorio = 0;
 		var codigoCorto = Math.min(cod1.length, cod2.length);
-		for (var i = 0; i < codigoCorto; i++) {
+		var codigoLargo = Math.max(cod1.length, cod2.length);
+
+		for (var i = 0; i < codigoLargo; i++) {
 			numAleatorio = aleatorio(0, 1);
-			if (numAleatorio == 1) {
-				//primer cruce
-				cruce1.push(cod1[i]);
-				//segundo cruce
-				cruce2.push(cod2[i]);
+			if (i < codigoCorto) {
+				if (numAleatorio == 1) {
+					//primer cruce
+					cruce1.push(cod1[i]);
+					//segundo cruce
+					cruce2.push(cod2[i]);
+				} else {
+					//segundo cruce
+					cruce2.push(cod1[i]);
+					//primer cruce
+					cruce1.push(cod2[i]);
+				}
 			} else {
-				//segundo cruce
-				cruce2.push(cod1[i]);
-				//primer cruce
-				cruce1.push(cod2[i]);
+				if (cod1.length > cod2.length) {
+					if (numAleatorio == 1) {
+						//primer cruce
+						cruce1.push(cod1[i]);
+						//segundo cruce
+						cruce2.push(cod1[i]);
+					} else {
+						//segundo cruce
+						cruce2.push(cod1[i]);
+						//primer cruce
+						cruce1.push(cod1[i]);
+					}
+				} else {
+					if (numAleatorio == 1) {
+						//primer cruce
+						cruce1.push(cod2[i]);
+						//segundo cruce
+						cruce2.push(cod2[i]);
+					} else {
+						//segundo cruce
+						cruce2.push(cod2[i]);
+						//primer cruce
+						cruce1.push(cod2[i]);
+					}
+				}
 			}
 		}
 		listaCruce.push(cruce1);
@@ -3060,62 +3090,188 @@ function Calculus() {
 			}
 		}
 		if (numeroAleatorio == 2) {
-			numeroAleatorio == aleatorio(0, codigoGeneticoP1.length - 1);
-			if (codigoGeneticoP1[numeroAleatorio].tipo != "Diagonal") {
+			var numeroAleatorio2;
+			numeroAleatorio2 = aleatorio(0, codigoGeneticoP1.length - 1);
+			if (codigoGeneticoP1[numeroAleatorio2].tipo != "Diagonal") {
 				var item = listaIPN[aleatorio(0, 1)]; //de donde copiará los perfiles aleatorios
 
-				codigoGeneticoP1[numeroAleatorio]["elemento"] = item["designacion"];
-				codigoGeneticoP1[numeroAleatorio]["inercia"] = item["ix"];
-				codigoGeneticoP1[numeroAleatorio]["inerciaY"] = item["iy"];
-				codigoGeneticoP1[numeroAleatorio]["dmm"] = item["altura"];
-				codigoGeneticoP1[numeroAleatorio]["bf"] = item["bf"];
-				codigoGeneticoP1[numeroAleatorio]["tf"] = item["tf"];
-				codigoGeneticoP1[numeroAleatorio]["tw"] = item["tw"];
-				codigoGeneticoP1[numeroAleatorio]["sx"] = item["sx"];
-				codigoGeneticoP1[numeroAleatorio]["zx"] = item["zx"];
-				codigoGeneticoP1[numeroAleatorio]["rx"] = item["rx"];
-				codigoGeneticoP1[numeroAleatorio]["sy"] = item["sy"];
-				codigoGeneticoP1[numeroAleatorio]["zy"] = item["zy"];
-				codigoGeneticoP1[numeroAleatorio]["ry"] = item["ry"];
-				codigoGeneticoP1[numeroAleatorio]["jj"] = item["j"];
-				codigoGeneticoP1[numeroAleatorio]["cw"] = item["cw"];
-				codigoGeneticoP1[numeroAleatorio]["area"] = item["area"];
-				codigoGeneticoP1[numeroAleatorio]["a"] = (
-					(codigoGeneticoP1[numeroAleatorio]["elasticidad"] * codigoGeneticoP1[numeroAleatorio]["area"]) /
-					(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100)
+				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
+				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
+				codigoGeneticoP1[numeroAleatorio2]["inerciaY"] = item["iy"];
+				codigoGeneticoP1[numeroAleatorio2]["dmm"] = item["altura"];
+				codigoGeneticoP1[numeroAleatorio2]["bf"] = item["bf"];
+				codigoGeneticoP1[numeroAleatorio2]["tf"] = item["tf"];
+				codigoGeneticoP1[numeroAleatorio2]["tw"] = item["tw"];
+				codigoGeneticoP1[numeroAleatorio2]["sx"] = item["sx"];
+				codigoGeneticoP1[numeroAleatorio2]["zx"] = item["zx"];
+				codigoGeneticoP1[numeroAleatorio2]["rx"] = item["rx"];
+				codigoGeneticoP1[numeroAleatorio2]["sy"] = item["sy"];
+				codigoGeneticoP1[numeroAleatorio2]["zy"] = item["zy"];
+				codigoGeneticoP1[numeroAleatorio2]["ry"] = item["ry"];
+				codigoGeneticoP1[numeroAleatorio2]["jj"] = item["j"];
+				codigoGeneticoP1[numeroAleatorio2]["cw"] = item["cw"];
+				codigoGeneticoP1[numeroAleatorio2]["area"] = item["area"];
+				codigoGeneticoP1[numeroAleatorio2]["a"] = (
+					(codigoGeneticoP1[numeroAleatorio2]["elasticidad"] * codigoGeneticoP1[numeroAleatorio2]["area"]) /
+					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
 				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio]["b"] = (
+				codigoGeneticoP1[numeroAleatorio2]["b"] = (
 					(12 *
-						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
-					Math.pow(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100, 3)
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 3)
 				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio]["c"] = (
+				codigoGeneticoP1[numeroAleatorio2]["c"] = (
 					(6 *
-						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
-					Math.pow(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100, 2)
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 2)
 				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio]["d"] = (
+				codigoGeneticoP1[numeroAleatorio2]["d"] = (
 					(4 *
-						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
-					(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100)
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
 				).toFixed(3);
 				codigoGeneticoP1[numeroAleatorio]["e"] = (
 					(2 *
-						codigoGeneticoP1[numeroAleatorio]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio]["inercia"]) /
-					(codigoGeneticoP1[numeroAleatorio]["longitud"] * 100)
+						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
+						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
+					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
 				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio]["peso"] = (
-					item["peso"] * codigoGeneticoP1[numeroAleatorio]["longitud"]
+				codigoGeneticoP1[numeroAleatorio2]["peso"] = (
+					item["peso"] * codigoGeneticoP1[numeroAleatorio2]["longitud"]
 				).toFixed(2);
 
 				//console.log("hubo mutación tipo 2: Cambio de Perfil");
 				return codigoGeneticoP1;
 			}
 		}
+
+		// if (numeroAleatorio == 3) {
+		// 	//"aquí se agregarán diagonales nuevas"
+		// 	var item = listUPL[Math.floor(Math.random() * listUPL.length)]; //de donde copiará los perfiles aleatorios
+		// 	//console.log(item);
+		// 	var numeroAleatorio2 = codigoGeneticoP1.length;
+		// 	codigoGeneticoP1[numeroAleatorio2] = {
+		// 		elemento: "",
+		// 		puntoIni: [],
+		// 		puntoFin: [],
+		// 		a: 0,
+		// 		b: 0,
+		// 		c: 0,
+		// 		d: 0,
+		// 		e: 0,
+		// 		teta: 0,
+		// 		cos: 0,
+		// 		sin: 0,
+		// 		inercia: 1,
+		// 		elasticidad: 2100000,
+		// 		longitud: 10,
+		// 		peso: 0,
+		// 		nodoIni: [],
+		// 		nodoFin: [],
+		// 		tipo: "",
+		// 		vectorX: [],
+		// 		vectorY: [],
+		// 		fuerzainterna: [0, 0, 0, 0, 0, 0],
+		// 		fuerzasGlobales: [0, 0, 0, 0, 0, 0],
+
+		// 		desplazamientoNodoIni: [0, 0, 0]
+		// 	};
+		// 	codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["inerciaY"] = item["iy"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["dmm"] = item["altura"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["bf"] = item["bf"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["tf"] = item["tf"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["tw"] = item["tw"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["sx"] = item["sx"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["zx"] = item["zx"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["rx"] = item["rx"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["sy"] = item["sy"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["zy"] = item["zy"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["ry"] = item["ry"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["jj"] = item["j"];
+		// 	codigoGeneticoP1[numeroAleatorio2]["cw"] = item["cw"];
+		// 	//console.log(i);
+		// 	codigoGeneticoP1[numeroAleatorio2]["puntoIni"] =
+		// 		nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+		// 	codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
+		// 		nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+		// 	while (
+		// 		codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0] ==
+		// 			codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] ||
+		// 		codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1] == codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1]
+		// 	) {
+		// 		codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
+		// 			nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+		// 	}
+		// 	//var temp4 = i - temp + 1;
+		// 	codigoGeneticoP1[numeroAleatorio2]["nodoIni"] = matchCoord(codigoGeneticoP1[numeroAleatorio2]["puntoIni"]);
+		// 	//var temp2 = temp + temp4;
+		// 	//console.log("temp2", temp2);
+		// 	codigoGeneticoP1[numeroAleatorio2]["nodoFin"] = matchCoord(codigoGeneticoP1[numeroAleatorio2]["puntoFin"]);
+		// 	codigoGeneticoP1[numeroAleatorio2]["vectorX"] = matchCoord2(codigoGeneticoP1[numeroAleatorio2]["puntoIni"]);
+		// 	codigoGeneticoP1[numeroAleatorio2]["vectorY"] = matchCoord2(codigoGeneticoP1[numeroAleatorio2]["puntoFin"]);
+		// 	//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
+		// 	codigoGeneticoP1[numeroAleatorio2]["longitud"] = Math.sqrt(
+		// 		Math.pow(
+		// 			codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] -
+		// 				codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0],
+		// 			2
+		// 		) +
+		// 			Math.pow(
+		// 				codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1] -
+		// 					codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1],
+		// 				2
+		// 			)
+		// 	);
+		// 	//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
+
+		// 	if (
+		// 		(codigoGeneticoP1[numeroAleatorio2]["longitud"] != actions.getLuzVano()) &
+		// 		(codigoGeneticoP1[numeroAleatorio2]["longitud"] != actions.getEntrePiso())
+		// 	) {
+		// 		codigoGeneticoP1[numeroAleatorio2]["area"] = item["area"];
+		// 		codigoGeneticoP1[numeroAleatorio2]["a"] = (
+		// 			(codigoGeneticoP1[numeroAleatorio2]["elasticidad"] * codigoGeneticoP1[numeroAleatorio2]["area"]) /
+		// 			(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
+		// 		).toFixed(3);
+		// 		codigoGeneticoP1[numeroAleatorio2]["b"] = (0).toFixed(3);
+		// 		codigoGeneticoP1[numeroAleatorio2]["c"] = (0).toFixed(3);
+		// 		codigoGeneticoP1[numeroAleatorio2]["d"] = (0).toFixed(3);
+		// 		codigoGeneticoP1[numeroAleatorio2]["e"] = (0).toFixed(3);
+		// 		codigoGeneticoP1[numeroAleatorio2]["peso"] = (
+		// 			item["peso"] * codigoGeneticoP1[numeroAleatorio2]["longitud"]
+		// 		).toFixed(2); //peso del elemento
+		// 		if (
+		// 			codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] -
+		// 				codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0] !=
+		// 			0
+		// 		) {
+		// 			codigoGeneticoP1[numeroAleatorio2]["teta"] = Math.atan(
+		// 				(codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1] -
+		// 					codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1]) /
+		// 					(codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] -
+		// 						codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0])
+		// 			);
+		// 		} else {
+		// 			codigoGeneticoP1[numeroAleatorio2]["teta"] = (Math.PI / 2).toFixed(6);
+		// 		}
+		// 		codigoGeneticoP1[numeroAleatorio2]["cos"] = Math.cos(
+		// 			codigoGeneticoP1[numeroAleatorio2]["teta"]
+		// 		).toFixed(3);
+		// 		if (codigoGeneticoP1[numeroAleatorio2]["teta"] == Math.PI / 2) {
+		// 			codigoGeneticoP1[numeroAleatorio2]["cos"] = 0;
+		// 		}
+		// 		codigoGeneticoP1[numeroAleatorio2]["sin"] = Math.sin(
+		// 			codigoGeneticoP1[numeroAleatorio2]["teta"]
+		// 		).toFixed(3);
+		// 		codigoGeneticoP1[numeroAleatorio2]["tipo"] = "Diagonal";
+		// 	}
+		// }
+
 		//cuando no hay mutación regresa el mismo código genético de entrada
 		return codigoGeneticoP1;
 	}
