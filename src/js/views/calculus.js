@@ -2361,7 +2361,7 @@ function Calculus() {
 			}
 			//falta agregar derivas, condiciones
 			peso += parseFloat(element.peso);
-
+			var temp;
 			//Derivas
 			if (element["tipo"] == "Columna") {
 				//el elemento
@@ -2370,8 +2370,12 @@ function Calculus() {
 				);
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) != 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
-					//puntuacion += 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
-				} else {
+					temp = 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
+					if (temp > 5) {
+						puntuacion += 5;
+					} else {
+						puntuacion += temp;
+					}
 				}
 			} else {
 				element["deriva"] = 0;
@@ -2699,8 +2703,8 @@ function Calculus() {
 			parseFloat(clon2[0]["resultadoCombo2"]) +
 			parseFloat(clon2[0]["resultadoCombo3"]) +
 			parseFloat(clon2[0]["resultadoCombo4"]) +
-			parseFloat(clon2[0]["resultadoComboSismop"]) +
-			parseFloat(clon2[0]["resultadoComboSismon"]);
+			parseFloat(clon2[0]["resultadoComboSismop"]) * 1.1 +
+			parseFloat(clon2[0]["resultadoComboSismon"]) * 1.1;
 		//parseFloat(codigoGeneticoP1[0]["resultadoComboLateral"]);
 		//console.log(codigoGeneticoP1);
 		clon2 = [];
