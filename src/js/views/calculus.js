@@ -2386,7 +2386,7 @@ function Calculus() {
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) <= 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
 					element["derivaChequeo"] = "Cumple";
-					puntuacion += 1;
+					puntuacion += 7;
 				} else {
 					element["derivaChequeo"] = "No Cumple";
 					puntuacion += -1;
@@ -5144,6 +5144,7 @@ function Calculus() {
 							if (historiax > 1) {
 								d3.selectAll("#tabla-final5 > *").remove();
 							}
+							console.time("final (ms): ");
 							for (var i = 0; i < generaciones; i++) {
 								historiax++;
 								historia.push(historiax);
@@ -5290,6 +5291,7 @@ function Calculus() {
 							console.log("Lista de las Estructuras Generadas", estructurasLista);
 							//agrega tabla con que se dibujan las gráficas
 							addTablaResultados("tabla-final8", historiaPeso, estabilidadPuntuacion);
+							console.timeEnd("final (ms): ");
 						}}>
 						<span>Calcular Generaciones Seleccionadas</span>
 					</button>
