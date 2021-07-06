@@ -3798,7 +3798,7 @@ function Calculus() {
 		codigoGeneticoP1[0]["pesoPisos"] = listaPesoPiso;
 		codigoGeneticoP1[0]["derivaPisos"] = desplazamientoLateral;
 
-		for (var j = 0; j < listaPesoPisoAltura.length - 1; j++) {
+		for (var j = 0; j < listaPesoPisoAltura.length; j++) {
 			pesoAltura += listaPesoPisoAltura[j];
 			pesoEdificioSismo += listaPesoPiso[j];
 		}
