@@ -3381,7 +3381,7 @@ function Calculus() {
 			multiMatriz = multiplicarMatrices(multiMatriz, matrizL);
 			codigoGeneticoP1[numeroAleatorio2]["rigidez"] = multiMatriz;
 
-			console.log(codigoGeneticoP1);
+			//console.log(codigoGeneticoP1);
 		}
 
 		//cuando no hay mutación regresa el mismo código genético de entrada
