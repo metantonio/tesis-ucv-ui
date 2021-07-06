@@ -3078,7 +3078,7 @@ function Calculus() {
 	//var getElementByIdf = "";
 
 	function mutacion(codigoGeneticoP1) {
-		var numeroAleatorio = aleatorio(1, 2);
+		var numeroAleatorio = aleatorio(1, 3);
 
 		if (numeroAleatorio == 1) {
 			if (codigoGeneticoP1[codigoGeneticoP1.length - 1].tipo == "Diagonal") {
@@ -3203,7 +3203,7 @@ function Calculus() {
 
 		if (numeroAleatorio == 3) {
 			//"aquí se agregarán diagonales nuevas"
-			var item = listUPL[Math.floor(Math.random() * listUPL.length)]; //de donde copiará los perfiles aleatorios
+			var item = listUPL[aleatorio(0, 3)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
 			var numeroAleatorio2 = codigoGeneticoP1.length;
 			codigoGeneticoP1.push({
@@ -3229,7 +3229,8 @@ function Calculus() {
 				vectorY: [],
 				fuerzainterna: [0, 0, 0, 0, 0, 0],
 				fuerzasGlobales: [0, 0, 0, 0, 0, 0],
-
+				//rigidezL:[[],[],[],[],[],[]],
+				rigidez: [[], [], [], [], [], []],
 				desplazamientoNodoIni: [0, 0, 0]
 			});
 			codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
@@ -3323,6 +3324,64 @@ function Calculus() {
 				).toFixed(3);
 				codigoGeneticoP1[numeroAleatorio2]["tipo"] = "Diagonal";
 			}
+			var matrizTemp = [
+				[+codigoGeneticoP1[numeroAleatorio2].a, 0, 0, -codigoGeneticoP1[numeroAleatorio2].a, 0, 0],
+				[
+					0,
+					+codigoGeneticoP1[numeroAleatorio2].b,
+					+codigoGeneticoP1[numeroAleatorio2].c,
+					0,
+					-codigoGeneticoP1[numeroAleatorio2].b,
+					+codigoGeneticoP1[numeroAleatorio2].c
+				],
+				[
+					0,
+					+codigoGeneticoP1[numeroAleatorio2].c,
+					+codigoGeneticoP1[numeroAleatorio2].d,
+					0,
+					-codigoGeneticoP1[numeroAleatorio2].c,
+					+codigoGeneticoP1[numeroAleatorio2].e
+				],
+				[-codigoGeneticoP1[numeroAleatorio2].a, 0, 0, +codigoGeneticoP1[numeroAleatorio2].a, 0, 0],
+				[
+					0,
+					-codigoGeneticoP1[numeroAleatorio2].b,
+					-codigoGeneticoP1[numeroAleatorio2].c,
+					0,
+					+codigoGeneticoP1[numeroAleatorio2].b,
+					-codigoGeneticoP1[numeroAleatorio2].c
+				],
+				[
+					0,
+					+codigoGeneticoP1[numeroAleatorio2].c,
+					+codigoGeneticoP1[numeroAleatorio2].e,
+					0,
+					-codigoGeneticoP1[numeroAleatorio2].c,
+					+codigoGeneticoP1[numeroAleatorio2].d
+				]
+			];
+			var matrizL = [
+				[+codigoGeneticoP1[numeroAleatorio2].cos, +codigoGeneticoP1[numeroAleatorio2].sin, 0, 0, 0, 0],
+				[-codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +codigoGeneticoP1[numeroAleatorio2].cos, +codigoGeneticoP1[numeroAleatorio2].sin, 0],
+				[0, 0, 0, -codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+
+			var matrizLtras = [
+				[+codigoGeneticoP1[numeroAleatorio2].cos, -codigoGeneticoP1[numeroAleatorio2].sin, 0, 0, 0, 0],
+				[+codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0, 0],
+				[0, 0, 0, +codigoGeneticoP1[numeroAleatorio2].cos, -codigoGeneticoP1[numeroAleatorio2].sin, 0],
+				[0, 0, 0, +codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0],
+				[0, 0, 0, 0, 0, 1]
+			];
+			var multiMatriz = multiplicarMatrices(matrizLtras, matrizTemp);
+			multiMatriz = multiplicarMatrices(multiMatriz, matrizL);
+			codigoGeneticoP1[numeroAleatorio2]["rigidez"] = multiMatriz;
+
+			console.log(codigoGeneticoP1);
 		}
 
 		//cuando no hay mutación regresa el mismo código genético de entrada
