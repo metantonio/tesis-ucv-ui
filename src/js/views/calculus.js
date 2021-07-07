@@ -74,7 +74,7 @@ function Calculus() {
 	var texto = "";
 	var entropia = 0;
 	let clon2;
-
+	var solucion = "Global";
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
 			drawLines +=
@@ -3390,7 +3390,14 @@ function Calculus() {
 
 	function show() {
 		var e = document.getElementById("ddlViewBy");
-		var as = document.forms[0].ddlViewBy.value;
+		var as = document.forms[1].ddlViewBy.value;
+		var strUser = e.options[e.selectedIndex].text;
+		//console.log(as, strUser);
+		return strUser;
+	}
+	function show2form() {
+		var e = document.getElementById("ddlViewBy2");
+		var as = document.forms[0].ddlViewBy2.value;
 		var strUser = e.options[e.selectedIndex].text;
 		//console.log(as, strUser);
 		return strUser;
@@ -5074,6 +5081,8 @@ function Calculus() {
 						<button
 							className="btnPaso text-center mt-12 title"
 							onClick={() => {
+								solucion = show2form();
+								console.log("tipo de solución: ", solucion);
 								entropia = 0;
 								//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
 								//caso 1.4 carga permanente
@@ -5162,6 +5171,19 @@ function Calculus() {
 					<p>
 						<span id="probabilidad-text">La probabilidad será 1/N, N: numero entero </span>
 					</p>
+					<h4>Tipo de Diagonales solución</h4>
+					<form>
+						<select id="ddlViewBy2">
+							<option value="1">Local</option>
+							<option value="2" selected="selected">
+								Global
+							</option>
+							{/* <option value="5">desplazamientoNodoIniComboSismon</option> */}
+						</select>
+					</form>
+					<p>
+						<span>Global: Nodos cualesquiera. Local: Nodos de un marco</span>
+					</p>
 				</div>
 				<div className="col-sm-4">
 					<button
@@ -5169,6 +5191,7 @@ function Calculus() {
 						id="myBtn"
 						onClick={() => {
 							generaciones = document.getElementById("generacion-box").value;
+							solucion = show2form();
 							while (estructurasLista.length < poblacionIni) {
 								//caso 1.4 carga permanente
 								entropia = 0;
