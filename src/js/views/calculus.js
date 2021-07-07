@@ -2372,7 +2372,7 @@ function Calculus() {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
 					temp = 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
 					if (temp > 5) {
-						puntuacion += 7;
+						puntuacion += (7 * parseFloat(actions.getNoPisos()) * parseFloat(actions.getNoColumnas())) / 9;
 					} else {
 						puntuacion += temp;
 					}
