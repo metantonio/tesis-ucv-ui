@@ -19,7 +19,8 @@ import {
 	sqrt,
 	inv,
 	matrix,
-	evaluateDependencies
+	evaluateDependencies,
+	json
 } from "mathjs";
 import { create, all } from "mathjs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -603,7 +604,9 @@ function Calculus() {
 				desplazamientoNodoIni: [0, 0, 0]
 			};
 		} // aquí termina el for de Vigas
-
+		var numeroRandom;
+		var arrayIni = [];
+		var arrayFin = [];
 		for (var i = 0; i < aleatorio(2, actions.getNoPisos() * actions.getNoColumnas()); i++) {
 			item = listUPL[Math.floor(Math.random() * listUPL.length)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
@@ -625,12 +628,48 @@ function Calculus() {
 			//console.log(i);
 			elementos["puntoIni"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
 			elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
-			while (
-				elementos["puntoIni"][0] == elementos["puntoFin"][0] ||
-				elementos["puntoIni"][1] == elementos["puntoFin"][1]
-			) {
-				elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+			arrayIni = [];
+			arrayFin = [];
+			arrayIni = elementos["puntoIni"].slice();
+			arrayFin = elementos["puntoFin"].slice();
+			if (solucion == "Global") {
+				while (
+					elementos["puntoIni"][0] == elementos["puntoFin"][0] ||
+					elementos["puntoIni"][1] == elementos["puntoFin"][1]
+				) {
+					elementos["puntoFin"] = nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+				}
 			}
+			if (solucion == "Local") {
+				elementos["puntoFin"] = [];
+				if (arrayIni[0] != 0) {
+					numeroRandom = aleatorio(0, 1);
+					if (numeroRandom == 0) {
+						numeroRandom = -1;
+					}
+					if (arrayIni[0] != parseFloat(actions.getLuzVano()) * parseFloat(actions.getNoColumnas())) {
+						elementos["puntoFin"].push(arrayIni[0] + numeroRandom * parseFloat(actions.getLuzVano()));
+					} else {
+						elementos["puntoFin"].push(arrayIni[0] - parseFloat(actions.getLuzVano()));
+					}
+				} else {
+					elementos["puntoFin"].push(parseFloat(actions.getLuzVano()));
+				}
+				if (arrayIni[1] != 0) {
+					numeroRandom = aleatorio(0, 1);
+					if (numeroRandom == 0) {
+						numeroRandom = -1;
+					}
+					if (arrayIni[1] != parseFloat(actions.getEntrePiso()) * parseFloat(actions.getNoPisos())) {
+						elementos["puntoFin"].push(arrayIni[1] + numeroRandom * parseFloat(actions.getEntrePiso()));
+					} else {
+						elementos["puntoFin"].push(arrayIni[1] - parseFloat(actions.getEntrePiso()));
+					}
+				} else {
+					elementos["puntoFin"].push(parseFloat(actions.getEntrePiso()));
+				}
+			}
+
 			//var temp4 = i - temp + 1;
 			elementos["nodoIni"] = matchCoord(elementos["puntoIni"]);
 			//var temp2 = temp + temp4;
