@@ -647,7 +647,7 @@ function Calculus() {
 					if (numeroRandom == 0) {
 						numeroRandom = -1;
 					}
-					if (arrayIni[0] != parseFloat(actions.getLuzVano()) * parseFloat(actions.getNoColumnas())) {
+					if (arrayIni[0] != parseFloat(actions.getLuzVano()) * (parseFloat(actions.getNoColumnas()) - 1)) {
 						elementos["puntoFin"].push(arrayIni[0] + numeroRandom * parseFloat(actions.getLuzVano()));
 					} else {
 						elementos["puntoFin"].push(arrayIni[0] - parseFloat(actions.getLuzVano()));
@@ -3292,13 +3292,58 @@ function Calculus() {
 				nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
 			codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
 				nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
-			while (
-				codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0] ==
-					codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] ||
-				codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1] == codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1]
-			) {
-				codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
-					nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+			var arrayIni = [];
+			var arrayFin = [];
+			var numeroRandom;
+			arrayIni = codigoGeneticoP1[numeroAleatorio2]["puntoIni"].slice();
+			arrayFin = codigoGeneticoP1[numeroAleatorio2]["puntoFin"].slice();
+			if (solucion == "Global") {
+				while (
+					codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0] ==
+						codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] ||
+					codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1] ==
+						codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1]
+				) {
+					codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
+						nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
+				}
+			}
+			if (solucion == "Local") {
+				codigoGeneticoP1[numeroAleatorio2]["puntoFin"] = [];
+				if (arrayIni[0] != 0) {
+					numeroRandom = aleatorio(0, 1);
+					if (numeroRandom == 0) {
+						numeroRandom = -1;
+					}
+					if (arrayIni[0] != parseFloat(actions.getLuzVano()) * (parseFloat(actions.getNoColumnas()) - 1)) {
+						codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
+							arrayIni[0] + numeroRandom * parseFloat(actions.getLuzVano())
+						);
+					} else {
+						codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
+							arrayIni[0] - parseFloat(actions.getLuzVano())
+						);
+					}
+				} else {
+					codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(parseFloat(actions.getLuzVano()));
+				}
+				if (arrayIni[1] != 0) {
+					numeroRandom = aleatorio(0, 1);
+					if (numeroRandom == 0) {
+						numeroRandom = -1;
+					}
+					if (arrayIni[1] != parseFloat(actions.getEntrePiso()) * parseFloat(actions.getNoPisos())) {
+						codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
+							arrayIni[1] + numeroRandom * parseFloat(actions.getEntrePiso())
+						);
+					} else {
+						codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
+							arrayIni[1] - parseFloat(actions.getEntrePiso())
+						);
+					}
+				} else {
+					codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(parseFloat(actions.getEntrePiso()));
+				}
 			}
 			//var temp4 = i - temp + 1;
 			codigoGeneticoP1[numeroAleatorio2]["nodoIni"] = matchCoord(codigoGeneticoP1[numeroAleatorio2]["puntoIni"]);
