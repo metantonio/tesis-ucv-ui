@@ -3132,7 +3132,7 @@ function Calculus() {
 			var numeroAleatorio2;
 			numeroAleatorio2 = aleatorio(0, codigoGeneticoP1.length - 1);
 			if (codigoGeneticoP1[numeroAleatorio2].tipo != "Diagonal") {
-				var item = listaIPN[aleatorio(0, listaIPN.length-1)]; //de donde copiará los perfiles aleatorios
+				var item = listaIPN[aleatorio(0, listaIPN.length - 1)]; //de donde copiará los perfiles aleatorios
 
 				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
 				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
@@ -3185,7 +3185,7 @@ function Calculus() {
 				//console.log("hubo mutación tipo 2: Cambio de Perfil");
 				return codigoGeneticoP1;
 			} else {
-				var item = listUPL[aleatorio(0, listUPL.length-1)]; //de donde copiará los perfiles aleatorios
+				var item = listUPL[aleatorio(0, listUPL.length - 1)]; //de donde copiará los perfiles aleatorios
 
 				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
 				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
