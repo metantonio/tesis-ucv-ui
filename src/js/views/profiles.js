@@ -213,7 +213,9 @@ function Profiles() {
 					<br />
 				</div>
 				<p>
-					<h4 className="sub-title 2">Muestras del Catálogo de SIDETUR - Perfiles IPN y UPL</h4>
+					<h4 className="sub-title 2">
+						Muestras del Catálogo de SIDETUR - Perfiles IPN y UPL (Perfiles entre 80 y 140 mm de altura)
+					</h4>
 				</p>
 				<div className="col-md-12" id="tabla1">
 					<table className="default" id="tabla-ipn" onLoad="addTableIPN()">
