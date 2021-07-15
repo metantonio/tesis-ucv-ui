@@ -2400,7 +2400,7 @@ function Calculus() {
 			}
 			//falta agregar derivas, condiciones
 			peso += parseFloat(element.peso);
-			var temp;
+			var temp = 2;
 			//Derivas
 			if (element["tipo"] == "Columna") {
 				//el elemento
@@ -2409,7 +2409,7 @@ function Calculus() {
 				);
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) != 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
-					temp = 2 / (1 - 1 / (0.012 - Math.abs(element.deriva) / parseFloat(100 * actions.getEntrePiso())));
+					temp = 2 / (1 - (0.012 - Math.abs(element.deriva) / parseFloat(100 * actions.getEntrePiso())));
 					if (temp > 2) {
 						puntuacion += (20 * parseFloat(actions.getNoPisos()) * parseFloat(actions.getNoColumnas())) / 2;
 					} else {
