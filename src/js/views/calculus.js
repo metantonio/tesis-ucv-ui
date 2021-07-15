@@ -2410,8 +2410,8 @@ function Calculus() {
 				if (Math.abs(element.deriva / parseFloat(100 * actions.getEntrePiso())) != 0.012) {
 					//para el grupo A debe ser menor a 0.012 según 1756-01 tabla 10.1
 					temp = 2 / (1 - 1 / (0.012 - element.deriva / parseFloat(100 * actions.getEntrePiso())));
-					if (temp > 5) {
-						puntuacion += (7 * parseFloat(actions.getNoPisos()) * parseFloat(actions.getNoColumnas())) / 9;
+					if (temp > 2) {
+						puntuacion += (20 * parseFloat(actions.getNoPisos()) * parseFloat(actions.getNoColumnas())) / 2;
 					} else {
 						puntuacion += temp;
 					}
@@ -3242,7 +3242,7 @@ function Calculus() {
 
 		if (numeroAleatorio == 3) {
 			//"aquí se agregarán diagonales nuevas"
-			var item = listUPL[aleatorio(0, 3)]; //de donde copiará los perfiles aleatorios
+			var item = listUPL[aleatorio(0, listUPL.length - 1)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
 			var numeroAleatorio2 = codigoGeneticoP1.length;
 			codigoGeneticoP1.push({
