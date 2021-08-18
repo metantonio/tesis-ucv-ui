@@ -6,29 +6,39 @@
 [![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/4GeeksAcademy/react-hello-webapp.git)
 
 
-### Requisitos para una instalación local:
+## Requisitos para una instalación local:
 - Asegurarse de usar al menos la versión 10 de [node](https://nodejs.org/es/download/)
+
+### Opción 1: Instalación manual desde consola
 
 1. Instalar los paquetes necesarios:
 ```
 $ npm install
-```
-```
+
 $ npm install mathjs
-```
-```
+
 $ npm install chart.js
 ```
 2. Crear un archivo .env:
 ```
 $ cp .env.example .env
 ```
-3. Levantar el servidor local de para entrar en la web, para windows, mac, linux o Gitpod:
+
+### Opción 2: Instalación automática Windows
+
+Para los usuarios de Windows, sólo bastaría con dar ejecutar el archivo **installDependencies.bat**
+
+Esto instalaría las dependencias necesarias y automáticamente crearía el archivo .env
+
+## Ejecución del servidor local
+1. Levantar el servidor local de para entrar en la web, para windows, mac, linux o Gitpod, ubicarse en la carpeta raíz del proyecto y desde consola ejecutar:
 
 ```bash
 $ npm run start
 ```
-4. Abrir en el navegador la web App desde localhost.
+O, simplemente ejecutar el archivo **runServer.bat**
+
+2. Abrir en el navegador la web App desde localhost.
 ```bash
 http://localhost:3000/
 ```
