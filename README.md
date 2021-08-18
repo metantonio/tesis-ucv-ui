@@ -3,10 +3,23 @@
 
 
 # Esta interface está hecha con el boilerplate React JS personalizado por 4Geeks Academy
+
+## Requisitos para una instalación en la nube (método fácil):
+1. Abrir cuenta en GitPod y lanzar proyecto con el siguiente botón: 
 [![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/metantonio/tesis-ucv-ui.git)
-
-
-## Requisitos para una instalación local:
+2. Instalar los paquetes necesarios:
+```
+$ npm install
+```
+3. Crear un archivo .env:
+```
+$ cp .env.example .env
+```
+4. Levantar servidor:
+```
+$ npm run start
+```
+## Requisitos para una instalación local (método usuario intermedio-avanzado):
 - Asegurarse de usar al menos la versión 10 de [node](https://nodejs.org/es/download/)
 
 ### Opción 1: Instalación manual desde consola
