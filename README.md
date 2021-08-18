@@ -20,7 +20,7 @@ cp .env.example .env
 npm run start
 ```
 ## Requisitos para una instalación local (método usuario intermedio-avanzado):
-- Asegurarse de usar al menos la versión 10 de [node](https://nodejs.org/es/download/)
+- Asegurarse de usar al menos la versión 10 de [node](https://nodejs.org/es/download/) y clonar este repositorio en local.
 
 ### Opción 1: Instalación manual desde consola
 
