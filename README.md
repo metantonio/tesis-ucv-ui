@@ -26,7 +26,7 @@ $ cp .env.example .env
 
 ### Opción 2: Instalación automática Windows
 
-Para los usuarios de Windows, sólo bastaría con dar ejecutar el archivo **installDependencies.bat**
+Para los usuarios de Windows, sólo bastaría con dar ejecutar al archivo **installDependencies.bat**
 
 Esto instalaría las dependencias necesarias y automáticamente crearía el archivo .env
 
@@ -55,6 +55,7 @@ La realización de esta interfaz es para el desarrollo de un producto mínimo vi
 Optimización de las Edificaciones de Acero con arriostramientos laterales en un sentido, condicionada a las deriva de piso mediante la aplicación de Algoritmos Genéticos
 ```
 ### Autor: [Martínez, Antonio](https://github.com/metantonio)
+### Contact: [Twitter](https://twitter.com/metantonio) [Facebook](https://www.facebook.com/metantonio/)
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+Distributed under the [MIT](https://choosealicense.com/licenses/mit/) License.
