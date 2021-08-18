@@ -2,7 +2,7 @@
 
 
 
-# Esta interface está hecha con el boilerplate React JS personalizado por 4Geeks Academy
+# Esta interface se elaboró con el boilerplate de React JS personalizado por 4Geeks Academy
 
 ## Requisitos para una instalación en la nube (método fácil):
 1. Abrir cuenta en GitPod y lanzar proyecto con el siguiente botón: 
