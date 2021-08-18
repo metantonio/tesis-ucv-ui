@@ -34,9 +34,9 @@ http://localhost:3000/
 ```
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Acerca del Proyecto
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][imagen del proyecto]](./docs/presentation.jpg)
 
 ## [🙎‍♂️ Acerca del Autor]
 
