@@ -9,15 +9,15 @@
 [![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/metantonio/tesis-ucv-ui.git)
 2. Instalar los paquetes necesarios:
 ```
-$ npm install
+npm install
 ```
 3. Crear un archivo .env:
 ```
-$ cp .env.example .env
+cp .env.example .env
 ```
 4. Levantar servidor:
 ```
-$ npm run start
+npm run start
 ```
 ## Requisitos para una instalación local (método usuario intermedio-avanzado):
 - Asegurarse de usar al menos la versión 10 de [node](https://nodejs.org/es/download/)
@@ -26,15 +26,15 @@ $ npm run start
 
 1. Instalar los paquetes necesarios:
 ```
-$ npm install
+npm install
 
-$ npm install mathjs
+npm install mathjs
 
-$ npm install chart.js
+npm install chart.js
 ```
 2. Crear un archivo .env:
 ```
-$ cp .env.example .env
+cp .env.example .env
 ```
 
 ### Opción 2: Instalación automática Windows
@@ -47,7 +47,7 @@ Esto instalaría las dependencias necesarias y automáticamente crearía el arch
 1. Levantar el servidor local para entrar en la web app, tanto en windows, mac, linux o Gitpod, debe ubicarse en la carpeta raíz del proyecto y desde consola ejecutar:
 
 ```bash
-$ npm run start
+npm run start
 ```
 O, simplemente ejecutar el archivo **runServer.bat** para los usuarios de Windows.
 
