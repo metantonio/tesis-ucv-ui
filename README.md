@@ -7,7 +7,7 @@
 
 
 ### Requisitos para una instalación local:
-- Asegurarse de usar al menos la versión 10 de node
+- Asegurarse de usar al menos la versión 10 de [node](https://nodejs.org/es/download/)
 
 1. Instalar los paquetes necesarios:
 ```
