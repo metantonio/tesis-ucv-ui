@@ -36,7 +36,7 @@ Esto instalaría las dependencias necesarias y automáticamente crearía el arch
 ```bash
 $ npm run start
 ```
-O, simplemente ejecutar el archivo **runServer.bat**
+O, simplemente ejecutar el archivo **runServer.bat** para los usuarios de Windows.
 
 2. Abrir en el navegador la web App desde localhost.
 ```bash
