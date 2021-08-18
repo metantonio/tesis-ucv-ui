@@ -7,7 +7,7 @@
 ## Requisitos para una instalación en la nube (método fácil):
 1. Abrir cuenta en GitPod y lanzar proyecto con el siguiente botón: 
 [![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/metantonio/tesis-ucv-ui.git)
-2. Instalar los paquetes necesarios:
+2. Instalar los paquetes necesarios escribiendo en la consola de comandos:
 ```
 npm install
 ```
