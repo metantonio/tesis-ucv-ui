@@ -36,7 +36,7 @@ http://localhost:3000/
 <!-- ABOUT THE PROJECT -->
 ## Acerca del Proyecto
 
-[![Product Name Screen Shot][imagen del proyecto]](./docs/presentation.jpg)
+[![Product Name Screen Shot][imagen del proyecto]](https://github.com/metantonio/tesis-ucv-ui/blob/main/docs/presentation.jpg)
 
 ## [🙎‍♂️ Acerca del Autor]
 
