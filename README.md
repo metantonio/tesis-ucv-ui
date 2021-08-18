@@ -63,7 +63,7 @@ http://localhost:3000/
 
 ## [🙎‍♂️ Acerca del Autor]
 
-La realización de esta interfaz es para el desarrollo de un producto mínimo viable basado en mi trabajo especial de grado en ingeniería civil: 
+La realización de esta interfaz y software es para el desarrollo de un producto mínimo viable basado en mi trabajo especial de grado en ingeniería civil: 
 
 **Optimización de las Edificaciones de Acero con arriostramientos laterales en un sentido, condicionada a las deriva de piso mediante la aplicación de Algoritmos Genéticos**
 
