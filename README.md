@@ -31,7 +31,7 @@ Para los usuarios de Windows, sólo bastaría con dar ejecutar el archivo **inst
 Esto instalaría las dependencias necesarias y automáticamente crearía el archivo .env
 
 ## Ejecución del servidor local
-1. Levantar el servidor local de para entrar en la web, para windows, mac, linux o Gitpod, ubicarse en la carpeta raíz del proyecto y desde consola ejecutar:
+1. Levantar el servidor local para entrar en la web app, tanto en windows, mac, linux o Gitpod, debe ubicarse en la carpeta raíz del proyecto y desde consola ejecutar:
 
 ```bash
 $ npm run start
