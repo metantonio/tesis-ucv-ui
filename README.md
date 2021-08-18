@@ -3,7 +3,7 @@
 
 
 # Esta interface está hecha con el boilerplate React JS personalizado por 4Geeks Academy
-[![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/4GeeksAcademy/react-hello-webapp.git)
+[![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/metantonio/tesis-ucv-ui.git)
 
 
 ## Requisitos para una instalación local:
