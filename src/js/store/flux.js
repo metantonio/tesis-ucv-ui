@@ -238,9 +238,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			vectorConect: [],
-			zonaSismica: "6",
+			zonaSismica: 6,
 			aceleracionAo: "0.35",
-			factorCorreccion: "0.85",
+			factorCorreccion: 0.85,
 			factorImportancia: "1.3",
 			factorReduccion: "6.0",
 			tAst: "1.0",

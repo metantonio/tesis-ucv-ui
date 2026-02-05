@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext, Component, PureComponent } from "react";
+import React, { useState, useEffect, useContext, Component, PureComponent, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { render } from "react-dom";
 //import dnaImage from "../../img/dna-genetic-algorithm.jpg";
 import "../../styles/structure.scss";
 import "../../styles/calculus.scss";
-import { array, element, func } from "prop-types";
+import PropTypes from "prop-types";
 import {
 	atan2,
 	chain,
@@ -31,51 +31,141 @@ const math = create(all, {});
 const rootElement = document.getElementById("grafica-evolucion1");
 function Calculus() {
 	const { store, actions } = useContext(Context);
-	//const [noColumnas, setNoColumnas] = useState("");
-	var x1 = 0;
-	var x2 = 0;
-	var y1 = 20;
-	var y2 = 15;
-	var drawLines = "";
-	var drawLines2 = "";
-	var drawText = "";
-	//var i = 2;
-	var noCol = actions.getNoColumnas() * actions.getNoPisos();
-	var noVig = actions.getNoPisos * (actions.getNoColumnas - 1);
-	var nodosCoordenadas = [];
-	var nodosCoordenadasV = [];
-	var nodosNumeros = [];
-	var u = 0;
-	var v = 0;
-	var uv = [];
-	//var vectorConectividad = [];
-	var vectorConectividadf = [];
-	var vectorConectividadf1 = [];
-	var vectorConectividadf2 = [];
-	var vectorConectividadf22 = [];
-	var listaPerfiles = actions.getPerfilIPN();
-	var listaIPN = actions.getPerfilIPN();
-	var listUPL = actions.getPerfilUPL();
-	var listaPerfiles = listaPerfiles.concat(listUPL);
+
+	// New Modern State
+	const [is3D, setIs3D] = useState(false);
+	const [poblacion, setPoblacion] = useState(25);
+	const [generacionesP, setGeneracionesP] = useState(5);
+	const [solucion, setSolucion] = useState("Global"); // Global or Local for Diagonals
+	const [showDeformation, setShowDeformation] = useState(false);
+	const [defScale, setDefScale] = useState(500);
+	const [selectedMatrix, setSelectedMatrix] = useState("Global");
+
+	// Calculation Results
+	const [calcResults, setCalcResults] = useState({
+		conectividad: [],
+		mejorEstructura: null,
+		historia: [],
+		pesoHistoria: [],
+		scoreHistoria: [],
+		displacements: [],
+		globalK: null,
+		seismicData: null
+	});
+
+	const MatrixViewer = ({ data, title }) => {
+		if (!data || !data.length) return null;
+		// Show only first 12x12 for performance if it's the global one
+		const displayData = data.slice(0, 12).map(row => row.slice(0, 12));
+
+		return (
+			<div className="matrix-viewer">
+				<div className="card-header mt-3">
+					<h4>{title}</h4>
+				</div>
+				<div className="table-responsive p-3">
+					<table className="matrix-table small-matrix">
+						<tbody>
+							{displayData.map((row, i) => (
+								<tr key={i}>
+									{row.map((val, j) => (
+										<td key={j} className={val === 0 ? "zero-val" : ""}>
+											{typeof val === "number" ? val.toExponential(2) : val}
+										</td>
+									))}
+								</tr>
+							))}
+						</tbody>
+					</table>
+					{data.length > 12 && (
+						<p className="text-muted small mt-2">* Mostrando solo los primeros 12x12 grados de libertad.</p>
+					)}
+				</div>
+			</div>
+		);
+	};
+
+	MatrixViewer.propTypes = {
+		data: PropTypes.array,
+		title: PropTypes.string
+	};
+
+	// Constants & Limits
+	const E = 2100000; // Elasticidad kg/cm2
+	const limitePlasticoIAla = 0.3 * Math.sqrt(E / 4200);
+	const limiteCompactoIAla = 0.376 * Math.sqrt(E / 4200);
+	// ... other constants can stay if needed, but let's modernize
+
+	// 3D coordinate support
+	const nodosCoordenadas = useMemo(
+		() => {
+			const coords = [];
+			const nCol = actions.getNoColumnas();
+			const nPisos = actions.getNoPisos();
+			const dVano = actions.getLuzVano();
+			const dPiso = actions.getEntrePiso();
+
+			// If 3D, we might want to have another dimension for "depth" (Luz Transversal)
+			// For now, let's assume a single frame in Z=0 or a simple 3D grid if requested.
+			// Let's implement a 2-frame 3D grid as a first step for 3D if enabled.
+			const nDepth = is3D ? 2 : 1;
+			const dDepth = is3D ? dVano : 0; // Simplified depth
+
+			for (let k = 0; k < nDepth; k++) {
+				const z = k * dDepth;
+				for (let i = 0; i < nCol; i++) {
+					const x = i * dVano;
+					for (let j = 0; j <= nPisos; j++) {
+						const y = j * dPiso;
+						coords.push([x, y, z]);
+					}
+				}
+			}
+			return coords;
+		},
+		[actions.getNoColumnas(), actions.getNoPisos(), actions.getLuzVano(), actions.getEntrePiso(), is3D]
+	);
+
+	const nodosNumeros = useMemo(
+		() => {
+			return nodosCoordenadas.map((_, index) => index);
+		},
+		[nodosCoordenadas]
+	);
+
+	// DOF per node: 2D = 3 (ux, uy, rz), 3D = 6 (ux, uy, uz, rx, ry, rz)
+	const DOFs = is3D ? 6 : 3;
+
+	// Legacy variable placeholders (mapping to new system to avoid immediate breaks)
 	var repetir = 0;
 	var exagerar = 1;
-	var limitePlasticoIAla = 0.3 * Math.sqrt(2100000 / 4200);
-	var limiteCompactoIAla = 0.376 * Math.sqrt(2100000 / 4200);
-	var limiteNoCompactoIAla = 0.816 * Math.sqrt(2100000 / (4200 - 700));
-	var limitePlasticoIAlma = 3.0 * Math.sqrt(2100000 / 4200);
-	var limiteCompactoIAlma = 3.7 * Math.sqrt(2100000 / 4200);
-	var limiteNoCompactoIAlma = 5.61 * Math.sqrt(2100000 / 4200);
-	var limiteCompactoUAnchoEspesor = 0.3 * Math.sqrt(2100000 / 4200);
-	var limiteEsbeltezU = 5.78 ** Math.sqrt(2100000 / 4200); //si ND3
-	var generaciones = 1;
-	var historiapesoy = 0;
-	var historiax = 0;
 	var historia = [];
 	var historiaPeso = [];
 	var texto = "";
-	var entropia = 0;
-	let clon2;
-	var solucion = "Global";
+	var generations = generacionesP;
+
+	// Global legacy variables to avoid ReferenceErrors
+	var drawLines = "";
+	var drawLines2 = "";
+	var drawText = "";
+	var vectorMatrizRigLocal = [];
+	var vectorMatrizRigGlobal = [];
+	var codigoGeneticoP = [];
+	var vectorFuerzasInternas = [];
+	var matrizReducidaInversa = [];
+	var vectorFuerzasInternasRedux = [];
+	var vectorDesplazamientos = [];
+	var nodosCoordenadasV = [];
+	var vectorConectividadf = [];
+	var vectorConectividadf2 = [];
+	var vectorConectividadf22 = [];
+	var drawini = "";
+	var u, v, uv, ctx;
+	var listaIPN = store.perfilIPN;
+	var listaUPL = store.perfilUPL;
+	var getElementByIdf = "";
+	var coordsLegacy = [];
+	var numNodesLegacy = [];
 	let dibujo = () => {
 		for (var i = 1; i <= actions.getNoColumnas(); i++) {
 			drawLines +=
@@ -138,43 +228,70 @@ function Calculus() {
 		return drawLines2;
 	};
 
+	const project3D = (x, y, z) => {
+		const nx = parseFloat(x) || 0;
+		const ny = parseFloat(y) || 0;
+		const nz = parseFloat(z) || 0;
+
+		if (!is3D) return { x: nx, y: -ny };
+		// Isometric Projection (30 degrees)
+		const isoX = (nx - nz) * 0.866;
+		const isoY = -(ny - (nx + nz) * 0.5);
+		return { x: isoX || 0, y: isoY || 0 };
+	};
+
 	let nodosCoord = () => {
-		for (var i = 0; i <= actions.getNoColumnas() - 1; i++) {
-			u = i * actions.getLuzVano();
-			for (var j = 0; j <= actions.getNoPisos(); j++) {
-				v = j * actions.getEntrePiso();
-				uv = [u, v];
-				nodosCoordenadas.push(uv);
+		coordsLegacy = []; // Populate global legacy array
+		const nDepth = is3D ? 2 : 1;
+		const dDepth = is3D ? actions.getLuzVano() : 0; // Simplified depth
+
+		for (let k = 0; k < nDepth; k++) {
+			const z = k * dDepth;
+			for (var i = 0; i <= actions.getNoColumnas() - 1; i++) {
+				let u = i * actions.getLuzVano();
+				for (var j = 0; j <= actions.getNoPisos(); j++) {
+					let v = j * actions.getEntrePiso();
+					let uv = [u, v, z];
+					coordsLegacy.push(uv);
+				}
 			}
 		}
-		//console.log("nodosCoordColumnas", nodosCoordenadas);
-		return nodosCoordenadas;
+		return coordsLegacy;
 	};
 
 	let nodosCoordVigas = () => {
-		for (var i = 0; i <= actions.getNoPisos(); i++) {
-			v = i * actions.getEntrePiso();
-			for (var j = 0; j <= actions.getNoColumnas() - 1; j++) {
-				u = j * actions.getLuzVano();
-				uv = [u, v];
-				nodosCoordenadasV.push(uv);
+		nodosCoordenadasV = []; // Populate global legacy array
+		const nDepth = is3D ? 2 : 1;
+		const dDepth = is3D ? actions.getLuzVano() : 0;
+
+		for (let k = 0; k < nDepth; k++) {
+			const z = k * dDepth;
+			for (var i = 0; i <= actions.getNoPisos(); i++) {
+				let v = i * actions.getEntrePiso();
+				for (var j = 0; j <= actions.getNoColumnas() - 1; j++) {
+					let u = j * actions.getLuzVano();
+					let uv = [u, v, z];
+					nodosCoordenadasV.push(uv);
+				}
 			}
 		}
-		//console.log("nodosCoordVigas", nodosCoordenadasV, nodosCoordenadasV.length);
 		return nodosCoordenadasV;
 	};
 
 	let nodosNum = () => {
-		for (var i = 0; i <= actions.getNoColumnas() - 1; i++) {
-			u = i;
-			for (var j = 0; j <= actions.getNoPisos(); j++) {
-				v = j;
-				uv = [u, v];
-				nodosNumeros.push(uv);
+		numNodesLegacy = []; // Populate global legacy array
+		const nDepth = is3D ? 2 : 1;
+		for (let k = 0; k < nDepth; k++) {
+			for (var i = 0; i <= actions.getNoColumnas() - 1; i++) {
+				let u = i;
+				for (var j = 0; j <= actions.getNoPisos(); j++) {
+					let v = j;
+					let uv = [u, v, k]; // Third index for depth layer
+					numNodesLegacy.push(uv);
+				}
 			}
 		}
-		//console.log("nodosNum", nodosNumeros);
-		return nodosNumeros;
+		return numNodesLegacy;
 	};
 
 	let tablaConectividad = cViento => {
@@ -380,30 +497,16 @@ function Calculus() {
 		return match;
 	};
 
-	let matchCoord2 = vector => {
-		let matchCoordenadas = {
-			coordMetro: nodosCoordenadas,
-			coordNum: nodosNumeros
-		};
-		//console.log("vector para match", vector);
-		//console.log("vector a comparar", matchCoordenadas["coordMetro"]);
+	const matchCoord2 = vector => {
 		let match = [];
-		//console.log("long lista nodos", nodosNumeros.length);
 		var n = 0;
-		var p = 0;
 		nodosCoordenadas.forEach(element => {
-			//console.log("loop función matchCoord", element);
-			//console.log("index?", n);
-			var elementString = String(element);
-			var vectoString = String(vector);
-			if (elementString == vectoString) {
-				p = 3 * (n + 1);
-				match = [p - 3, p - 2, p - 1];
-				//console.log("aquí hubo el match");
+			if (element.every((val, index) => val === vector[index])) {
+				const startDOF = n * DOFs;
+				match = Array.from({ length: DOFs }, (_, i) => startDOF + i);
 			}
 			n++;
 		});
-		//console.log("match", match);
 		return match;
 	};
 
@@ -608,7 +711,7 @@ function Calculus() {
 		var arrayIni = [];
 		var arrayFin = [];
 		for (var i = 0; i < aleatorio(2, actions.getNoPisos() * actions.getNoColumnas()); i++) {
-			item = listUPL[Math.floor(Math.random() * listUPL.length)]; //de donde copiará los perfiles aleatorios
+			item = listaUPL[Math.floor(Math.random() * listaUPL.length)]; //de donde copiará los perfiles aleatorios
 			//console.log(item);
 			elementos["elemento"] = item["designacion"];
 			elementos["inercia"] = item["ix"];
@@ -1002,74 +1105,155 @@ function Calculus() {
 		});
 		return final;
 	}
-	var vectorMatrizRigLocal = [];
-	var vectorMatrizRigGlobal = [];
+	// These will be populated by the legacy wrappers if called
+	vectorMatrizRigLocal = [];
+	vectorMatrizRigGlobal = [];
 
-	let matrizRigidLocal = () => {
-		let matriz = [[], [], [], [], [], []];
-		let vectorMatrizRigL = [];
-		vectorMatrizRigLocal = [];
-		vectorConectividadf.forEach(element => {
-			matriz = [
-				[+element.a, 0, 0, -element.a, 0, 0],
-				[0, +element.b, +element.c, 0, -element.b, +element.c],
-				[0, +element.c, +element.d, 0, -element.c, +element.e],
-				[-element.a, 0, 0, +element.a, 0, 0],
-				[0, -element.b, -element.c, 0, +element.b, -element.c],
-				[0, +element.c, +element.e, 0, -element.c, +element.d]
+	const calcElementLocalK = element => {
+		const { area, inercia, inerciaY, jj, longitud, elasticidad } = element;
+		const L = longitud * 100; // cm
+		const E = elasticidad;
+		const G = E / (2 * (1 + 0.3)); // G approximated with Poisson = 0.3
+
+		if (!is3D) {
+			// 2D: 6x6 (Axial, Shear Y, Moment Z)
+			const a = (E * area) / L;
+			const b = (12 * E * inercia) / Math.pow(L, 3);
+			const c = (6 * E * inercia) / Math.pow(L, 2);
+			const d = (4 * E * inercia) / L;
+			const e = (2 * E * inercia) / L;
+
+			return [
+				[+a, 0, 0, -a, 0, 0],
+				[0, +b, +c, 0, -b, +c],
+				[0, +c, +d, 0, -c, +e],
+				[-a, 0, 0, +a, 0, 0],
+				[0, -b, -c, 0, +b, -c],
+				[0, +c, +e, 0, -c, +d]
 			];
-			vectorMatrizRigL.push(matriz);
-			matriz = [[], [], [], [], [], []];
-		});
-		//console.log("vector de matrices de Rigidez coord Local", vectorMatrizRigL);
-		vectorMatrizRigLocal = vectorMatrizRigL;
-		return vectorMatrizRigL;
+		} else {
+			// 3D: 12x12 (Axial, Shear Y, Shear Z, Torsion, Moment Y, Moment Z)
+			const Iz = inercia;
+			const Iy = inerciaY || inercia;
+			const J = jj || Iy + Iz;
+
+			const K = Array.from({ length: 12 }, () => Array(12).fill(0));
+
+			// Axial x
+			const axial = (E * area) / L;
+			K[0][0] = K[6][6] = axial;
+			K[0][6] = K[6][0] = -axial;
+
+			// Torsion x
+			const torsion = (G * J) / L;
+			K[3][3] = K[9][9] = torsion;
+			K[3][9] = K[9][3] = -torsion;
+
+			// Bending about Z (Shear Y, Moment Z)
+			const bz = (12 * E * Iz) / Math.pow(L, 3);
+			const cz = (6 * E * Iz) / Math.pow(L, 2);
+			const dz = (4 * E * Iz) / L;
+			const ez = (2 * E * Iz) / L;
+
+			K[1][1] = bz;
+			K[1][5] = cz;
+			K[5][1] = cz;
+			K[5][5] = dz;
+			K[7][7] = bz;
+			K[7][11] = -cz;
+			K[11][7] = -cz;
+			K[11][11] = dz;
+			K[1][7] = K[7][1] = -bz;
+			K[1][11] = K[11][1] = cz;
+			K[5][7] = K[7][5] = -cz;
+			K[5][11] = K[11][5] = ez;
+
+			// Bending about Y (Shear Z, Moment Y)
+			const by = (12 * E * Iy) / Math.pow(L, 3);
+			const cy = (6 * E * Iy) / Math.pow(L, 2);
+			const dy = (4 * E * Iy) / L;
+			const ey = (2 * E * Iy) / L;
+
+			K[2][2] = by;
+			K[2][4] = -cy;
+			K[4][2] = -cy;
+			K[4][4] = dy;
+			K[8][8] = by;
+			K[8][10] = cy;
+			K[10][8] = cy;
+			K[10][10] = dy;
+			K[2][8] = K[8][2] = -by;
+			K[2][10] = K[10][2] = -cy;
+			K[4][8] = K[8][4] = cy;
+			K[4][10] = K[10][4] = ey;
+
+			return K;
+		}
 	};
 
-	let matrizRigidGlogal = () => {
-		let matrizL = [[], [], [], [], [], []];
-		let matrizLtras = [[], [], [], [], [], []];
-		let vectorMatrizLtras = [];
-		let vectorMatrizL = [];
-		vectorMatrizRigGlobal = [];
-		var multi1 = [];
-		vectorConectividadf.forEach(element => {
-			matrizL = [
-				[+element.cos, +element.sin, 0, 0, 0, 0],
-				[-element.sin, +element.cos, 0, 0, 0, 0],
+	const calcElementGlobalK = element => {
+		const K_local = math.matrix(calcElementLocalK(element));
+		const { cos, sin, puntoIni, puntoFin } = element;
+
+		let T;
+		if (!is3D) {
+			const c = parseFloat(cos);
+			const s = parseFloat(sin);
+			T = math.matrix([
+				[c, s, 0, 0, 0, 0],
+				[-s, c, 0, 0, 0, 0],
 				[0, 0, 1, 0, 0, 0],
-				[0, 0, 0, +element.cos, +element.sin, 0],
-				[0, 0, 0, -element.sin, +element.cos, 0],
+				[0, 0, 0, c, s, 0],
+				[0, 0, 0, -s, c, 0],
 				[0, 0, 0, 0, 0, 1]
-			];
-			vectorMatrizL.push(matrizL);
-			matrizL = [[], [], [], [], [], []];
-			matrizLtras = [
-				[+element.cos, -element.sin, 0, 0, 0, 0],
-				[+element.sin, +element.cos, 0, 0, 0, 0],
-				[0, 0, 1, 0, 0, 0],
-				[0, 0, 0, +element.cos, -element.sin, 0],
-				[0, 0, 0, +element.sin, +element.cos, 0],
-				[0, 0, 0, 0, 0, 1]
-			];
-			vectorMatrizLtras.push(matrizLtras);
-			matrizLtras = [[], [], [], [], [], []];
-		});
-		//console.log("vectores de transformación", vectorMatrizLtras, vectorMatrizL);
-		//console.log("vectorMatrizRigLocal", vectorMatrizRigLocal);
-		for (var i = 0; i < vectorMatrizRigLocal.length; i++) {
-			//console.log(i);
-			multi1[i] = multiplicarMatrices(vectorMatrizLtras[i], vectorMatrizRigLocal[i]);
-			//console.log(multi1[i]);
-			multi1[i] = multiplicarMatrices(multi1[i], vectorMatrizL[i]);
-			//console.log(multi1[i]);
-			//vectorMatrizRigGlobal.push(multi1[i]);
-			//console.log("vectorMatrizRigGlobal dentro del for", vectorMatrizRigGlobal);
+			]);
+		} else {
+			// 3D Rotation Matrix
+			const dx = puntoFin[0] - puntoIni[0];
+			const dy = puntoFin[1] - puntoIni[1];
+			const dz = (puntoFin[2] || 0) - (puntoIni[2] || 0);
+			const L = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+
+			const cx = dx / L;
+			const cy = dy / L;
+			const cz = dz / L;
+
+			let r;
+			if (Math.abs(cx) < 0.001 && Math.abs(cz) < 0.001) {
+				const sign = cy > 0 ? 1 : -1;
+				r = [[0, sign, 0], [-sign, 0, 0], [0, 0, 1]];
+			} else {
+				const D = Math.sqrt(cx * cx + cz * cz);
+				r = [[cx, cy, cz], [(-cx * cy) / D, D, (-cy * cz) / D], [-cz / D, 0, cx / D]];
+			}
+
+			const R = math.matrix(r);
+			const zero3 = math.zeros(3, 3);
+			T = math.concat(
+				math.concat(R, zero3, zero3, zero3, 1),
+				math.concat(zero3, R, zero3, zero3, 1),
+				math.concat(zero3, zero3, R, zero3, 1),
+				math.concat(zero3, zero3, zero3, R, 1),
+				0
+			);
 		}
-		//console.log("vector multi1", multi1);
-		//vectorMatrizRigGlobal = multi1;
-		//vectorMatrizRigGlobal = vectorMatrizRigL;
-		return multi1;
+
+		const T_trans = math.transpose(T);
+		const K_global = math.multiply(math.multiply(T_trans, K_local), T);
+		return K_global.toArray();
+	};
+
+	// Legacy wrappers for initialization path
+	let matrizRigidLocal = element => {
+		if (element) return calcElementLocalK(element);
+		vectorMatrizRigLocal = (vectorConectividadf || []).map(el => calcElementLocalK(el));
+		return vectorMatrizRigLocal;
+	};
+
+	let matrizRigidGlogal = element => {
+		if (element) return calcElementGlobalK(element);
+		vectorMatrizRigGlobal = (vectorConectividadf || []).map(el => calcElementGlobalK(el));
+		return vectorMatrizRigGlobal;
 	};
 
 	let matrizRigidLocal2 = codigoGeneticoP1 => {
@@ -1248,22 +1432,16 @@ function Calculus() {
 	var codigoGeneticoP = [];
 
 	function codigoGenetico() {
-		var vectorGenetico = [];
-		vectorGenetico = vectorConectividadf;
-		var vector = [];
-		vector = matrizRigidGlogal();
-		//console.log("vectorGenetico", vectorGenetico);
-		var n = 0;
-		//console.log("vector rigidez global", vector);
-		var final = vectorGenetico.map(function(element, index, array) {
-			element["rigidez"] = vector[n];
-			n++;
-			return element;
+		// Ensure connectivity is refreshed if empty
+		if (vectorConectividadf.length === 0) {
+			tablaConectividad(0);
+			tablaConectividad2(0, 0);
+		}
+
+		return vectorConectividadf.map(element => {
+			const globalK = calcElementGlobalK(element);
+			return { ...element, rigidez: globalK };
 		});
-		//console.log("final", final);
-		vectorGenetico = [];
-		//vectorGenetico=final;
-		return final;
 	}
 	function codigoGenetico2(codigoGeneticoP1) {
 		var vectorGenetico = [];
@@ -1286,215 +1464,240 @@ function Calculus() {
 
 	let matrizRigidezTotal = [];
 
-	let rigidezTotal = () => {
-		matrizRigidezTotal = [];
-		let numNodosu = 0;
-		var tempy = 0;
-		var tempx = 0;
-		var stop = 0;
-		//console.log(actions.getNoPisos(), actions.getNoColumnas());
-		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
-		//console.log("No de nodos", numNodosu);
-		for (var a = 0; a < numNodosu; a++) {
-			matrizRigidezTotal[a] = new Array(numNodosu).fill(0);
-			for (var b = 0; b < numNodosu; b++) {
-				matrizRigidezTotal[a][b] = 0;
+	let rigidezTotal = connectivity => {
+		const numDOFs = nodosCoordenadas.length * DOFs;
+		// Initialize global stiffness matrix with zeros
+		let globalK = math.zeros(numDOFs, numDOFs, "sparse");
+
+		connectivity.forEach(element => {
+			const { rigidez, vectorX, vectorY } = element;
+			// Combined indices [nodeA_dofs, nodeB_dofs]
+			const elementIndices = [...vectorX, ...vectorY];
+
+			for (let i = 0; i < elementIndices.length; i++) {
+				for (let j = 0; j < elementIndices.length; j++) {
+					const row = elementIndices[i];
+					const col = elementIndices[j];
+					const val = globalK.get([row, col]) + rigidez[i][j];
+					globalK.set([row, col], val);
+				}
 			}
-		}
-		//console.log(matrizRigidezTotal);
-		for (var i = 0; i <= numNodosu - 2; i += 3) {
-			for (var j = 0; j <= numNodosu - 2; j += 3) {
-				//console.log("Posición Matriz Rig Total:", i, j);
-				codigoGeneticoP.forEach(element => {
-					//esquina superior izquierda de la matriz rigidez k
-					//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
-					if ((element.vectorX[0] == i) & (element.vectorX[0] == j)) {
-						stop = 0;
-						for (var k = 0; k <= 2; k++) {
-							for (var m = 0; m <= 2; m++) {
-								//console.log("Esquina sup-izq posicion", k, m);
-								matrizRigidezTotal[i + k][m + j] += element.rigidez[k][m];
-								stop++;
-								if (stop > numNodosu * 10) {
-									break;
-								}
-								//console.log(matrizRigidezTotal);
-							}
-						}
-					} else {
-						//esquina superior derecha de la matriz rigidez k
-						if ((element.vectorX[0] == i) & (element.vectorY[0] == j)) {
-							stop = 0;
-							for (var k = 0; k <= 2; k++) {
-								tempy = 0;
-								for (var m = 3; m <= 5; m++) {
-									//console.log("IF esquina sup-derecha pos,", k, m);
-									matrizRigidezTotal[i + k][tempy + j] += element.rigidez[k][m];
-									tempy++;
-									//console.log(matrizRigidezTotal);
-									stop++;
-									if (stop > numNodosu * 10) {
-										break;
-									}
-								}
-							}
-						} else {
-							//esquina inferior izquierda de la matriz rigidez k
-							if ((element.vectorX[0] == j) & (element.vectorY[0] == i)) {
-								tempx = 0;
-								stop = 0;
-								for (var k = 3; k <= 5; k++) {
-									for (var m = 0; m <= 2; m++) {
-										//console.log("IF esquina inf-izquierda pos,", k, m);
-										matrizRigidezTotal[i + tempx][m + j] += element.rigidez[k][m];
-										//console.log(matrizRigidezTotal);
-										stop++;
-										if (stop > numNodosu * 10) {
-											break;
-										}
-									}
-									tempx++;
-								}
-							} else {
-								//esquina inferior derecha de la matriz rigidez k
-								//console.log("esquina inf-derecha,", i, j);
-								//console.log("element.vectoyY[0]", element.vectoyY[0]);
-								if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
-									tempx = 0;
-									stop = 0;
-									//console.log("esquina inf-derecha en el IF,", i, j);
-									for (var k = 3; k <= 5; k++) {
-										tempy = 0;
-										for (var m = 3; m <= 5; m++) {
-											//console.log("tempx, tempy, ", tempx, tempy);
-											//.log("IF esquina inf-derecha pos, ", k, m);
-											//console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
-											matrizRigidezTotal[i + tempx][tempy + j] += element.rigidez[k][m];
-											stop++;
-											if (stop > numNodosu * 100) {
-												break;
-											}
-											//console.log(matrizRigidezTotal);
-											tempy++;
-										}
-										tempx++;
-									}
-								} //aquí cierra el IF comentado
-							}
-						}
-					}
-					return matrizRigidezTotal;
-				});
-			}
-		}
-		//console.log("matriz de rigidez total", matrizRigidezTotal);
+		});
+
+		matrizRigidezTotal = globalK.toArray();
 		return matrizRigidezTotal;
 	};
 
-	let rigidezTotal2 = codigoGeneticoP1 => {
-		matrizRigidezTotal = [];
-		var codigoGeneticoP2 = codigoGeneticoP1;
-		let numNodosu = 0;
-		var tempy = 0;
-		var tempx = 0;
-		var stop = 0;
-		//console.log(actions.getNoPisos(), actions.getNoColumnas());
-		numNodosu = (parseInt(actions.getNoPisos()) + 1) * parseInt(actions.getNoColumnas()) * 3;
-		//console.log("No de nodos", numNodosu);
-		for (var a = 0; a < numNodosu; a++) {
-			matrizRigidezTotal[a] = new Array(numNodosu).fill(0);
-			for (var b = 0; b < numNodosu; b++) {
-				matrizRigidezTotal[a][b] = 0;
-			}
-		}
-		//console.log(matrizRigidezTotal);
-		for (var i = 0; i <= numNodosu - 2; i += 3) {
-			for (var j = 0; j <= numNodosu - 2; j += 3) {
-				//console.log("Posición Matriz Rig Total:", i, j);
-				codigoGeneticoP2.forEach(element => {
-					//esquina superior izquierda de la matriz rigidez k
-					//console.log("element y element.VectorX Y[0]", element, element.vectorX[0], element.vectorY[0]);
-					if ((element.vectorX[0] == i) & (element.vectorX[0] == j)) {
-						stop = 0;
-						for (var k = 0; k <= 2; k++) {
-							for (var m = 0; m <= 2; m++) {
-								//console.log("Esquina sup-izq posicion", k, m);
-								matrizRigidezTotal[i + k][m + j] += element.rigidez[k][m];
-								stop++;
-								if (stop > numNodosu * 10) {
-									break;
-								}
-								//console.log(matrizRigidezTotal);
-							}
-						}
-					} else {
-						//esquina superior derecha de la matriz rigidez k
-						if ((element.vectorX[0] == i) & (element.vectorY[0] == j)) {
-							stop = 0;
-							for (var k = 0; k <= 2; k++) {
-								tempy = 0;
-								for (var m = 3; m <= 5; m++) {
-									//console.log("IF esquina sup-derecha pos,", k, m);
-									matrizRigidezTotal[i + k][tempy + j] += element.rigidez[k][m];
-									tempy++;
-									//console.log(matrizRigidezTotal);
-									stop++;
-									if (stop > numNodosu * 10) {
-										break;
-									}
-								}
-							}
-						} else {
-							//esquina inferior izquierda de la matriz rigidez k
-							if ((element.vectorX[0] == j) & (element.vectorY[0] == i)) {
-								tempx = 0;
-								stop = 0;
-								for (var k = 3; k <= 5; k++) {
-									for (var m = 0; m <= 2; m++) {
-										//console.log("IF esquina inf-izquierda pos,", k, m);
-										matrizRigidezTotal[i + tempx][m + j] += element.rigidez[k][m];
-										//console.log(matrizRigidezTotal);
-										stop++;
-										if (stop > numNodosu * 10) {
-											break;
-										}
-									}
-									tempx++;
-								}
-							} else {
-								//esquina inferior derecha de la matriz rigidez k
-								//console.log("esquina inf-derecha,", i, j);
-								//console.log("element.vectoyY[0]", element.vectoyY[0]);
-								if ((element.vectorY[0] == i) & (element.vectorY[0] == j)) {
-									tempx = 0;
-									stop = 0;
-									//console.log("esquina inf-derecha en el IF,", i, j);
-									for (var k = 3; k <= 5; k++) {
-										tempy = 0;
-										for (var m = 3; m <= 5; m++) {
-											//console.log("tempx, tempy, ", tempx, tempy);
-											//.log("IF esquina inf-derecha pos, ", k, m);
-											//console.log("Matriz Rigidez Total Pos..., ", i + tempx, tempy + j);
-											matrizRigidezTotal[i + tempx][tempy + j] += element.rigidez[k][m];
-											stop++;
-											if (stop > numNodosu * 100) {
-												break;
-											}
-											//console.log(matrizRigidezTotal);
-											tempy++;
-										}
-										tempx++;
-									}
-								} //aquí cierra el IF comentado
-							}
-						}
-					}
-					return matrizRigidezTotal;
+	const analyzeStructure = connectivity => {
+		const numDOFs = nodosCoordenadas.length * DOFs;
+
+		// 1. Build Global K
+		const K_global = math.matrix(math.zeros(numDOFs, numDOFs, "sparse"));
+		connectivity.forEach(element => {
+			const { rigidez, vectorX, vectorY } = element;
+			if (!rigidez || !vectorX || !vectorY) return;
+			const indices = [...vectorX, ...vectorY];
+			indices.forEach((row, i) => {
+				indices.forEach((col, j) => {
+					K_global.set([row, col], (K_global.get([row, col]) || 0) + (rigidez[i][j] || 0));
 				});
+			});
+		});
+
+		// 2. Build Global F (Gravity + Seismic)
+		const F_global = math.zeros(numDOFs);
+
+		// --- Seismic Loading Logic (COVENIN 1756) ---
+		const nPisos = parseInt(actions.getNoPisos()) || 0;
+		const entrePiso = parseFloat(actions.getEntrePiso()) || 0.001; // Avoid div by zero
+		const luzVano = parseFloat(actions.getLuzVano()) || 0;
+		const nColumnas = parseInt(actions.getNoColumnas()) || 0;
+
+		const cp_losa = parseFloat(actions.getCargaLosaPermanente()) || 0;
+		const cv_losa = parseFloat(actions.getCargaLosaVariable()) || 0;
+		const cp_techo = parseFloat(actions.getCargaTechoPermanente()) || 0;
+		const cv_techo = parseFloat(actions.getCargaTechoVariable()) || 0;
+
+		// Calculate weight per level
+		const weightsPerLevel = new Array(nPisos > 0 ? nPisos : 1).fill(0);
+		connectivity.forEach(el => {
+			if (!el.puntoIni || !el.puntoFin) return;
+			const level = Math.round(el.puntoIni[1] / entrePiso);
+			const levelFin = Math.round(el.puntoFin[1] / entrePiso);
+			const elWeight = parseFloat(el.peso || 0) || 0;
+
+			if (level === levelFin) {
+				// Horizontal (Beam)
+				if (level > 0 && level <= nPisos) weightsPerLevel[level - 1] += elWeight;
+			} else {
+				// Vertical (Column/Diagonal)
+				if (level < nPisos && level >= 0) weightsPerLevel[level] += elWeight / 2;
+				if (levelFin > 0 && levelFin <= nPisos) weightsPerLevel[levelFin - 1] += elWeight / 2;
+			}
+		});
+
+		// Add Slab Weights (D + 0.25L)
+		if (nPisos > 0) {
+			const areaTributaria = luzVano * (is3D ? luzVano : 1);
+			for (let i = 0; i < nPisos; i++) {
+				const cp = i === nPisos - 1 ? cp_techo : cp_losa;
+				const cv = i === nPisos - 1 ? cv_techo : cv_losa;
+				const nVanos = nColumnas - 1;
+				weightsPerLevel[i] += (cp + 0.25 * cv) * areaTributaria * (is3D ? nVanos * nVanos : nVanos);
 			}
 		}
-		//console.log("matriz de rigidez total", matrizRigidezTotal);
-		return matrizRigidezTotal;
+
+		const W_total = weightsPerLevel.reduce((a, b) => a + (parseFloat(b) || 0), 0);
+
+		// Spectral Acceleration evaluated at T
+		const H = nPisos * entrePiso;
+		const T = H > 0 ? 0.08 * Math.pow(H, 0.75) : 0.1; // Fundamental Period estimate
+
+		const ao = parseFloat(store.aceleracionAo) || 0;
+		const phi = parseFloat(store.factorCorreccion) || 1;
+		const alpha = parseFloat(store.factorImportancia) || 1;
+		const beta = parseFloat(store.beta) || 1;
+		const tAst = parseFloat(store.tAst) || 1;
+		const ro = parseFloat(store.ro) || 1;
+		const R = parseFloat(store.factorReduccion) || 1;
+
+		let Saeval = 0;
+		if (T < tAst / 4) {
+			Saeval = ao * alpha * phi * (1 + (T / Math.max(0.01, tAst / 4)) * (beta - 1));
+		} else if (T <= tAst) {
+			Saeval = ao * alpha * phi * beta;
+		} else {
+			Saeval = ao * alpha * phi * beta * Math.pow(tAst / T, ro);
+		}
+
+		const V_base = (Saeval * W_total) / (R > 0 ? R : 1);
+
+		// Distribution of lateral forces Fi
+		const lateralForces = weightsPerLevel.map((wi, i) => {
+			const hi = (i + 1) * entrePiso;
+			const numerator = wi * hi;
+			const denominator = weightsPerLevel.reduce((acc, wj, j) => acc + wj * (j + 1) * entrePiso, 0);
+			return V_base * (denominator > 0 ? numerator / denominator : 1 / (nPisos || 1));
+		});
+
+		// Apply horizontal forces (FX) to nodes
+		nodosCoordenadas.forEach((coord, n) => {
+			if (!coord) return;
+			const level = Math.round(coord[1] / entrePiso);
+			if (level > 0 && level <= nPisos) {
+				const nodesAtLevel = nodosCoordenadas.filter(c => Math.round(c[1] / entrePiso) === level).length;
+				if (nodesAtLevel > 0) {
+					const forceShare = (lateralForces[level - 1] || 0) / nodesAtLevel;
+					F_global.set([n * DOFs], (F_global.get([n * DOFs]) || 0) + forceShare);
+				}
+			}
+		});
+
+		// 3. Add gravity and intern forces
+		connectivity.forEach(element => {
+			const { fuerzainterna, vectorX, vectorY } = element;
+			const indices = [...vectorX, ...vectorY];
+			indices.forEach((idx, i) => {
+				const f_val = (fuerzainterna && fuerzainterna[i]) || 0;
+				F_global.set([idx], F_global.get([idx]) + f_val);
+			});
+		});
+
+		// 3. Identify Free DOFs (y != 0)
+		const freeIndices = [];
+		nodosCoordenadas.forEach((coord, n) => {
+			const startDOF = n * DOFs;
+			if (coord[1] !== 0) {
+				// Base nodes fixed
+				for (let i = 0; i < DOFs; i++) freeIndices.push(startDOF + i);
+			}
+		});
+
+		if (freeIndices.length === 0) return null;
+
+		// 4. Reduce System
+		const K_reduced = K_global.subset(math.index(freeIndices, freeIndices));
+		const F_reduced = F_global.subset(math.index(freeIndices));
+
+		// 5. Solve U
+		let U_reduced;
+		try {
+			U_reduced = math.lusolve(K_reduced, F_reduced);
+		} catch (e) {
+			return null;
+		}
+
+		// 6. Map back to full U
+		const U_full = Array(numDOFs).fill(0);
+		freeIndices.forEach((idx, i) => {
+			U_full[idx] = U_reduced.get([i, 0]);
+		});
+
+		// 7. Calculate Story Drifts (Horizontal)
+		const drifts = Array(nPisos).fill(0);
+		for (let i = 0; i < nPisos; i++) {
+			const levelNodes = nodosCoordenadas.filter(c => Math.round(c[1] / entrePiso) === i + 1);
+			const prevLevelNodes = nodosCoordenadas.filter(c => Math.round(c[1] / entrePiso) === i);
+
+			const u_i =
+				levelNodes.length > 0
+					? levelNodes.reduce((acc, c) => {
+							const n = nodosCoordenadas.findIndex(nc => nc[0] === c[0] && nc[1] === c[1]);
+							return acc + U_full[n * DOFs];
+					  }, 0) / levelNodes.length
+					: 0;
+
+			const u_prev =
+				i === 0
+					? 0
+					: prevLevelNodes.length > 0
+						? prevLevelNodes.reduce((acc, c) => {
+								const n = nodosCoordenadas.findIndex(nc => nc[0] === c[0] && nc[1] === c[1]);
+								return acc + U_full[n * DOFs];
+						  }, 0) / prevLevelNodes.length
+						: 0;
+
+			drifts[i] = (u_i - u_prev) / (entrePiso * 100);
+		}
+
+		return {
+			displacements: U_full,
+			globalK: K_global.toArray(),
+			seismicData: {
+				W_total,
+				Sa: Saeval,
+				V_base,
+				lateralForces,
+				drifts
+			}
+		};
+	};
+
+	const evaluateFitness = structure => {
+		let totalWeight = 0;
+		structure.forEach(el => (totalWeight += parseFloat(el.peso || 0)));
+
+		const result = analyzeStructure(structure);
+		if (!result) return 999999; // Penalty for unstable structure
+		const { displacements, seismicData } = result;
+
+		// Simple penalty for excess displacement (max 1/500 L)
+		let penalty = 0;
+		const limit = (actions.getEntrePiso() * actions.getNoPisos()) / 500;
+		displacements.forEach(u => {
+			if (Math.abs(u) > limit) penalty += (Math.abs(u) - limit) * 10000;
+		});
+
+		// Story Drift Penalty (Seismic limit: 0.015)
+		if (seismicData && seismicData.drifts) {
+			seismicData.drifts.forEach(delta => {
+				if (Math.abs(delta) > 0.015) {
+					penalty += (Math.abs(delta) - 0.015) * 100000;
+				}
+			});
+		}
+
+		return totalWeight + penalty;
 	};
 
 	function addMatricesRigTotal() {
@@ -1534,7 +1737,7 @@ function Calculus() {
 	}
 
 	//función para construir vector de fuerzas internas
-	let vectorFuerzasInternas = [];
+	vectorFuerzasInternas = [];
 	let funcionFuerzasInt = () => {
 		let value = 0;
 		let vectorFuerzas1 = new Array(
@@ -1619,12 +1822,11 @@ function Calculus() {
 
 	function getCol(matrix, col) {
 		//Función para obtener una columna de una matriz (bidimensional)
-		var column = 0;
+		var column = [];
 		for (var i = 0; i < matrix.length; i++) {
-			column = matrix[i][col];
+			column.push(matrix[i][col]);
 		}
-		console.log("getCol", matrix[i][col]);
-		return matrix[i][col];
+		return column;
 	}
 
 	function getRow(matrix, row) {
@@ -2022,7 +2224,7 @@ function Calculus() {
 		return inversaMatriz;
 	}
 
-	var matrizReducidaInversa = [];
+	matrizReducidaInversa = [];
 
 	function addMatricesRigReduxInversa() {
 		var vectorMatrizRigT = copiarMatriz(matrizReducidaInversa);
@@ -2060,7 +2262,7 @@ function Calculus() {
 		return a;
 	}
 
-	var vectorFuerzasInternasRedux = [];
+	vectorFuerzasInternasRedux = [];
 	function vectorFReducido() {
 		var vectorFuerzaReducida = vectorFuerzasInternas;
 		var filasN = [];
@@ -2177,7 +2379,7 @@ function Calculus() {
 		return a;
 	}
 
-	var vectorDesplazamientos = [];
+	vectorDesplazamientos = [];
 	function matrizPorVector(matriz, vector) {
 		var vectorD = math.matrix(vector);
 		var matrizamul = math.matrix(matriz);
@@ -2800,7 +3002,6 @@ function Calculus() {
 		// } else {
 		// 	mejor = 0;
 		// }
-		console.log("mejor puntaje histórico", mejor);
 		var provi = estructurasLista.sort(function(a, b) {
 			return parseFloat(b[0].evaluacionCodigoGenetico) - parseFloat(a[0].evaluacionCodigoGenetico);
 		});
@@ -3049,7 +3250,7 @@ function Calculus() {
 	}
 	var draw = "";
 	var drawLines3 = "";
-	var drawini = "";
+	drawini = "";
 	let dibujoDesplazamiento = (codigoGeneticoP1, textoP1) => {
 		draw = "";
 		for (var i = 0; i < codigoGeneticoP1.length; i++) {
@@ -3124,524 +3325,41 @@ function Calculus() {
 
 	//var getElementByIdf = "";
 
-	function mutacion(codigoGeneticoP1) {
-		var numeroAleatorio = aleatorio(1, 3);
+	function mutacion(structure) {
+		const newStructure = structure.map(el => ({ ...el }));
+		const randomIndex = Math.floor(Math.random() * newStructure.length);
+		const el = newStructure[randomIndex];
 
-		if (numeroAleatorio == 1) {
-			if (codigoGeneticoP1[codigoGeneticoP1.length - 1].tipo == "Diagonal") {
-				var filter = codigoGeneticoP1.filter((element, index) => index < codigoGeneticoP1.length - 1);
+		// Decide which profile list to use based on element type
+		const profileList = el.tipo === "Diagonal" ? listaUPL : listaIPN;
+		const newProfile = profileList[Math.floor(Math.random() * profileList.length)];
 
-				//codigoGeneticoP1[codigoGeneticoP1.length - 1].pop();
-				//console.log("hubo mutación tipo 1: Eliminación de Diagonal");
-				return filter;
-			}
-		}
-		if (numeroAleatorio == 2) {
-			var numeroAleatorio2;
-			numeroAleatorio2 = aleatorio(0, codigoGeneticoP1.length - 1);
-			if (codigoGeneticoP1[numeroAleatorio2].tipo != "Diagonal") {
-				var item = listaIPN[aleatorio(0, listaIPN.length - 1)]; //de donde copiará los perfiles aleatorios
+		// Update profile-related properties
+		el.elemento = newProfile.designacion;
+		el.inercia = newProfile.ix;
+		el.inerciaY = newProfile.iy;
+		el.area = newProfile.area;
+		el.peso = (newProfile.peso * el.longitud).toFixed(2);
 
-				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
-				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
-				codigoGeneticoP1[numeroAleatorio2]["inerciaY"] = item["iy"];
-				codigoGeneticoP1[numeroAleatorio2]["dmm"] = item["altura"];
-				codigoGeneticoP1[numeroAleatorio2]["bf"] = item["bf"];
-				codigoGeneticoP1[numeroAleatorio2]["tf"] = item["tf"];
-				codigoGeneticoP1[numeroAleatorio2]["tw"] = item["tw"];
-				codigoGeneticoP1[numeroAleatorio2]["sx"] = item["sx"];
-				codigoGeneticoP1[numeroAleatorio2]["zx"] = item["zx"];
-				codigoGeneticoP1[numeroAleatorio2]["rx"] = item["rx"];
-				codigoGeneticoP1[numeroAleatorio2]["sy"] = item["sy"];
-				codigoGeneticoP1[numeroAleatorio2]["zy"] = item["zy"];
-				codigoGeneticoP1[numeroAleatorio2]["ry"] = item["ry"];
-				codigoGeneticoP1[numeroAleatorio2]["jj"] = item["j"];
-				codigoGeneticoP1[numeroAleatorio2]["cw"] = item["cw"];
-				codigoGeneticoP1[numeroAleatorio2]["area"] = item["area"];
-				codigoGeneticoP1[numeroAleatorio2]["a"] = (
-					(codigoGeneticoP1[numeroAleatorio2]["elasticidad"] * codigoGeneticoP1[numeroAleatorio2]["area"]) /
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["b"] = (
-					(12 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 3)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["c"] = (
-					(6 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 2)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["d"] = (
-					(4 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio]["e"] = (
-					(2 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["peso"] = (
-					item["peso"] * codigoGeneticoP1[numeroAleatorio2]["longitud"]
-				).toFixed(2);
+		// Metadata for analysis
+		el.jj = newProfile.j;
+		el.cw = newProfile.cw;
+		el.bf = newProfile.bf;
+		el.tf = newProfile.tf;
+		el.tw = newProfile.tw;
+		el.sx = newProfile.sx;
+		el.zx = newProfile.zx;
+		el.rx = newProfile.rx;
+		el.sy = newProfile.sy;
+		el.zy = newProfile.zy;
+		el.ry = newProfile.ry;
 
-				//console.log("hubo mutación tipo 2: Cambio de Perfil");
-				return codigoGeneticoP1;
-			} else {
-				var item = listUPL[aleatorio(0, listUPL.length - 1)]; //de donde copiará los perfiles aleatorios
+		// Re-calculate local/global stiffness when needed
+		el.rigidez = calcElementGlobalK(el);
 
-				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
-				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
-				codigoGeneticoP1[numeroAleatorio2]["inerciaY"] = item["iy"];
-				codigoGeneticoP1[numeroAleatorio2]["dmm"] = item["altura"];
-				codigoGeneticoP1[numeroAleatorio2]["bf"] = item["bf"];
-				codigoGeneticoP1[numeroAleatorio2]["tf"] = item["tf"];
-				codigoGeneticoP1[numeroAleatorio2]["tw"] = item["tw"];
-				codigoGeneticoP1[numeroAleatorio2]["sx"] = item["sx"];
-				codigoGeneticoP1[numeroAleatorio2]["zx"] = item["zx"];
-				codigoGeneticoP1[numeroAleatorio2]["rx"] = item["rx"];
-				codigoGeneticoP1[numeroAleatorio2]["sy"] = item["sy"];
-				codigoGeneticoP1[numeroAleatorio2]["zy"] = item["zy"];
-				codigoGeneticoP1[numeroAleatorio2]["ry"] = item["ry"];
-				codigoGeneticoP1[numeroAleatorio2]["jj"] = item["j"];
-				codigoGeneticoP1[numeroAleatorio2]["cw"] = item["cw"];
-				codigoGeneticoP1[numeroAleatorio2]["area"] = item["area"];
-				codigoGeneticoP1[numeroAleatorio2]["a"] = (
-					(codigoGeneticoP1[numeroAleatorio2]["elasticidad"] * codigoGeneticoP1[numeroAleatorio2]["area"]) /
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["b"] = (
-					(12 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 3)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["c"] = (
-					(6 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					Math.pow(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100, 2)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["d"] = (
-					(4 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio]["e"] = (
-					(2 *
-						codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-						codigoGeneticoP1[numeroAleatorio2]["inercia"]) /
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-				).toFixed(3);
-				codigoGeneticoP1[numeroAleatorio2]["peso"] = (
-					item["peso"] * codigoGeneticoP1[numeroAleatorio2]["longitud"]
-				).toFixed(2);
-
-				//console.log("hubo mutación tipo 2: Cambio de Perfil");
-				return codigoGeneticoP1;
-			}
-		}
-
-		if (numeroAleatorio == 3) {
-			for (
-				var ciclo = 0;
-				ciclo < aleatorio(1, parseInt(actions.getNoPisos()) * parseInt(actions.getNoColumnas()));
-				ciclo++
-			) {
-				//"aquí se agregarán diagonales nuevas"
-				var item = listUPL[aleatorio(0, listUPL.length - 1)]; //de donde copiará los perfiles aleatorios
-				//console.log(item);
-				var numeroAleatorio2 = codigoGeneticoP1.length;
-				codigoGeneticoP1.push({
-					elemento: "",
-					puntoIni: [],
-					puntoFin: [],
-					a: 0,
-					b: 0,
-					c: 0,
-					d: 0,
-					e: 0,
-					teta: 0,
-					cos: 0,
-					sin: 0,
-					inercia: 1,
-					elasticidad: 2100000,
-					longitud: 10,
-					peso: 0,
-					nodoIni: [],
-					nodoFin: [],
-					tipo: "",
-					vectorX: [],
-					vectorY: [],
-					fuerzainterna: [0, 0, 0, 0, 0, 0],
-					fuerzasGlobales: [0, 0, 0, 0, 0, 0],
-					//rigidezL:[[],[],[],[],[],[]],
-					rigidez: [[], [], [], [], [], []],
-					desplazamientoNodoIni: [0, 0, 0]
-				});
-				codigoGeneticoP1[numeroAleatorio2]["elemento"] = item["designacion"];
-				codigoGeneticoP1[numeroAleatorio2]["inercia"] = item["ix"];
-				codigoGeneticoP1[numeroAleatorio2]["inerciaY"] = item["iy"];
-				codigoGeneticoP1[numeroAleatorio2]["dmm"] = item["altura"];
-				codigoGeneticoP1[numeroAleatorio2]["bf"] = item["bf"];
-				codigoGeneticoP1[numeroAleatorio2]["tf"] = item["tf"];
-				codigoGeneticoP1[numeroAleatorio2]["tw"] = item["tw"];
-				codigoGeneticoP1[numeroAleatorio2]["sx"] = item["sx"];
-				codigoGeneticoP1[numeroAleatorio2]["zx"] = item["zx"];
-				codigoGeneticoP1[numeroAleatorio2]["rx"] = item["rx"];
-				codigoGeneticoP1[numeroAleatorio2]["sy"] = item["sy"];
-				codigoGeneticoP1[numeroAleatorio2]["zy"] = item["zy"];
-				codigoGeneticoP1[numeroAleatorio2]["ry"] = item["ry"];
-				codigoGeneticoP1[numeroAleatorio2]["jj"] = item["j"];
-				codigoGeneticoP1[numeroAleatorio2]["cw"] = item["cw"];
-				//console.log(i);
-				codigoGeneticoP1[numeroAleatorio2]["puntoIni"] =
-					nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
-				codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
-					nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
-				var arrayIni = [];
-				var arrayFin = [];
-				var numeroRandom;
-				arrayIni = codigoGeneticoP1[numeroAleatorio2]["puntoIni"].slice();
-				arrayFin = codigoGeneticoP1[numeroAleatorio2]["puntoFin"].slice();
-				if (solucion == "Global") {
-					while (
-						codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0] ==
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] ||
-						codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1] ==
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1]
-					) {
-						codigoGeneticoP1[numeroAleatorio2]["puntoFin"] =
-							nodosCoordenadasV[Math.floor(Math.random() * nodosCoordenadasV.length)];
-					}
-				}
-				if (solucion == "Local") {
-					codigoGeneticoP1[numeroAleatorio2]["puntoFin"] = [];
-					if (arrayIni[0] != 0) {
-						numeroRandom = aleatorio(0, 1);
-						if (numeroRandom == 0) {
-							numeroRandom = -1;
-						}
-						if (
-							arrayIni[0] !=
-							parseFloat(actions.getLuzVano()) * (parseFloat(actions.getNoColumnas()) - 1)
-						) {
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
-								arrayIni[0] + numeroRandom * parseFloat(actions.getLuzVano())
-							);
-						} else {
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
-								arrayIni[0] - parseFloat(actions.getLuzVano())
-							);
-						}
-					} else {
-						codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(parseFloat(actions.getLuzVano()));
-					}
-					if (arrayIni[1] != 0) {
-						numeroRandom = aleatorio(0, 1);
-						if (numeroRandom == 0) {
-							numeroRandom = -1;
-						}
-						if (arrayIni[1] != parseFloat(actions.getEntrePiso()) * parseFloat(actions.getNoPisos())) {
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
-								arrayIni[1] + numeroRandom * parseFloat(actions.getEntrePiso())
-							);
-						} else {
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(
-								arrayIni[1] - parseFloat(actions.getEntrePiso())
-							);
-						}
-					} else {
-						codigoGeneticoP1[numeroAleatorio2]["puntoFin"].push(parseFloat(actions.getEntrePiso()));
-					}
-				}
-				//var temp4 = i - temp + 1;
-				codigoGeneticoP1[numeroAleatorio2]["nodoIni"] = matchCoord(
-					codigoGeneticoP1[numeroAleatorio2]["puntoIni"]
-				);
-				//var temp2 = temp + temp4;
-				//console.log("temp2", temp2);
-				codigoGeneticoP1[numeroAleatorio2]["nodoFin"] = matchCoord(
-					codigoGeneticoP1[numeroAleatorio2]["puntoFin"]
-				);
-				codigoGeneticoP1[numeroAleatorio2]["vectorX"] = matchCoord2(
-					codigoGeneticoP1[numeroAleatorio2]["puntoIni"]
-				);
-				codigoGeneticoP1[numeroAleatorio2]["vectorY"] = matchCoord2(
-					codigoGeneticoP1[numeroAleatorio2]["puntoFin"]
-				);
-				//console.log(elementos["puntoIni"], elementos["puntoFin"]); //debug
-				codigoGeneticoP1[numeroAleatorio2]["longitud"] = Math.sqrt(
-					Math.pow(
-						codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] -
-							codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0],
-						2
-					) +
-						Math.pow(
-							codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1] -
-								codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1],
-							2
-						)
-				);
-				//console.log("esto es elementos por la mitad", elementos["puntoIni"], elementos["puntoFin"]);
-
-				if (
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] != actions.getLuzVano()) &
-					(codigoGeneticoP1[numeroAleatorio2]["longitud"] != actions.getEntrePiso())
-				) {
-					codigoGeneticoP1[numeroAleatorio2]["area"] = item["area"];
-					codigoGeneticoP1[numeroAleatorio2]["a"] = (
-						(codigoGeneticoP1[numeroAleatorio2]["elasticidad"] *
-							codigoGeneticoP1[numeroAleatorio2]["area"]) /
-						(codigoGeneticoP1[numeroAleatorio2]["longitud"] * 100)
-					).toFixed(3);
-					codigoGeneticoP1[numeroAleatorio2]["b"] = (0).toFixed(3);
-					codigoGeneticoP1[numeroAleatorio2]["c"] = (0).toFixed(3);
-					codigoGeneticoP1[numeroAleatorio2]["d"] = (0).toFixed(3);
-					codigoGeneticoP1[numeroAleatorio2]["e"] = (0).toFixed(3);
-					codigoGeneticoP1[numeroAleatorio2]["peso"] = (
-						item["peso"] * codigoGeneticoP1[numeroAleatorio2]["longitud"]
-					).toFixed(2); //peso del elemento
-					if (
-						codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] -
-							codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0] !=
-						0
-					) {
-						codigoGeneticoP1[numeroAleatorio2]["teta"] = Math.atan(
-							(codigoGeneticoP1[numeroAleatorio2]["puntoFin"][1] -
-								codigoGeneticoP1[numeroAleatorio2]["puntoIni"][1]) /
-								(codigoGeneticoP1[numeroAleatorio2]["puntoFin"][0] -
-									codigoGeneticoP1[numeroAleatorio2]["puntoIni"][0])
-						);
-					} else {
-						codigoGeneticoP1[numeroAleatorio2]["teta"] = (Math.PI / 2).toFixed(6);
-					}
-					codigoGeneticoP1[numeroAleatorio2]["cos"] = Math.cos(
-						codigoGeneticoP1[numeroAleatorio2]["teta"]
-					).toFixed(3);
-					if (codigoGeneticoP1[numeroAleatorio2]["teta"] == Math.PI / 2) {
-						codigoGeneticoP1[numeroAleatorio2]["cos"] = 0;
-					}
-					codigoGeneticoP1[numeroAleatorio2]["sin"] = Math.sin(
-						codigoGeneticoP1[numeroAleatorio2]["teta"]
-					).toFixed(3);
-					codigoGeneticoP1[numeroAleatorio2]["tipo"] = "Diagonal";
-				}
-				var matrizTemp = [
-					[+codigoGeneticoP1[numeroAleatorio2].a, 0, 0, -codigoGeneticoP1[numeroAleatorio2].a, 0, 0],
-					[
-						0,
-						+codigoGeneticoP1[numeroAleatorio2].b,
-						+codigoGeneticoP1[numeroAleatorio2].c,
-						0,
-						-codigoGeneticoP1[numeroAleatorio2].b,
-						+codigoGeneticoP1[numeroAleatorio2].c
-					],
-					[
-						0,
-						+codigoGeneticoP1[numeroAleatorio2].c,
-						+codigoGeneticoP1[numeroAleatorio2].d,
-						0,
-						-codigoGeneticoP1[numeroAleatorio2].c,
-						+codigoGeneticoP1[numeroAleatorio2].e
-					],
-					[-codigoGeneticoP1[numeroAleatorio2].a, 0, 0, +codigoGeneticoP1[numeroAleatorio2].a, 0, 0],
-					[
-						0,
-						-codigoGeneticoP1[numeroAleatorio2].b,
-						-codigoGeneticoP1[numeroAleatorio2].c,
-						0,
-						+codigoGeneticoP1[numeroAleatorio2].b,
-						-codigoGeneticoP1[numeroAleatorio2].c
-					],
-					[
-						0,
-						+codigoGeneticoP1[numeroAleatorio2].c,
-						+codigoGeneticoP1[numeroAleatorio2].e,
-						0,
-						-codigoGeneticoP1[numeroAleatorio2].c,
-						+codigoGeneticoP1[numeroAleatorio2].d
-					]
-				];
-				var matrizL = [
-					[+codigoGeneticoP1[numeroAleatorio2].cos, +codigoGeneticoP1[numeroAleatorio2].sin, 0, 0, 0, 0],
-					[-codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0, 0],
-					[0, 0, 0, +codigoGeneticoP1[numeroAleatorio2].cos, +codigoGeneticoP1[numeroAleatorio2].sin, 0],
-					[0, 0, 0, -codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0],
-					[0, 0, 0, 0, 0, 1]
-				];
-
-				var matrizLtras = [
-					[+codigoGeneticoP1[numeroAleatorio2].cos, -codigoGeneticoP1[numeroAleatorio2].sin, 0, 0, 0, 0],
-					[+codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0, 0],
-					[0, 0, 0, +codigoGeneticoP1[numeroAleatorio2].cos, -codigoGeneticoP1[numeroAleatorio2].sin, 0],
-					[0, 0, 0, +codigoGeneticoP1[numeroAleatorio2].sin, +codigoGeneticoP1[numeroAleatorio2].cos, 0],
-					[0, 0, 0, 0, 0, 1]
-				];
-				var multiMatriz = multiplicarMatrices(matrizLtras, matrizTemp);
-				multiMatriz = multiplicarMatrices(multiMatriz, matrizL);
-				codigoGeneticoP1[numeroAleatorio2]["rigidez"] = multiMatriz;
-
-				//console.log(codigoGeneticoP1);
-			}
-		}
-
-		//cuando no hay mutación regresa el mismo código genético de entrada
-		return codigoGeneticoP1;
+		return newStructure;
 	}
 
-	function show() {
-		var e = document.getElementById("ddlViewBy");
-		var as = document.forms[1].ddlViewBy.value;
-		var strUser = e.options[e.selectedIndex].text;
-		//console.log(as, strUser);
-		return strUser;
-	}
-	function show2form() {
-		var e = document.getElementById("ddlViewBy2");
-		var as = document.forms[0].ddlViewBy2.value;
-		var strUser = e.options[e.selectedIndex].text;
-		//console.log(as, strUser);
-		return strUser;
-	}
-
-	function botonCalcular(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
-		var numeroCol = actions.getNoColumnas();
-		var numeroPisos = actions.getNoPisos();
-		var alturaEntrePiso = actions.getEntrePiso();
-		var luzVano = actions.getLuzVano();
-		//drawLines = dibujo();
-		//drawLines2 = dibujoVigas();
-		//d3.selectAll("#caja-dibujo4 > *").remove();
-		d3.selectAll("#caja-dibujo4").remove();
-		if (repetir > 0) {
-			d3.selectAll("#matrices-rigid-local > *").remove();
-			d3.selectAll("#matrices-rigid-global > *").remove();
-			d3.selectAll("#matrices-rigid-total > *").remove();
-			d3.selectAll("#vector-fuerzas > *").remove();
-			d3.selectAll("#matriz-reducida > *").remove();
-			d3.selectAll("#matriz-reducida-inversa > *").remove();
-			d3.selectAll("#vector-reducido > *").remove();
-			d3.selectAll("#desplazamiento-nodos > *").remove();
-		}
-		exagerar = 1.0;
-		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-		// console.log(drawLines, drawLines2);
-		tablaConectividad(coefViento);
-		tablaConectividad2(coefVariable, coefPermanente);
-		addTableConnect();
-		matrizRigidLocal();
-		//console.log(multiplicarMatrices(matrizEA, matrizEB));
-		addMatricesRigLocal();
-		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
-		vectorMatrizRigGlobal = matrizRigidGlogal();
-		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
-		addMatricesRigGlobal();
-		codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal);
-
-		rigidezTotal();
-		addMatricesRigTotal();
-		vectorFuerzasInternas = funcionFuerzasInt();
-		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
-		addVectorFuerza(casos);
-		rigidezReducida();
-		addMatricesRigRedux();
-		matrizReducidaInversa = matrizRigidezReduxInversa();
-		addMatricesRigReduxInversa();
-		//matrizInversa(matrizEjemplo);
-		vectorFuerzasInternasRedux = vectorFReducido();
-		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido", casos);
-		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
-		//console.log("codigo genético P", codigoGeneticoP);
-		//desplazamientoEnCodigo(codigoGeneticoP);
-		calculosFinales(coefViento, coefVariable, coefPermanente, codigoGeneticoP);
-		addTablaFinal(getElementByIdTablaFinal, codigoGeneticoP);
-		//drawLines3 = dibujoDesplazamiento();
-		drawini = dibujoIni(codigoGeneticoP);
-		drawLines = drawLines3 + drawText;
-		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
-		document.getElementById("caja-dibujo2").innerHTML = drawLines;
-		return (
-			numeroPisos,
-			numeroCol,
-			alturaEntrePiso,
-			luzVano,
-			codigoGeneticoP,
-			vectorDesplazamientos,
-			vectorFuerzasInternasRedux
-		);
-	}
-
-	function botonCalcular2(getElementByIdTablaFinal, coefViento, coefVariable, coefPermanente, casos) {
-		var numeroCol = actions.getNoColumnas();
-		var numeroPisos = actions.getNoPisos();
-		var alturaEntrePiso = actions.getEntrePiso();
-		var luzVano = actions.getLuzVano();
-		//drawLines = dibujo();
-		//drawLines2 = dibujoVigas();
-		//d3.selectAll("#caja-dibujo4").remove();
-		//console.log(numeroCol, numeroPisos, alturaEntrePiso, luzVano);
-		// console.log(drawLines, drawLines2);
-		//console.log(vectorConectividadf);
-		reescrituraConectividadf(coefViento, codigoGeneticoP);
-		//console.log(vectorConectividadf);
-		reescrituraConectividadf2(coefVariable, coefPermanente, codigoGeneticoP);
-		//addTableConnect();
-		//matrizRigidLocal();
-		//console.log(multiplicarMatrices(matrizEA, matrizEB));
-		//addMatricesRigLocal();
-		//console.log("vector Matriz rigid local", vectorMatrizRigLocal);
-		vectorMatrizRigGlobal = matrizRigidGlogal();
-		//console.log("vector matriz rigideces coord Global", vectorMatrizRigGlobal);
-		//addMatricesRigGlobal();
-		//codigoGeneticoP = codigoGenetico(vectorMatrizRigGlobal); //se produce un codGenetico
-
-		rigidezTotal();
-		//addMatricesRigTotal();
-		vectorFuerzasInternas = funcionFuerzasInt2(codigoGeneticoP);
-		//console.log("vector Fuerzas internas def", vectorFuerzasInternas);
-		addVectorFuerza(casos);
-		rigidezReducida();
-		//addMatricesRigRedux();
-		matrizReducidaInversa = matrizRigidezReduxInversa();
-		//addMatricesRigReduxInversa();
-		//matrizInversa(matrizEjemplo);
-		vectorFuerzasInternasRedux = vectorFReducido();
-		addVector(vectorFuerzasInternasRedux, 2, "vector-reducido", casos);
-		vectorDesplazamientos = matrizPorVector(matrizReducidaInversa, vectorFuerzasInternasRedux);
-		addVector(vectorDesplazamientos, 3, "desplazamiento-nodos", casos);
-		//console.log("codigo genético P", codigoGeneticoP);
-		//desplazamientoEnCodigo(codigoGeneticoP);
-		var clon6 = codigoGeneticoP.slice();
-		var clon14 = calculosFinales(coefViento, coefVariable, coefPermanente, clon6);
-		codigoGeneticoP = clon14.slice();
-		addTablaFinal(getElementByIdTablaFinal, clon14);
-		//desplazamientosFinales(codigoGeneticoP);
-		//drawLines3 = dibujoDesplazamiento();
-		// drawini = dibujoIni();
-		// drawLines = drawLines3 + drawText;
-		// document.getElementById("caja-dibujo4").innerHTML = dibujoIni();
-		// document.getElementById("caja-dibujo2").innerHTML = drawLines;
-		//drawini = dibujoIni();
-		return (
-			numeroPisos,
-			numeroCol,
-			alturaEntrePiso,
-			luzVano,
-			codigoGeneticoP,
-			vectorDesplazamientos,
-			vectorFuerzasInternasRedux
-		);
-	}
 	function Calc1(codigoDelCruce) {
 		vectorConectividadf1 = codigoDelCruce.slice();
 		codigoGeneticoP = vectorConectividadf1.slice();
@@ -5072,14 +4790,14 @@ function Calculus() {
 	let ctx2;
 	//window.myChart;
 	//var ctx = document.getElementById("grafica-peso");
-	function graficaXY(myChart, canvasID, arrayX, arrayY, titulo, ctx, nombreY, nombreX) {
-		//console.log("histori e historiaPeso", historia, historiaPeso);
-		if (myChart != null) {
-			myChart.destroy();
+	function graficaXY(unused_myChart, canvasID, arrayX, arrayY, titulo, ctx, nombreY, nombreX) {
+		const existingChart = Chart.getChart(canvasID);
+		if (existingChart) {
+			existingChart.destroy();
 		}
-		//resetCanvas();
+
 		ctx = document.getElementById(canvasID);
-		myChart = new Chart(ctx, {
+		const myChart = new Chart(ctx, {
 			type: "line",
 			data: {
 				labels: arrayX,
@@ -5162,7 +4880,7 @@ function Calculus() {
 	let clon;
 	useEffect(() => {
 		// Actualiza el título del documento usando la API del navegador
-		window.scroll(0, top);
+		window.scroll(0, 0);
 		nodosCoord();
 		nodosNum();
 		nodosCoordVigas();
@@ -5173,527 +4891,491 @@ function Calculus() {
 		//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
 		//svg.selectAll("*").remove();
 		//document.getElementById("caja-dibujo4").innerHTML = dibujoIni(codigoGeneticoP);
-		show();
+		//show();
 		//graficaPeso();
 	});
+	useEffect(() => {
+		window.scroll(0, 0);
+	}, []);
 
+	// Main Optimization Trigger
+	const handleRunGA = () => {
+		const currentPoblacion = poblacion;
+		const currentGenerations = generacionesP;
+
+		let currentStructures = [];
+
+		// 1. Initial Population
+		for (let i = 0; i < currentPoblacion; i++) {
+			const initialBase = codigoGenetico();
+			const structure = i === 0 ? initialBase : mutacion([...initialBase]);
+			currentStructures.push({
+				genes: structure,
+				fitness: 0
+			});
+		}
+
+		let weightHistory = [];
+		let scoreHistory = [];
+		let genHistory = [];
+
+		// 2. Generation Loop
+		for (let g = 0; g < currentGenerations; g++) {
+			genHistory.push(g + 1);
+
+			// Evaluate Fitness
+			currentStructures.forEach(ind => {
+				ind.fitness = evaluateFitness(ind.genes);
+			});
+
+			// Sort by fitness (lower is better for weight + penalty)
+			currentStructures.sort((a, b) => a.fitness - b.fitness);
+
+			const best = currentStructures[0];
+			let totalWeight = 0;
+			best.genes.forEach(el => (totalWeight += parseFloat(el.peso || 0)));
+
+			weightHistory.push(totalWeight);
+			scoreHistory.push(best.fitness);
+
+			// Selection and Crossover (Keep top 50, create children)
+			const parents = currentStructures.slice(0, Math.floor(currentPoblacion / 2));
+			const children = [];
+
+			while (children.length < currentPoblacion - parents.length) {
+				const p1 = parents[Math.floor(Math.random() * parents.length)];
+				const p2 = parents[Math.floor(Math.random() * parents.length)];
+
+				// Simplified Crossover
+				const mid = Math.floor(p1.genes.length / 2);
+				const childGenes = [...p1.genes.slice(0, mid), ...p2.genes.slice(mid)];
+
+				// Mutation
+				const mutatedGenes = Math.random() < 0.2 ? mutacion(childGenes) : childGenes;
+
+				children.push({
+					genes: mutatedGenes,
+					fitness: 0
+				});
+			}
+
+			currentStructures = [...parents, ...children];
+		}
+
+		// Update results
+		const finalBest = currentStructures[0];
+		// Final Detailed Analysis for the best structure
+		const finalResult = analyzeStructure(finalBest.genes);
+
+		setCalcResults({
+			conectividad: finalBest.genes,
+			mejorEstructura: finalBest.genes,
+			historia: genHistory,
+			pesoHistoria: weightHistory,
+			scoreHistoria: scoreHistory,
+			displacements: finalResult ? finalResult.displacements : [],
+			globalK: finalResult ? finalResult.globalK : null,
+			seismicData: finalResult ? finalResult.seismicData : null
+		});
+
+		updateCharts(genHistory, weightHistory, scoreHistory);
+		alert("Optimización completada.");
+	};
+
+	const updateCharts = (history, weights, scores) => {
+		const ctx1 = document.getElementById("grafica-weight");
+		const ctx2 = document.getElementById("grafica-stability");
+
+		if (ctx1 && ctx2) {
+			graficaXY(null, "grafica-weight", history, weights, "Peso (kg) vs Generación", ctx1, "Peso (kg)", "Gen");
+			graficaXY(null, "grafica-stability", history, scores, "Estabilidad vs Generación", ctx2, "Score", "Gen");
+		}
+	};
 	return (
-		<React.Fragment>
-			<div className="text-center mt-6 title">
+		<div className="calculus-container container-fluid">
+			<div className="title-section">
 				<h1 className="title">
-					Optimización de las Edificaciones de Acero con arriostramientos laterales en un sentido,
-					condicionada a las deriva de piso mediante la aplicación de Algoritmos Genéticos
+					Optimización Estructural con Algoritmos Genéticos
+					<span className="d-block text-muted small mt-2">Análisis Estático ({is3D ? "3D" : "2D"})</span>
 				</h1>
 			</div>
-			<div className="row justify-content">
-				<div className="col-sm-4">
-					<p className="save-btn">
-						<button
-							className="btnPaso text-center mt-12 title"
-							onClick={() => {
-								solucion = show2form();
-								console.log("tipo de solución: ", solucion);
-								entropia = 0;
-								//se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
-								//caso 1.4 carga permanente
-								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
-								//desplazamientosFinales(codigoGeneticoP);
-								entropia = 1;
-								//caso 1.2CP+1.6CV
-								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
-								entropia = 2;
-								//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
-								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
-								entropia = 3;
-								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
-								entropia = 4;
-								botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
-								//ver código genético
-								console.log("codigo genético P", codigoGeneticoP);
-								repetir++; //sirve para borrar div en caso de que repetir>0
-								clon = codigoGeneticoP.slice();
-								EvaluacionCruce(clon);
-								listaOrden();
-								//clon = [];
-								obtenerDesplazamiento(clon, "tabla-final", "desCombo1");
-								obtenerDesplazamiento(clon, "tabla-final2", "desCombo2");
-								obtenerDesplazamiento(clon, "tabla-final3", "desCombo3");
-								obtenerDesplazamiento(clon, "tabla-final4", "desCombo4");
-								obtenerDesplazamiento(clon, "tabla-final5", "desComboLateral");
-								console.log("Lista de las Estructuras Generadas", estructurasLista);
-							}}>
-							<span>Calcular una estructura al azar</span>
-						</button>
-						<p>Muestra los pasos de cálculo (no aplica Algoritmos Genéticos)</p>
-					</p>
-				</div>
-				<div className="col-sm-4">
-					<h4>Número de Generaciones</h4>
-					<input
-						className="no-columnas"
-						type="number"
-						placeholder="Ej: 10"
-						id="generacion-box"
-						name="no-columnas"
-						min="1"
-						step="1"
-						max="100"
-						onChange={e => (generaciones = document.getElementById("generacion-box").value)}
-					/>
-					<p>
-						<span>
-							Se recomienda ir de 5 generaciones en 5 para observar resultados en pc poco potentes. En
-							celulares ir de 1 en 1.
-						</span>
-					</p>
-					<h4>Población Inicial</h4>
-					<input
-						className="no-columnas"
-						type="number"
-						placeholder="Ej: 20"
-						id="poblacion-box"
-						name="no-columnas"
-						min="3"
-						step="1"
-						max="200"
-						onChange={e => (poblacionIni = document.getElementById("poblacion-box").value)}
-					/>
-					<p>
-						<span>Mínimo: 3, Máx:200. Se recomienda 3 para probar en celulares.</span>
-					</p>
-					<h4>Probabilidad de Mutación en el cruce</h4>
-					<input
-						className="no-columnas"
-						type="number"
-						placeholder="Ej: 10"
-						id="probabilidad-box"
-						name="no-columnas"
-						min="1"
-						step="1"
-						max="100"
-						onChange={e => {
-							probabilidadUsuario = parseInt(document.getElementById("probabilidad-box").value);
-							document.getElementById("probabilidad-text").innerHTML =
-								"Probabilidad: " + (100 / probabilidadUsuario).toFixed(2) + "%";
-						}}
-					/>
-					<p>
-						<span id="probabilidad-text">La probabilidad será 1/N, N: numero entero </span>
-					</p>
-					<h4>Tipo de Diagonales solución</h4>
-					<form>
-						<select id="ddlViewBy2">
-							<option value="1">Local</option>
-							<option value="2" selected="selected">
-								Global
-							</option>
-							{/* <option value="5">desplazamientoNodoIniComboSismon</option> */}
+
+			<div className="control-panel">
+				<div className="control-row">
+					<div className="input-group">
+						<label>Cálculo</label>
+						<div className="mode-toggle">
+							<button className={!is3D ? "active" : ""} onClick={() => setIs3D(false)}>
+								2D
+							</button>
+							<button className={is3D ? "active" : ""} onClick={() => setIs3D(true)}>
+								3D
+							</button>
+						</div>
+					</div>
+					<div className="input-group">
+						<label>Población</label>
+						<input
+							type="number"
+							style={{ width: "70px" }}
+							value={poblacion}
+							onChange={e => setPoblacion(parseInt(e.target.value))}
+						/>
+					</div>
+					<div className="input-group">
+						<label>Generaciones</label>
+						<input
+							type="number"
+							style={{ width: "70px" }}
+							value={generacionesP}
+							onChange={e => setGeneracionesP(parseInt(e.target.value))}
+						/>
+					</div>
+					<div className="input-group">
+						<label>Diagonales</label>
+						<select value={solucion} onChange={e => setSolucion(e.target.value)} className="select-modern">
+							<option value="Global">Globales</option>
+							<option value="Local">Locales</option>
 						</select>
-					</form>
-					<p>
-						<span>Global: Nodos cualesquiera. Local: Nodos de un marco</span>
-					</p>
-				</div>
-				<div className="col-sm-4">
-					<button
-						className="btnPaso text-center mt-12 title"
-						id="myBtn"
-						onClick={() => {
-							generaciones = document.getElementById("generacion-box").value;
-							solucion = show2form();
-							while (estructurasLista.length < poblacionIni) {
-								//caso 1.4 carga permanente
-								entropia = 0;
-								botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
-								//desplazamientosFinales(codigoGeneticoP);
-								//caso 1.2CP+1.6CV
-								entropia = 1;
-								botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
-								//caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-								entropia = 2;
-								botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
-								//caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
-								entropia = 3;
-								botonCalcular2("tabla-final4", -1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV - 1.7 W)");
-								//caso cargaLateral
-								entropia = 4;
-								botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
-								//ver código genético
-								//console.log("codigo genético P", codigoGeneticoP);
-								repetir++; //sirve para borrar div en caso de que repetir>0
-								clon = codigoGeneticoP.slice();
-								EvaluacionCruce(clon);
-								//clon = [];
-								//obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
-								//obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
-								//obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
-								//obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
-								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
-							}
-							listaOrden();
-							//A partir de este punto corre el algoritmo genético
-							if (historiax > 1) {
-								d3.selectAll("#tabla-final5 > *").remove();
-							}
-							console.time("final (ms): ");
-							for (var i = 0; i < generaciones; i++) {
-								historiax++;
-								historia.push(historiax);
-								historiapesoy = 0;
-								estabilidadY = 0;
-								//aquí se agrega una estructura aleatoria en cada generación de individuos
-								{
-									////se coloca nombre de la tabla, coefViento, coefVariable, coefPermanente
-									////caso 1.4 carga permanente
-									entropia = 0;
-									botonCalcular("tabla-final", 0, 0, 1.4, "1.4CP");
-									////caso 1.2CP+1.6CV
-									entropia = 1;
-									botonCalcular2("tabla-final2", 0, 1.6, 1.2, "1.2CP+1.6CV");
-									////caso 0.75 (1.4CP + 1.7 CV + 1.7 W)
-									entropia = 2;
-									botonCalcular2("tabla-final3", 1.275, 1.275, 1.05, "0.75 (1.4CP + 1.7 CV + 1.7 W)");
-									////caso 0.75 (1.4CP + 1.7 CV - 1.7 W)
-									entropia = 3;
-									botonCalcular2(
-										"tabla-final4",
-										-1.275,
-										1.275,
-										1.05,
-										"0.75 (1.4CP + 1.7 CV - 1.7 W)"
-									);
-									entropia = 4;
-									botonCalcular2("tabla-final5", 1, 0.5, 1, "1CP + 1 CV +Cargas Laterales)");
-									////ver código genético
-									console.log("codigo genético P", codigoGeneticoP);
-									repetir++;
-									clon = codigoGeneticoP.slice();
-									EvaluacionCruce(clon);
-								}
-								BotonCruce();
-
-								listaOrden();
-
-								// if (
-								// 	reserva[0].evaluacionCodigoGenetico >
-								// 	estructurasLista[0][0].evaluacionCodigoGenetico
-								// ) {
-								// 	//console.log("reserva", reserva);
-								// 	estructurasLista.unshift(reserva);
-								// }
-								document.getElementById("caja-dibujo2").innerHTML = dibujoIni(estructurasLista[0]);
-								var pesoEstructura = estructurasLista[0].slice();
-								for (var j = 0; j < pesoEstructura.length; j++) {
-									if (pesoEstructura[j]["peso"] != undefined) {
-										historiapesoy += parseFloat(pesoEstructura[j].peso);
-									}
-								}
-								// if (reserva == null || reserva == undefined) {
-								// 	reserva = pesoEstructura.slice();
-								// } else {
-								// 	if (
-								// 		reserva[0].evaluacionCodigoGenetico < pesoEstructura[0].evaluacionCodigoGenetico
-								// 	) {
-								// 		reserva = [];
-								// 		reserva = pesoEstructura.slice();
-								// 		//console.log("reserva", reserva);
-								// 	}
-								// }
-								estabilidadY = parseFloat(pesoEstructura[0].evaluacionCodigoGenetico);
-								estabilidadPuntuacion.push(estabilidadY);
-								if (estabilidadY > mejor) {
-									mejor = estabilidadY;
-								}
-								//historiaPeso.push(historiapesoy);
-								historiaPeso.push(parseFloat(pesoEstructura[0].pesoEstructura));
-								console.log(
-									`Peso ${historiapesoy}kg \nGeneración ${
-										historia[historia.length - 1]
-									}, \nPuntuación: ${pesoEstructura[0].evaluacionCodigoGenetico}`
-								);
-								//ahora se agregan las tablas
-								//codigoGeneticoP = pesoEstructura.slice();
-								addTableConnect2(pesoEstructura);
-								//borrar tablas innecesarias
-								d3.selectAll("#matrices-rigid-local > *").remove();
-								d3.selectAll("#matrices-rigid-global > *").remove();
-								d3.selectAll("#matrices-rigid-total > *").remove();
-								d3.selectAll("#vector-fuerzas > *").remove();
-								d3.selectAll("#matriz-reducida > *").remove();
-								d3.selectAll("#matriz-reducida-inversa > *").remove();
-								d3.selectAll("#vector-reducido > *").remove();
-								d3.selectAll("#desplazamiento-nodos > *").remove();
-								d3.selectAll("#tabla-final > *").remove();
-								d3.selectAll("#tabla-final2 > *").remove();
-								d3.selectAll("#tabla-final3 > *").remove();
-								d3.selectAll("#tabla-final4 > *").remove();
-								d3.selectAll("#tabla-final5 > *").remove();
-								d3.selectAll("#tabla-final6 > *").remove();
-								d3.selectAll("#tabla-final7 > *").remove();
-								d3.selectAll("#tabla-final8 > *").remove();
-
-								//addTablasAgain(pesoEstructura);
-								addTablaCodigoGen1("tabla-final", pesoEstructura);
-								addTablaCodigoGen22("tabla-final2", pesoEstructura);
-								addTablaCodigoGen3("tabla-final3", pesoEstructura);
-								addTablaCodigoGen4("tabla-final4", pesoEstructura);
-								addTablaCodigoGenLateral("tabla-final5", pesoEstructura);
-								addTablaCodigoGen6("tabla-final6", pesoEstructura);
-								addTablaCodigoGen7("tabla-final7", pesoEstructura);
-
-								//se dibuja la gráfica
-								myChart1 = graficaXY(
-									myChart1,
-									"grafica-peso",
-									historia,
-									historiaPeso,
-									"Peso (kg) vs. Generaciones",
-									ctx1,
-									"Peso (kg)",
-									"Generación (No)"
-								);
-								myChart2 = graficaXY(
-									myChart2,
-									"grafica-estabilidad",
-									historia,
-									estabilidadPuntuacion,
-									"Estabilidad vs. Generaciones",
-									ctx2,
-									"Pseudo-Estabilidad",
-									"Generación (No)"
-								);
-								//removeData(myChart);
-								//graficaPeso();
-								//dibujaGrafica("grafica-evolucion1", "Generaciones", "Puntuación");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final", "desCombo1");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final2", "desCombo2");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final3", "desCombo3");
-								obtenerDesplazamiento(estructurasLista[0], "tabla-final4", "desCombo4");
-								//obtenerDesplazamiento(estructurasLista[0], "tabla-final5", "desComboLateral");
-
-								if (estructurasLista.length > 2 * poblacionIni) {
-									estructurasLista = estructurasLista.slice(0, 2 * poblacionIni);
-								}
-							}
-							if (estructurasLista.length > 2 * poblacionIni) {
-								estructurasLista = estructurasLista.slice(0, 2 * poblacionIni);
-							}
-							console.log("Reserva Gen", reserva);
-							console.log("Lista de las Estructuras Generadas", estructurasLista);
-							//agrega tabla con que se dibujan las gráficas
-							addTablaResultados("tabla-final8", historiaPeso, estabilidadPuntuacion);
-							console.timeEnd("final (ms): ");
-						}}>
-						<span>Calcular Generaciones Seleccionadas</span>
+					</div>
+					<div className="input-group">
+						<label>Deformada</label>
+						<div className="mode-toggle">
+							<button
+								className={!showDeformation ? "active" : ""}
+								onClick={() => setShowDeformation(false)}>
+								Off
+							</button>
+							<button
+								className={showDeformation ? "active" : ""}
+								onClick={() => setShowDeformation(true)}>
+								On
+							</button>
+						</div>
+					</div>
+					{showDeformation && (
+						<div className="input-group">
+							<label>Escala: {defScale}</label>
+							<input
+								type="range"
+								min="1"
+								max="2000"
+								value={defScale}
+								onChange={e => setDefScale(parseInt(e.target.value))}
+								style={{ width: "100px" }}
+							/>
+						</div>
+					)}
+					<button className="btnPaso ms-auto" onClick={handleRunGA}>
+						Optimizar
 					</button>
-					<p>
-						No muestra pasos de cálculo para mayor rendimiento (Aplica el Algoritmo Genético y el Método
-						Estático Equivalente, apto para estructuras de hasta 10 pisos o alturas menores a 30 metros)
-					</p>
 				</div>
 			</div>
-			<div className="row justify-content">
-				<div className="col-md-12" id="caja-dibujo5">
-					<svg
-						width="500px"
-						height="500px"
-						viewBox="-5 -10 35 50"
-						preserveAspectRatio="xMidYMid meet"
-						xmlns="http://www.w3.org/2000/svg"
-						id="caja-dibujo4">
-						{}
-					</svg>
-				</div>
-			</div>
-			<p> </p>
-			<div className="text-sm-left">
-				<h2> 1-. Tabla de Conectividad</h2>
-			</div>
-			<p />
-			<div className="col-sm-12" id="tabla3">
-				<table className="table table-striped" id="tabla-connect" onLoad="">
-					<thead>
-						<tr>
-							<th scope="row">No</th>
-							<th>Perfil</th>
-							<th>Coordenada Inicial</th>
-							<th>Coordenada Final</th>
-							<th>A</th>
-							<th>B</th>
-							<th>C</th>
-							<th>D</th>
-							<th>E</th>
-							<th>θ</th>
-							<th>coseno</th>
-							<th>seno</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-			<div className="text-sm-left">
-				<h2> 2-. Matrices de Rigidez en coordenadas Locales para cada elemento</h2>
-			</div>
-			<div className="col justify-content-center" id="matrices-rigid-local" />
-			<div className="text-sm-left">
-				<h2> 3-. Matrices de Rigidez en coordenadas Globales para cada elemento</h2>
-			</div>
-			<div className="col justify-content-center" id="matrices-rigid-global" />
-			<div className="text-sm-left">
-				<h2> 4-. Ensamblaje de la Matriz de Rigidez Total</h2>
-			</div>
-			<div className="col justify-content-center" id="matrices-rigid-total" />
-			<div className="text-sm-left">
-				<h2> 5-. Vector de Fuerzas (Fuerzas Externas - Fuerzas Internas)</h2>
-			</div>
-			<div className="col justify-content-center" id="vector-fuerzas" />
-			<div className="text-sm-left">
-				<h2> 6-. Matriz de Rigidez Reducida</h2>
-			</div>
-			<div className="col justify-content-center" id="matriz-reducida" />
-			<div className="text-sm-left">
-				<h2> 7-. Inversa de la Matriz de Rigidez Reducida</h2>
-			</div>
-			<div className="col justify-content-center" id="matriz-reducida-inversa" />
-			<div className="text-sm-left">
-				<h2> 8-. Vector de Fuerzas Asociado a Matriz de Rigidez Reducida</h2>
-			</div>
-			<div className="col justify-content-center" id="vector-reducido" />
-			<div className="text-sm-left">
-				<h2> 9-. Dezplazamiento de Nodos (Asociados a Matriz de Rigidez Reducida) (cm,cm,rad)</h2>
-			</div>
-			<div className="col justify-content-center" id="desplazamiento-nodos" />
-			<div className="text-sm-left">
-				<h2> 10.1-. Tabla Combinación de cargas caso: 1.4CP</h2>
-			</div>
-			<div className="col-sm-12" id="tabla-resumen">
-				<table className="table table-striped" id="tabla-final" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 10.2-. Tabla Combinación de cargas caso: 1.2CP+1.6CV</h2>
-			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final2" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 10.3-. Tabla Combinación de cargas caso: 0.75*(1.4CP + 1.7CV + 1.7W)</h2>
-			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final3" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 10.4-. Tabla Combinación de cargas caso: 0.75*(1.4CP + 1.7CV - 1.7W)</h2>
-			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final4" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 10.5-. Método estático equivalente: 1CP + 0.5CV + cargas Laterales de 1000kgf</h2>
-			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final5" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 10.6-. Tabla Combinación de cargas caso: 1CP + 0.5CV + S</h2>
-			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final6" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 10.7-. Tabla Combinación de cargas caso: 1CP + 0.5CV - S</h2>
-			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final7" onLoad="" />
-			</div>
-			<div className="text-sm-left">
-				<h2> 11-. Resultados Algoritmos Genéticos</h2>
-				<h3> 11-.1 Evolución del Algoritmo Genético</h3>
-			</div>
-			<div className="col-sm-12" id="grafica-container">
-				<canvas id="grafica-peso" width="800px" height="350px" />
-			</div>
-			<div className="text-sm-left">
-				<h3> 11-.2 Evolución de la Estabilidad de la Estructura</h3>
-			</div>
-			<div className="col-sm-12" id="grafica-container-2">
-				<canvas id="grafica-estabilidad" width="800px" height="350px" />
-			</div>
-			<p>
-				<h3>Visualización de la mejor estructura hallada</h3>
-				<h4>(Independiente del gráfico inicial de página)</h4>
-			</p>
-			<p />
-			<div className="row justify-content">
-				<div className="col-md-12" id="caja-dibujo3">
-					<svg
-						width="500px"
-						height="500px"
-						viewBox="-5 -10 35 50"
-						preserveAspectRatio="xMidYMid meet"
-						xmlns="http://www.w3.org/2000/svg"
-						id="caja-dibujo2">
-						{}
-					</svg>
-				</div>
-			</div>
-			<p className="save-btn">
-				<form>
-					<select id="ddlViewBy">
-						<option value="1">desCombo1</option>
-						<option value="2" selected="selected">
-							desCombo2
-						</option>
-						<option value="3">desCombo3</option>
-						<option value="4">desCombo4</option>
-						<option value="5">desplazamientoNodoIniComboSismop</option>
-						<option value="5">desplazamientoNodoIniComboSismon</option>
-						{/* <option value="5">desplazamientoNodoIniComboSismon</option> */}
-					</select>
-				</form>
-				<p>
-					<h4>Exagerar deformación</h4>
-					<input
-						className="no-columnas"
-						type="number"
-						placeholder="Ej: 1.05"
-						id="exageracion-box"
-						name="no-columnas"
-						min="1"
-						step="0.01"
-						max="1.10"
-						onChange={e => (exagerar = document.getElementById("exageracion-box").value)}
-					/>
-				</p>
-				<button
-					className="btnPaso text-center mt-12 title"
-					onClick={() => {
-						exagerar = document.getElementById("exageracion-box").value;
-						texto = show();
-						//console.log(texto);
-						drawLines3 = dibujoDesplazamiento(estructurasLista[0], texto);
 
-						drawLines = drawLines3;
+			<div className="row g-4 mb-4">
+				<div className="col-lg-6">
+					<div className="matrix-card">
+						<div className="card-header">
+							<h3>Visualización</h3>
+						</div>
+						<div className="card-body">
+							<div className="visualization-box">
+								{(() => {
+									const nCol = actions.getNoColumnas();
+									const nPisos = actions.getNoPisos();
+									const dVano = actions.getLuzVano();
+									const dPiso = actions.getEntrePiso();
+									const totalW = (nCol - 1) * dVano;
+									const totalH = nPisos * dPiso;
+									const totalD = is3D ? dVano : 0;
 
-						document.getElementById("caja-dibujo2").innerHTML = drawLines;
-					}}>
-					<span>Dibujar deformada</span>
-				</button>
-			</p>
-			<div className="text-sm-left">
-				<h2> Tabla resultado por generación</h2>
+									// Estimate isometric bounds
+									const p1 = project3D(0, 0, 0);
+									const p2 = project3D(totalW, 0, 0);
+									const p3 = project3D(0, totalH, 0);
+									const p4 = project3D(0, 0, totalD);
+									const p5 = project3D(totalW, totalH, totalD);
+
+									const minX = Math.min(p1.x, p2.x, p3.x, p4.x, p5.x) - 5;
+									const maxX = Math.max(p1.x, p2.x, p3.x, p4.x, p5.x) + 5;
+									const minY = Math.min(p1.y, p2.y, p3.y, p4.y, p5.y) - 5;
+									const maxY = Math.max(p1.y, p2.y, p3.y, p4.y, p5.y) + 5;
+
+									return (
+										<svg
+											id="caja-drawing"
+											viewBox={`${minX} ${minY} ${maxX - minX} ${maxY - minY}`}>
+											{calcResults.mejorEstructura ? (
+												calcResults.mejorEstructura.map((el, i) => {
+													const ux_i = showDeformation
+														? (calcResults.displacements[el.vectorX[0]] || 0) * defScale
+														: 0;
+													const uy_i = showDeformation
+														? (calcResults.displacements[el.vectorX[1]] || 0) * defScale
+														: 0;
+													const uz_i =
+														showDeformation && is3D
+															? (calcResults.displacements[el.vectorX[2]] || 0) * defScale
+															: 0;
+
+													const ux_f = showDeformation
+														? (calcResults.displacements[el.vectorY[0]] || 0) * defScale
+														: 0;
+													const uy_f = showDeformation
+														? (calcResults.displacements[el.vectorY[1]] || 0) * defScale
+														: 0;
+													const uz_f =
+														showDeformation && is3D
+															? (calcResults.displacements[el.vectorY[2]] || 0) * defScale
+															: 0;
+
+													const start_orig = project3D(
+														el.puntoIni[0],
+														el.puntoIni[1],
+														el.puntoIni[2] || 0
+													);
+													const end_orig = project3D(
+														el.puntoFin[0],
+														el.puntoFin[1],
+														el.puntoFin[2] || 0
+													);
+
+													const start_def = project3D(
+														el.puntoIni[0] + ux_i,
+														el.puntoIni[1] + uy_i,
+														(el.puntoIni[2] || 0) + uz_i
+													);
+													const end_def = project3D(
+														el.puntoFin[0] + ux_f,
+														el.puntoFin[1] + uy_f,
+														(el.puntoFin[2] || 0) + uz_f
+													);
+
+													const isDiagonal = el.tipo === "Diagonal";
+
+													return (
+														<g key={i}>
+															{showDeformation && (
+																<line
+																	x1={start_orig.x || 0}
+																	y1={start_orig.y || 0}
+																	x2={end_orig.x || 0}
+																	y2={end_orig.y || 0}
+																	stroke="#334155"
+																	strokeWidth="0.05"
+																	strokeDasharray="0.5,0.5"
+																/>
+															)}
+															<line
+																x1={start_def.x || 0}
+																y1={start_def.y || 0}
+																x2={end_def.x || 0}
+																y2={end_def.y || 0}
+																stroke={
+																	isDiagonal
+																		? "#00f2fe"
+																		: showDeformation
+																			? "#22c55e"
+																			: "#ffffff"
+																}
+																strokeWidth={isDiagonal ? "0.1" : "0.3"}
+																strokeOpacity={isDiagonal ? "0.6" : "0.9"}
+															/>
+															<text
+																x={((start_def.x || 0) + (end_def.x || 0)) / 2}
+																y={((start_def.y || 0) + (end_def.y || 0)) / 2}
+																fontSize="0.8"
+																fill={isDiagonal ? "#00f2fe" : "#ffffff"}
+																textAnchor="middle"
+																dominantBaseline="middle"
+																opacity="0.4">
+																{el.elemento}
+															</text>
+														</g>
+													);
+												})
+											) : (
+												<text x="0" y="-5" fill="#666" fontSize="2">
+													Inicie la optimización...
+												</text>
+											)}
+										</svg>
+									);
+								})()}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="col-lg-6">
+					<div className="matrix-card">
+						<div className="card-header">
+							<h3>Conectividad</h3>
+						</div>
+						<div className="card-body">
+							<div className="table-responsive">
+								<table className="matrix-table">
+									<thead>
+										<tr>
+											<th>Item</th>
+											<th>Perfil</th>
+											<th>L(m)</th>
+											<th>A</th>
+											<th>I</th>
+										</tr>
+									</thead>
+									<tbody>
+										{calcResults.mejorEstructura &&
+											calcResults.mejorEstructura.map((el, i) => (
+												<tr key={i}>
+													<td>{i + 1}</td>
+													<td>{el.elemento}</td>
+													<td>
+														{(el.longitud && parseFloat(el.longitud).toFixed(2)) || "0.00"}
+													</td>
+													<td>{el.area}</td>
+													<td>{el.inercia}</td>
+												</tr>
+											))}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div className="col-sm-12">
-				<table className="table table-striped" id="tabla-final8" onLoad="" />
+
+			{calcResults.seismicData && (
+				<div className="row g-4 mb-4">
+					<div className="col-12">
+						<div className="matrix-card">
+							<div className="card-header">
+								<h3>Resumen de Análisis Sísmico (COVENIN 1756)</h3>
+							</div>
+							<div className="card-body">
+								<div className="row">
+									<div className="col-md-3">
+										<div className="note-box">
+											<strong>Peso Sísmico Total (W)</strong>
+											<div className="h4 text-info">
+												{parseFloat(calcResults.seismicData.W_total).toFixed(2)} kg
+											</div>
+										</div>
+									</div>
+									<div className="col-md-3">
+										<div className="note-box">
+											<strong>Corte Basal (V)</strong>
+											<div className="h4 text-info">
+												{parseFloat(calcResults.seismicData.V_base).toFixed(2)} kg
+											</div>
+										</div>
+									</div>
+									<div className="col-md-3">
+										<div className="note-box">
+											<strong>Aceleración Sa(T)</strong>
+											<div className="h4 text-info">
+												{parseFloat(calcResults.seismicData.Sa).toFixed(3)} g
+											</div>
+										</div>
+									</div>
+									<div className="col-md-3">
+										<div className="note-box">
+											<strong>Deriva Máxima (Δ/h)</strong>
+											<div className="h4 text-warning">
+												{Math.max(...calcResults.seismicData.drifts).toFixed(5)}
+											</div>
+											<small
+												className={
+													Math.max(...calcResults.seismicData.drifts) > 0.015
+														? "text-danger"
+														: "text-success"
+												}>
+												{Math.max(...calcResults.seismicData.drifts) > 0.015
+													? "✘ Excede límite (0.015)"
+													: "✔ Dentro del límite"}
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+
+			<div className="row g-4 mb-4">
+				<div className="col-12">
+					<div className="matrix-card">
+						<div className="card-header pb-0">
+							<div className="d-flex justify-content-between align-items-center w-100">
+								<h3>Transparencia de Cálculo (Matrices)</h3>
+								<div className="input-group m-0" style={{ flexDirection: "row", alignItems: "center" }}>
+									<label className="me-2 mb-0">Ver:</label>
+									<select
+										value={selectedMatrix}
+										onChange={e => setSelectedMatrix(e.target.value)}
+										className="select-modern">
+										<option value="Global">Matriz de Rigidez Global</option>
+										{calcResults.mejorEstructura &&
+											calcResults.mejorEstructura.map((el, idx) => (
+												<option key={idx} value={idx}>
+													Elemento {idx + 1}: {el.elemento}
+												</option>
+											))}
+									</select>
+								</div>
+							</div>
+						</div>
+						<div className="card-body">
+							{selectedMatrix === "Global" ? (
+								<MatrixViewer data={calcResults.globalK} title="Matriz de Rigidez Global (K)" />
+							) : (
+								<MatrixViewer
+									data={
+										calcResults.mejorEstructura &&
+										calcResults.mejorEstructura[selectedMatrix] &&
+										calcResults.mejorEstructura[selectedMatrix].rigidez
+									}
+									title={`Matriz de Rigidez del Elemento ${parseInt(selectedMatrix) + 1} (${
+										calcResults.mejorEstructura[selectedMatrix].elemento
+									})`}
+								/>
+							)}
+						</div>
+					</div>
+				</div>
 			</div>
-			<p>
-				<button className="btnPaso2 text-center mt-12 title">
-					<Link to="/">
-						<span>Volver al Home</span>
-					</Link>
-				</button>
-			</p>
-		</React.Fragment>
+
+			<div className="row g-4">
+				<div className="col-md-6">
+					<div className="matrix-card">
+						<div className="card-header">
+							<h3>Peso (kg)</h3>
+						</div>
+						<div className="card-body">
+							<canvas id="grafica-weight" height="250" />
+						</div>
+					</div>
+				</div>
+				<div className="col-md-6">
+					<div className="matrix-card">
+						<div className="card-header">
+							<h3>Estabilidad</h3>
+						</div>
+						<div className="card-body">
+							<canvas id="grafica-stability" height="250" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className="text-center pb-5">
+				<Link to="/" className="btn btn-outline-secondary">
+					Volver al Home
+				</Link>
+			</div>
+		</div>
 	);
 }
 
+Calculus.displayName = "Calculus";
 export default Calculus;
