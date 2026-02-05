@@ -1,46 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap');
+
+$primary: #2563eb;
+$primary-hover: #1e40af;
+$success: #10b981;
+$bg-technical: #f8fafc;
+$text-main: #1e293b;
+$border-color: #e2e8f0;
+
+.title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: $text-main;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
 .sub-title {
-    justify-content: left;
-    padding-left: 5%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: $primary;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid $primary;
+    padding-left: 1rem;
 }
 
 .config-paso-1 {
-    justify-content: space-around;
-    padding-left: 10%;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border: 1px solid $border-color;
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.5rem;
+    }
+
+    .no-columnas {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid $border-color;
+        background: $bg-technical;
+        font-family: 'JetBrains Mono', monospace;
+        margin-bottom: 1.5rem;
+        transition: all 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: $primary;
+            box-shadow: 0 0 0 3px rgba($primary, 0.1);
+            background: white;
+        }
+    }
 }
 
-.save-btn {
-    padding-left: 10%;
-    justify-items: center;
+.visualization-container {
+    background: #0f172a; // Deep technical background
+    padding: 2rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    min-height: 550px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
+        pointer-events: none;
+    }
+
+    svg {
+        border: none;
+        filter: drop-shadow(0 0 15px rgba($primary, 0.3));
+        max-width: 100%;
+        height: auto;
+        z-index: 1;
+    }
+
+    .viz-label {
+        color: rgba(255, 255, 255, 0.7);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        margin-top: 1rem;
+        z-index: 1;
+    }
+}
+
+.btn-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-left: 2rem;
 }
 
 .btnPaso {
-    background-color: #2f8ee7;
-    color: rgb(245, 245, 245);
-    text-emphasis-color: white;
-    text-decoration-color: white;
-}
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    background: $primary;
+    color: white;
+    cursor: pointer;
 
-.btnPaso:hover {
-    background-color: #e21818;
-    color: rgb(245, 245, 245);
-}
+    &:hover {
+        background: $primary-hover;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($primary, 0.3);
+    }
 
-svg {
-    border: solid red 1px;
-    justify-self: center;
+    &:active {
+        transform: translateY(0);
+    }
 }
 
 .btnPaso2 {
-    background-color: #2fe747;
-    color: rgb(245, 245, 245);
-}
+    @extend .btnPaso;
+    background: transparent;
+    border: 2px solid $success;
+    
+    a {
+        color: $success;
+        text-decoration: none;
+    }
 
-.default *{
-    background-color: rgb(216, 216, 216);
-    justify-content: center;
-    justify-self: center;
-    padding-inline: 0%;
-    border: solid black 1px;
-    text-align: center;
+    &:hover {
+        background: $success;
+        a { color: white; }
+        box-shadow: 0 4px 12px rgba($success, 0.3);
+    }
 }
