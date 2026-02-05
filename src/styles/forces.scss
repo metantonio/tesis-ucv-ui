@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap');
+
+$primary: #2563eb;
+$primary-hover: #1e40af;
+$success: #10b981;
+$bg-technical: #f8fafc;
+$text-main: #1e293b;
+$border-color: #e2e8f0;
+
+.forces-container {
+    padding: 2rem;
+    background: #fdfdfd;
+}
+
+.section-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    border: 1px solid $border-color;
+    height: 100%;
+    margin-bottom: 1.5rem;
+
+    .card-header {
+        border-bottom: 2px solid $bg-technical;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: $text-main;
+            margin: 0;
+        }
+
+        span {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-family: 'JetBrains Mono';
+        }
+    }
+}
+
+.input-block {
+    margin-bottom: 1.25rem;
+
+    label {
+        display: block;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.5rem;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 0.65rem 0.75rem;
+        border-radius: 8px;
+        border: 1px solid $border-color;
+        background: $bg-technical;
+        font-family: 'JetBrains Mono', monospace;
+        transition: all 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: $primary;
+            box-shadow: 0 0 0 3px rgba($primary, 0.1);
+            background: white;
+        }
+    }
+}
+
+.chart-wrapper {
+    background: #0f172a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    position: relative;
+    border: 1px solid #1e293b;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 30px 30px;
+        pointer-events: none;
+    }
+
+    canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 1;
+        position: relative;
+    }
+}
+
+.note-box {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #92400e;
+}
