@@ -13,7 +13,7 @@
 [![Para abrir en Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/metantonio/tesis-ucv-ui.git)
 2. Instalar los paquetes necesarios escribiendo en la consola de comandos:
 ```
-npm install
+npm install --legacy-peer-deps
 ```
 3. Crear un archivo .env:
 ```
